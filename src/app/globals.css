@@ -1,0 +1,116 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 26 23 35;
+    --foreground: 243 231 211;
+  }
+
+  * {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: #1A1A1A;
+    color: #F3E7D3;
+    font-family: var(--font-satoshi), system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    color: #7D6854;
+    font-weight: 700;
+  }
+
+  h1 {
+    font-size: 32px;
+    line-height: 40px;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    font-size: 20px;
+    line-height: 28px;
+    letter-spacing: -0.01em;
+  }
+
+  ::placeholder {
+    color: #B2A88A;
+    opacity: 1;
+  }
+
+  :focus-visible {
+    outline: 2px solid #7D7254;
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background-color: #7D7254;
+    color: #1A1A1A;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-olive-gold text-charcoal font-bold text-base px-6 py-3 rounded-lg 
+           transition-all duration-200 hover:brightness-110 active:scale-[0.98]
+           disabled:opacity-50 disabled:cursor-not-allowed;
+    letter-spacing: -0.01em;
+    min-height: 48px;
+  }
+
+  .btn-secondary {
+    @apply bg-charcoal text-warm-white font-normal text-base px-6 py-3 rounded-lg 
+           border border-olive-gold transition-all duration-200 
+           hover:bg-olive-gold/10 active:scale-[0.98]
+           disabled:opacity-50 disabled:cursor-not-allowed;
+    min-height: 48px;
+  }
+
+  .card {
+    @apply bg-charcoal border border-warm-sand/20 rounded-xl p-4;
+  }
+
+  .input-field {
+    @apply w-full bg-charcoal border border-warm-sand/30 rounded-lg px-4 py-3 
+           text-warm-white text-base placeholder:text-warm-sand
+           focus:border-olive-gold focus:ring-1 focus:ring-olive-gold
+           transition-colors duration-200;
+    min-height: 48px;
+  }
+
+  .label {
+    @apply text-warm-sand text-sm mb-1.5 block;
+  }
+
+  .meta-text {
+    @apply text-warm-sand text-meta;
+  }
+}
+
+@layer utilities {
+  .text-title {
+    @apply text-warm-gold font-bold;
+  }
+
+  .text-body {
+    @apply text-warm-white font-normal;
+  }
+
+  .text-accent {
+    @apply text-olive-gold font-bold;
+  }
+
+  .text-supporting {
+    @apply text-warm-sand font-normal;
+  }
+}
