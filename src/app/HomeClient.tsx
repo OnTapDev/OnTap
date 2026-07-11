@@ -419,7 +419,6 @@ export function HomeClient({ availableSpots: initialSpots }: HomeClientProps) {
               <h3 className="text-lg font-semibold text-warm-white">Professional</h3>
               <div className="flex items-baseline gap-1 mt-2">
                 <span className="text-3xl font-bold text-warm-white">$50</span>
-                <span className="text-warm-sand text-xs line-through">$50</span>
               </div>
               <p className="text-warm-sand text-sm mb-4">/month at launch</p>
               <ul className="space-y-2 text-warm-sand text-sm">
@@ -431,7 +430,10 @@ export function HomeClient({ availableSpots: initialSpots }: HomeClientProps) {
               </ul>
             </div>
 
-            <div className="p-5 md:p-6 rounded-2xl border border-warm-sand/15 bg-charcoal">
+            <div className="p-5 md:p-6 rounded-2xl border border-warm-sand/15 bg-charcoal relative">
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-olive-gold text-charcoal px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap">
+                Founders pay $80
+              </div>
               <h3 className="text-lg font-semibold text-warm-white">Enterprise</h3>
               <div className="flex items-baseline gap-1 mt-2">
                 <span className="text-3xl font-bold text-warm-white">$200</span>

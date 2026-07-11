@@ -36,7 +36,7 @@ export async function sendEmail(to: string, subject: string, body: string, conta
       "Authorization": `Bearer ${resendApiKey}`,
     },
     body: JSON.stringify({
-      from: "OnTap <noreply@yourdomain.com>",
+      from: "OnTap <noreply@ontapbar.com>",
       to: to,
       subject: subject,
       html: body,
@@ -106,4 +106,24 @@ export async function sendSMS(to: string, body: string, contactId: string, orgId
 
   revalidatePath("/crm");
   return { success: true };
+}
+
+export async function getOrgMessages(orgId: string) {
+  const supabase = await createClient();
+
+  const { data: messages, error } = await supabase
+    .from("messages")
+    .select(`
+      *,
+      contact:contacts(name, email, phone)
+    `)
+    .eq("org_id", orgId)
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error("Error fetching org messages:", error);
+    return [];
+  }
+
+  return messages || [];
 }

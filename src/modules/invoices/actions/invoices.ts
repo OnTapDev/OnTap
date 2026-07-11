@@ -69,6 +69,7 @@ export async function createInvoice(orgId: string, invoice: {
   }
 
   revalidatePath("/invoices");
+  revalidatePath("/billing");
   return data;
 }
 
@@ -95,6 +96,7 @@ export async function updateInvoice(id: string, invoice: {
   }
 
   revalidatePath("/invoices");
+  revalidatePath("/billing");
   return data;
 }
 
@@ -112,6 +114,7 @@ export async function deleteInvoice(id: string) {
   }
 
   revalidatePath("/invoices");
+  revalidatePath("/billing");
   return { success: true };
 }
 
@@ -129,7 +132,7 @@ export async function getInvoiceForDownload(invoiceId: string) {
         venue_address,
         contact:contacts(name, email, phone)
       ),
-      organization:organizations(name, email, phone, address, city, state, zip)
+      organization:organizations(name)
     `)
     .eq("id", invoiceId)
     .single();

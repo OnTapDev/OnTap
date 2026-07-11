@@ -2,11 +2,13 @@
 
 import { useState } from "react";
 import { Input, Card, CardHeader, CardTitle, CardContent } from "@/ui/primitives";
-import { Bell, Link2, User, Lock, Mail, LogOut, HelpCircle, AlertTriangle } from "lucide-react";
+import { Bell, Link2, User, Lock, Mail, LogOut, HelpCircle, AlertTriangle, CreditCard, Download } from "lucide-react";
 import { SignOutButton } from "@clerk/nextjs";
 import { deleteUserAccount } from "@/lib/auth/actions";
 import { updateUserPreferences, UserPreferences } from "@/lib/preferences/actions";
 import { submitSupportTicket } from "@/lib/support/actions";
+import { createStripeConnectLink, disconnectStripe } from "@/modules/settings/actions/stripe-connect";
+import { exportInvoicesCSV } from "@/modules/billing/actions/export";
 
 function SupportForm() {
   const [category, setCategory] = useState("general");
@@ -133,6 +135,92 @@ function NotificationToggle({
   );
 }
 
+function SubscriptionActions({ orgId, status }: { orgId?: string; status?: string }) {
+  const [loading, setLoading] = useState(false);
+
+  const handleSubscribe = async () => {
+    if (!orgId) return;
+    setLoading(true);
+    try {
+      const res = await fetch("/api/stripe/create-subscription-checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ orgId }),
+      });
+      const data = await res.json();
+      if (data.url) { window.location.href = data.url; }
+      else { alert(data.error || "Failed to create subscription"); }
+    } catch { alert("Failed to start subscription"); }
+    finally { setLoading(false); }
+  };
+
+  const handleManage = async () => {
+    if (!orgId) return;
+    setLoading(true);
+    try {
+      const res = await fetch("/api/stripe/create-portal-session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ orgId }),
+      });
+      const data = await res.json();
+      if (data.url) { window.location.href = data.url; }
+      else { alert(data.error || "Failed to open billing portal"); }
+    } catch { alert("Failed to open billing portal"); }
+    finally { setLoading(false); }
+  };
+
+  if (status === "active" || status === "past_due") {
+    return (
+      <button onClick={handleManage} disabled={loading}
+        className="btn-secondary text-sm flex items-center gap-2">
+        <CreditCard className="w-4 h-4" />
+        {loading ? "Loading..." : "Manage Billing"}
+      </button>
+    );
+  }
+
+  return (
+    <button onClick={handleSubscribe} disabled={loading}
+      className="btn-primary text-sm flex items-center gap-2">
+      <CreditCard className="w-4 h-4" />
+      {loading ? "Redirecting..." : "Subscribe Now"}
+    </button>
+  );
+}
+
+function StripeConnectButton({ orgId }: { orgId?: string }) {
+  const [loading, setLoading] = useState(false);
+
+  const handleConnect = async () => {
+    if (!orgId) return;
+    setLoading(true);
+    try {
+      const result = await createStripeConnectLink(orgId);
+      if (result.url) {
+        window.location.href = result.url;
+      } else if (result.status === "complete") {
+        window.location.reload();
+      }
+    } catch {
+      alert("Failed to create Stripe Connect link. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <button
+      onClick={handleConnect}
+      disabled={loading}
+      className="btn-primary flex items-center gap-2"
+    >
+      <CreditCard className="w-4 h-4" />
+      {loading ? "Redirecting to Stripe..." : "Connect with Stripe"}
+    </button>
+  );
+}
+
 interface SettingsClientProps {
   userEmail?: string | null;
   emailVerified?: boolean;
@@ -144,9 +232,16 @@ interface SettingsClientProps {
     status: string;
     created_at: string;
   }>;
+  orgId?: string;
+  stripeConnectStatus?: { connected: boolean; status: string | null; accountId?: string | null };
+  subscriptionStatus?: {
+    status: string;
+    periodEnd?: string;
+    subscriberCount?: number;
+  };
 }
 
-export function SettingsClient({ userEmail, emailVerified, preferences, tickets = [] }: SettingsClientProps) {
+export function SettingsClient({ userEmail, emailVerified, preferences, tickets = [], orgId, stripeConnectStatus, subscriptionStatus }: SettingsClientProps) {
   const [activeTab, setActiveTab] = useState("account");
   const [deleting, setDeleting] = useState(false);
 
@@ -155,6 +250,7 @@ export function SettingsClient({ userEmail, emailVerified, preferences, tickets 
   const tabs = [
     { id: "account", label: "Account", icon: User },
     { id: "security", label: "Security", icon: Lock },
+    { id: "payments", label: "Payments", icon: CreditCard },
     { id: "integrations", label: "Integrations", icon: Link2 },
     { id: "notifications", label: "Notifications", icon: Bell },
     { id: "support", label: "Support", icon: HelpCircle },
@@ -370,6 +466,158 @@ export function SettingsClient({ userEmail, emailVerified, preferences, tickets 
                   className="bg-red-500/20 text-red-400 px-4 py-2 rounded-lg text-sm font-medium hover:bg-red-500/30 transition-colors disabled:opacity-50"
                 >
                   {deleting ? "Deleting..." : "Delete My Account"}
+                </button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
+      {activeTab === "payments" && (
+        <div className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Stripe Connect</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4 max-w-lg">
+                <div className="flex items-center justify-between p-4 bg-warm-sand/5 rounded-lg border border-warm-sand/20">
+                  <div className="flex items-center gap-3">
+                    <CreditCard className="w-8 h-8 text-olive-gold" />
+                    <div>
+                      <h4 className="text-warm-white font-medium">Receive Payments</h4>
+                      <p className="text-warm-sand text-sm">
+                        {stripeConnectStatus?.connected
+                          ? "Your Stripe account is connected. Payments will be deposited to your account."
+                          : stripeConnectStatus?.status === "pending"
+                          ? "Onboarding in progress. Complete the Stripe setup to start receiving payments."
+                          : "Connect your Stripe account to accept online payments from clients."}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {!stripeConnectStatus?.connected ? (
+                  <StripeConnectButton orgId={orgId} />
+                ) : (
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-2 text-sm text-green-400">
+                      <span className="w-2 h-2 rounded-full bg-green-400" />
+                      Connected — {stripeConnectStatus.accountId?.slice(0, 10)}...
+                    </div>
+                    <button
+                      onClick={async () => {
+                        if (!orgId) return;
+                        if (!window.confirm("Disconnect Stripe? You won't be able to accept payments until you reconnect.")) return;
+                        await disconnectStripe(orgId);
+                        window.location.reload();
+                      }}
+                      className="text-sm text-red-400 hover:text-red-300"
+                    >
+                      Disconnect Stripe
+                    </button>
+                  </div>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Platform Subscription</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4 max-w-lg">
+                <div className="flex items-center gap-3 p-4 bg-warm-sand/5 rounded-lg border border-warm-sand/20">
+                  <CreditCard className="w-8 h-8 text-olive-gold" />
+                  <div className="flex-1">
+                    <h4 className="text-warm-white font-medium">OnTap Platform</h4>
+                    <p className="text-warm-sand text-sm">
+                      {subscriptionStatus?.status === "active"
+                        ? `Active — renews ${subscriptionStatus.periodEnd ? new Date(subscriptionStatus.periodEnd).toLocaleDateString() : ""}`
+                        : subscriptionStatus?.status === "past_due"
+                        ? "Payment past due — update your billing info to keep access"
+                        : "Subscribe to access the OnTap platform"}
+                    </p>
+                  </div>
+                  <span className={`text-sm font-medium ${subscriptionStatus?.status === "active" ? "text-green-400" : subscriptionStatus?.status === "past_due" ? "text-red-400" : "text-warm-sand"}`}>
+                    {subscriptionStatus?.status === "active" ? "Active" : subscriptionStatus?.status === "past_due" ? "Past Due" : "Inactive"}
+                  </span>
+                </div>
+
+                <SubscriptionActions orgId={orgId} status={subscriptionStatus?.status} />
+
+                {subscriptionStatus?.subscriberCount !== undefined && (
+                  <div className="flex items-center justify-between p-3 bg-olive-gold/10 rounded-lg border border-olive-gold/20">
+                    <p className="text-sm text-warm-sand">Active subscribers</p>
+                    <p className="text-sm font-bold text-olive-gold">{subscriptionStatus.subscriberCount} / 500</p>
+                  </div>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Payout Settings</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4 max-w-lg">
+                <div className="flex items-center justify-between p-4 bg-warm-sand/5 rounded-lg">
+                  <div>
+                    <h4 className="text-warm-white font-medium">Platform Fee</h4>
+                    <p className="text-warm-sand text-sm">No platform fee is currently applied. 100% of each payment settles to your Stripe account (minus standard Stripe processing fees).</p>
+                  </div>
+                  <span className="text-olive-gold font-medium">0%</span>
+                </div>
+                <div className="flex items-center justify-between p-4 bg-warm-sand/5 rounded-lg">
+                  <div>
+                    <h4 className="text-warm-white font-medium">Settlement Timing</h4>
+                    <p className="text-warm-sand text-sm">Funds settle directly to your Stripe account. Typically available within 2 business days.</p>
+                  </div>
+                  <span className="text-warm-sand text-sm">2-3 days</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="border-warm-sand/20">
+            <CardHeader>
+              <CardTitle>Record Keeping & Responsibility</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4 max-w-lg">
+              <p className="text-warm-sand text-sm">
+                As the merchant of record, you are responsible for maintaining records of all transactions processed through your Stripe account. This includes invoices, payments, refunds, and chargebacks.
+              </p>
+              <div className="p-4 bg-olive-gold/10 rounded-lg border border-olive-gold/20">
+                <h4 className="text-warm-white font-medium text-sm mb-2">Your Responsibilities</h4>
+                <ul className="text-warm-sand text-sm space-y-2">
+                  <li className="flex items-start gap-2">• Download and store copies of paid invoices for your records</li>
+                  <li className="flex items-start gap-2">• Handle refunds and disputes directly through your Stripe dashboard</li>
+                  <li className="flex items-start gap-2">• Report and remit applicable taxes for your transactions</li>
+                  <li className="flex items-start gap-2">• Retain transaction records as required by your local regulations</li>
+                </ul>
+              </div>
+              <p className="text-warm-sand/60 text-xs">
+                OnTap is a service platform and is not responsible for your record-keeping or tax obligations.
+              </p>
+              <div className="pt-2">
+                <button
+                  onClick={async () => {
+                    if (!orgId) return;
+                    const csv = await exportInvoicesCSV(orgId);
+                    if (!csv) { alert("No invoices to export."); return; }
+                    const blob = new Blob([csv], { type: "text/csv" });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement("a");
+                    a.href = url;
+                    a.download = `invoices-export-${new Date().toISOString().split("T")[0]}.csv`;
+                    a.click();
+                    URL.revokeObjectURL(url);
+                  }}
+                  className="btn-secondary text-sm flex items-center gap-2"
+                >
+                  <Download className="w-4 h-4" /> Download Invoice Records (CSV)
                 </button>
               </div>
             </CardContent>

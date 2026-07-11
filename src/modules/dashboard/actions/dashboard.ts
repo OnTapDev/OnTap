@@ -1,177 +1,240 @@
 "use server";
 
-import { createClient } from "@supabase/supabase-js";
+import { createClient } from "@/core/db/server";
 
-function createAdminClient() {
-  return createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
+function getDateRange(daysAgo: number): string {
+  const d = new Date();
+  d.setDate(d.getDate() - daysAgo);
+  return d.toISOString().split("T")[0];
 }
 
 export async function getDashboardKPIs(orgId: string) {
-  const supabase = createAdminClient();
-  const today = new Date();
-  const todayStr = today.toISOString().split("T")[0];
-  
-  const thirtyDaysAgo = new Date(today);
-  thirtyDaysAgo.setDate(today.getDate() - 30);
-  const thirtyDaysAgoStr = thirtyDaysAgo.toISOString().split("T")[0];
-  
-  const sixtyDaysAgo = new Date(today);
-  sixtyDaysAgo.setDate(today.getDate() - 60);
-  const sixtyDaysAgoStr = sixtyDaysAgo.toISOString().split("T")[0];
+  const supabase = await createClient();
+  const today = getDateRange(0);
+  const thirtyDaysAgo = getDateRange(30);
+  const sixtyDaysAgo = getDateRange(60);
+  const thirtyDaysFromNow = getDateRange(-30);
 
-  const { count: newLeads } = await supabase
-    .from("contacts")
-    .select("*", { count: "exact", head: true })
-    .eq("org_id", orgId)
-    .gte("created_at", thirtyDaysAgoStr);
+  // ── Bulk fetch all data needed for KPIs and charts ──
+  const [
+    allContacts,
+    allPaidInvoices,
+    upcomingEvents,
+    oldSignedContracts,
+    newSignedContracts,
+    oldQuotes,
+    newQuotes,
+  ] = await Promise.all([
+    // All contacts from last 60 days (for leads count + chart)
+    supabase
+      .from("contacts")
+      .select("created_at")
+      .eq("org_id", orgId)
+      .gte("created_at", sixtyDaysAgo),
 
-  const { count: oldLeads } = await supabase
-    .from("contacts")
-    .select("*", { count: "exact", head: true })
-    .eq("org_id", orgId)
-    .gte("created_at", sixtyDaysAgoStr)
-    .lt("created_at", thirtyDaysAgoStr);
+    // All paid invoices from last 60 days (for revenue + chart)
+    supabase
+      .from("invoices")
+      .select("amount, created_at")
+      .eq("org_id", orgId)
+      .eq("status", "paid")
+      .gte("created_at", sixtyDaysAgo),
 
-  const { data: currentInvoices } = await supabase
-    .from("invoices")
-    .select("amount")
-    .eq("org_id", orgId)
-    .eq("status", "paid")
-    .gte("created_at", thirtyDaysAgoStr);
+    // Upcoming events in next 30 days
+    supabase
+      .from("events")
+      .select("id, date")
+      .eq("org_id", orgId)
+      .gte("date", today)
+      .lte("date", thirtyDaysFromNow),
 
-  const { data: oldInvoices } = await supabase
-    .from("invoices")
-    .select("amount")
-    .eq("org_id", orgId)
-    .eq("status", "paid")
-    .gte("created_at", sixtyDaysAgoStr)
-    .lt("created_at", thirtyDaysAgoStr);
+    // Old signed contracts (31-60 days ago)
+    supabase
+      .from("contracts")
+      .select("id", { count: "exact", head: true })
+      .eq("org_id", orgId)
+      .eq("status", "signed")
+      .gte("created_at", sixtyDaysAgo)
+      .lt("created_at", thirtyDaysAgo),
 
-  const revenue = currentInvoices?.reduce((sum, inv) => sum + (inv.amount || 0), 0) || 0;
-  const prevRevenue = oldInvoices?.reduce((sum, inv) => sum + (inv.amount || 0), 0) || 0;
+    // New signed contracts (0-30 days ago)
+    supabase
+      .from("contracts")
+      .select("id", { count: "exact", head: true })
+      .eq("org_id", orgId)
+      .eq("status", "signed")
+      .gte("created_at", thirtyDaysAgo),
 
-  const { count: upcomingEvents } = await supabase
-    .from("events")
-    .select("*", { count: "exact", head: true })
-    .eq("org_id", orgId)
-    .gte("date", todayStr)
-    .lte("date", new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split("T")[0]);
+    // Old quotes (31-60 days ago)
+    supabase
+      .from("quotes")
+      .select("id", { count: "exact", head: true })
+      .eq("org_id", orgId)
+      .gte("created_at", sixtyDaysAgo)
+      .lt("created_at", thirtyDaysAgo),
 
-  const oldTotalSignedContracts = await supabase
-    .from("contracts")
-    .select("*", { count: "exact", head: true })
-    .eq("org_id", orgId)
-    .eq("status", "signed")
-    .gte("created_at", sixtyDaysAgoStr)
-    .lt("created_at", thirtyDaysAgoStr);
+    // New quotes (0-30 days ago)
+    supabase
+      .from("quotes")
+      .select("id", { count: "exact", head: true })
+      .eq("org_id", orgId)
+      .gte("created_at", thirtyDaysAgo),
+  ]);
 
-  const newTotalSignedContracts = await supabase
-    .from("contracts")
-    .select("*", { count: "exact", head: true })
-    .eq("org_id", orgId)
-    .eq("status", "signed")
-    .gte("created_at", thirtyDaysAgoStr);
+  // ── Process data in JS instead of per-day DB queries ──
 
-  const oldTotalQuotes = await supabase
-    .from("quotes")
-    .select("*", { count: "exact", head: true })
-    .eq("org_id", orgId)
-    .gte("created_at", sixtyDaysAgoStr)
-    .lt("created_at", thirtyDaysAgoStr);
+  // Leads counts
+  const contactsLast30 = (allContacts.data || []).filter(
+    c => c.created_at >= thirtyDaysAgo
+  ).length;
+  const contactsPrev30 = (allContacts.data || []).filter(
+    c => c.created_at >= sixtyDaysAgo && c.created_at < thirtyDaysAgo
+  ).length;
 
-  const newTotalQuotes = await supabase
-    .from("quotes")
-    .select("*", { count: "exact", head: true })
-    .eq("org_id", orgId)
-    .gte("created_at", thirtyDaysAgoStr);
+  // Generate cumulative leads chart data
+  const leadsChartData = generateCumulativeDaily(
+    (allContacts.data || []).map(c => c.created_at),
+    30
+  );
 
-  const prevConversion = oldTotalQuotes.count && oldTotalQuotes.count > 0 && oldTotalSignedContracts.count
-    ? Math.round((oldTotalSignedContracts.count / oldTotalQuotes.count) * 100)
-    : 0;
-  
-  const currentConversion = newTotalQuotes.count && newTotalQuotes.count > 0 && newTotalSignedContracts.count
-    ? Math.round((newTotalSignedContracts.count / newTotalQuotes.count) * 100)
-    : 0;
+  // Revenue
+  const revenueLast30 = (allPaidInvoices.data || [])
+    .filter(i => i.created_at >= thirtyDaysAgo)
+    .reduce((s, i) => s + (i.amount || 0), 0);
+  const revenuePrev30 = (allPaidInvoices.data || [])
+    .filter(i => i.created_at >= sixtyDaysAgo && i.created_at < thirtyDaysAgo)
+    .reduce((s, i) => s + (i.amount || 0), 0);
 
-  const leadsChange = oldLeads && oldLeads > 0 && newLeads
-    ? Math.round(((newLeads - oldLeads) / oldLeads) * 100)
-    : newLeads ? 100 : 0;
+  // Generate cumulative revenue chart data
+  const revenueChartData = generateCumulativeDailyRevenue(
+    (allPaidInvoices.data || []).map(i => ({ amount: i.amount || 0, created_at: i.created_at })),
+    30
+  );
 
-  const revenueChange = prevRevenue > 0 && revenue
-    ? Math.round(((revenue - prevRevenue) / prevRevenue) * 100)
-    : revenue > 0 ? 100 : 0;
+  // Upcoming events count
+  const upcomingCount = upcomingEvents.data?.length || 0;
 
-  const conversionChange = prevConversion > 0 && currentConversion
+  // Events chart: use actual event dates from the upcoming events to create realistic distribution
+  const eventDates = (upcomingEvents.data || []).map(e => e.date);
+  const eventsChartData = generateCumulativeByDate(eventDates, 30);
+
+  // Conversion rates
+  const oldSignedCount = oldSignedContracts.count || 0;
+  const newSignedCount = newSignedContracts.count || 0;
+  const oldQuotesCount = oldQuotes.count || 0;
+  const newQuotesCount = newQuotes.count || 0;
+
+  const prevConversion = oldQuotesCount > 0 ? Math.round((oldSignedCount / oldQuotesCount) * 100) : 0;
+  const currentConversion = newQuotesCount > 0 ? Math.round((newSignedCount / newQuotesCount) * 100) : 0;
+
+  // Conversion chart: start from previous period and trend toward current
+  const conversionChartData = generateConversionChart(prevConversion, currentConversion, 30);
+
+  const leadsChange = contactsPrev30 > 0
+    ? Math.round(((contactsLast30 - contactsPrev30) / contactsPrev30) * 100)
+    : contactsLast30 > 0 ? 100 : 0;
+
+  const revenueChange = revenuePrev30 > 0
+    ? Math.round(((revenueLast30 - revenuePrev30) / revenuePrev30) * 100)
+    : revenueLast30 > 0 ? 100 : 0;
+
+  const conversionChange = prevConversion > 0
     ? currentConversion - prevConversion
     : currentConversion > 0 ? 100 : 0;
 
-  const generateChartData = async (type: "leads" | "revenue", periodDays: number = 30) => {
-    const data: number[] = [];
-    let cumulative = 0;
-    
-    for (let i = periodDays - 1; i >= 0; i--) {
-      const date = new Date(today);
-      date.setDate(date.getDate() - i);
-      const dateStr = date.toISOString().split("T")[0];
-      
-      if (type === "leads") {
-        const { count } = await supabase
-          .from("contacts")
-          .select("*", { count: "exact", head: true })
-          .eq("org_id", orgId)
-          .gte("created_at", dateStr)
-          .lt("created_at", new Date(date.getTime() + 24 * 60 * 60 * 1000).toISOString().split("T")[0]);
-        cumulative += count || 0;
-        data.push(cumulative);
-      } else {
-        const { data: dayInvoices } = await supabase
-          .from("invoices")
-          .select("amount")
-          .eq("org_id", orgId)
-          .eq("status", "paid")
-          .gte("created_at", dateStr)
-          .lt("created_at", new Date(date.getTime() + 24 * 60 * 60 * 1000).toISOString().split("T")[0]);
-        const dayRevenue = dayInvoices?.reduce((sum, inv) => sum + (inv.amount || 0), 0) || 0;
-        cumulative += dayRevenue;
-        data.push(cumulative);
-      }
-    }
-    return data;
-  };
-
-  const leadsChartData = await generateChartData("leads", 30);
-  const revenueChartData = await generateChartData("revenue", 30);
-
   return {
     leads: {
-      value: newLeads || 0,
+      value: contactsLast30,
       change: `${leadsChange >= 0 ? "+" : ""}${leadsChange}%`,
       chartData: leadsChartData,
     },
     revenue: {
-      value: revenue,
+      value: revenueLast30,
       change: `${revenueChange >= 0 ? "+" : ""}${revenueChange}%`,
       chartData: revenueChartData,
     },
     events: {
-      value: upcomingEvents || 0,
-      change: "+3",
-      chartData: Array.from({ length: 30 }, (_, i) => Math.max(0, (upcomingEvents || 0) - i)),
+      value: upcomingCount,
+      change: upcomingCount > 0 ? `+${Math.min(upcomingCount, 5)} upcoming` : "0 upcoming",
+      chartData: eventsChartData,
     },
     conversion: {
       value: currentConversion,
       change: `${conversionChange >= 0 ? "+" : ""}${conversionChange}%`,
-      chartData: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, currentConversion],
+      chartData: conversionChartData,
     },
   };
 }
 
+function generateCumulativeDaily(dateStrs: string[], days: number): number[] {
+  const data: number[] = [];
+  let cumulative = 0;
+  const now = new Date();
+
+  for (let i = days - 1; i >= 0; i--) {
+    const date = new Date(now);
+    date.setDate(date.getDate() - i);
+    const dayStart = date.toISOString().split("T")[0];
+
+    const count = dateStrs.filter(d => d === dayStart).length;
+    cumulative += count;
+    data.push(cumulative);
+  }
+  return data;
+}
+
+function generateCumulativeDailyRevenue(
+  items: { amount: number; created_at: string }[],
+  days: number
+): number[] {
+  const data: number[] = [];
+  let cumulative = 0;
+  const now = new Date();
+
+  for (let i = days - 1; i >= 0; i--) {
+    const date = new Date(now);
+    date.setDate(date.getDate() - i);
+    const dayStart = date.toISOString().split("T")[0];
+
+    const dayTotal = items
+      .filter(it => it.created_at >= dayStart && it.created_at < dayStart + "T23:59:59")
+      .reduce((s, it) => s + it.amount, 0);
+    cumulative += dayTotal;
+    data.push(cumulative);
+  }
+  return data;
+}
+
+function generateCumulativeByDate(dateStrs: string[], days: number): number[] {
+  const data: number[] = [];
+  const now = new Date();
+
+  for (let i = days - 1; i >= 0; i--) {
+    const date = new Date(now);
+    date.setDate(date.getDate() - i);
+    const dayStart = date.toISOString().split("T")[0];
+
+    if (dayStart >= getDateRange(0)) {
+      data.push(dateStrs.filter(d => d === dayStart).length);
+    } else {
+      data.push(0);
+    }
+  }
+  return data;
+}
+
+function generateConversionChart(prevRate: number, currentRate: number, days: number): number[] {
+  const data: number[] = [];
+  for (let i = 0; i < days; i++) {
+    const t = i / (days - 1 || 1);
+    data.push(Math.round(prevRate + (currentRate - prevRate) * t));
+  }
+  return data;
+}
+
 export async function getRecentLeads(orgId: string, limit = 5) {
-  const supabase = createAdminClient();
-  
+  const supabase = await createClient();
+
   const { data: contacts } = await supabase
     .from("contacts")
     .select("id, name, email, phone, source, created_at")
@@ -183,9 +246,9 @@ export async function getRecentLeads(orgId: string, limit = 5) {
 }
 
 export async function getUpcomingEventsList(orgId: string, limit = 5) {
-  const supabase = createAdminClient();
+  const supabase = await createClient();
   const today = new Date().toISOString().split("T")[0];
-  
+
   const { data: events } = await supabase
     .from("events")
     .select("id, name, date, status, guest_count, contacts!inner(name)")
@@ -205,8 +268,8 @@ export async function getUpcomingEventsList(orgId: string, limit = 5) {
 }
 
 export async function getContactsForDashboard(orgId: string, limit = 10) {
-  const supabase = createAdminClient();
-  
+  const supabase = await createClient();
+
   const { data: contacts } = await supabase
     .from("contacts")
     .select("id, name, email, phone, company, role, source, notes, created_at")
@@ -218,8 +281,8 @@ export async function getContactsForDashboard(orgId: string, limit = 10) {
 }
 
 export async function getEventsForDashboard(orgId: string, limit = 10) {
-  const supabase = createAdminClient();
-  
+  const supabase = await createClient();
+
   const { data: events } = await supabase
     .from("events")
     .select("id, name, date, status, guest_count")
@@ -238,8 +301,8 @@ export async function getEventsForDashboard(orgId: string, limit = 10) {
 }
 
 export async function getAllEventsForCalendar(orgId: string) {
-  const supabase = createAdminClient();
-  
+  const supabase = await createClient();
+
   const { data: events } = await supabase
     .from("events")
     .select("id, name, type, date, start_time, venue_name, guest_count, status, total_price, contacts!inner(name)")
@@ -259,4 +322,49 @@ export async function getAllEventsForCalendar(orgId: string) {
     total_price: e.total_price,
     contact: e.contacts?.[0] ? { name: e.contacts[0].name } : null,
   }));
+}
+
+export type DashboardAdditionalData = {
+  pendingQuotes: number;
+  signedContracts: number;
+  lowStockItems: number;
+  pendingContracts: number;
+  staffCount: number;
+  todayEvents: number;
+  thisWeekEvents: number;
+  totalContacts: number;
+};
+
+export async function getDashboardAdditionalData(orgId: string): Promise<DashboardAdditionalData> {
+  const supabase = await createClient();
+  const today = getDateRange(0);
+  const weekEnd = getDateRange(-7);
+
+  const [{ count: pendingQuotes }, { count: signedContracts },
+    { count: pendingContracts }, { count: staffCount }, { count: todayEvents },
+    { count: thisWeekEvents }, { count: totalContacts }, { data: inventoryItems }] = await Promise.all([
+    supabase.from("quotes").select("*", { count: "exact", head: true }).eq("org_id", orgId).eq("status", "draft"),
+    supabase.from("contracts").select("*", { count: "exact", head: true }).eq("org_id", orgId).eq("status", "signed"),
+    supabase.from("contracts").select("*", { count: "exact", head: true }).eq("org_id", orgId).eq("status", "draft"),
+    supabase.from("staff_assignments").select("*", { count: "exact", head: true }).eq("org_id", orgId),
+    supabase.from("events").select("*", { count: "exact", head: true }).eq("org_id", orgId).gte("date", today).lte("date", today),
+    supabase.from("events").select("*", { count: "exact", head: true }).eq("org_id", orgId).gte("date", today).lte("date", weekEnd),
+    supabase.from("contacts").select("*", { count: "exact", head: true }).eq("org_id", orgId),
+    supabase.from("inventory_items").select("quantity, reorder_level").eq("org_id", orgId).not("reorder_level", "is", null),
+  ]);
+
+  const lowStockItems = (inventoryItems || []).filter(
+    (item: { quantity: number; reorder_level: number }) => item.quantity <= item.reorder_level
+  ).length;
+
+  return {
+    pendingQuotes: pendingQuotes || 0,
+    signedContracts: signedContracts || 0,
+    lowStockItems,
+    pendingContracts: pendingContracts || 0,
+    staffCount: staffCount || 0,
+    todayEvents: todayEvents || 0,
+    thisWeekEvents: thisWeekEvents || 0,
+    totalContacts: totalContacts || 0,
+  };
 }

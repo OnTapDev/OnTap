@@ -25,7 +25,7 @@ export default async function EventsPage() {
         <AddEventButton contacts={contacts} orgId={orgId} />
       </div>
 
-      <EventsList events={events} />
+      <EventsList events={events} orgId={orgId} />
     </div>
   );
 }

@@ -3,17 +3,12 @@
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/ui/primitives";
 import { DetailedLineChart } from "@/ui/components/MiniLineChart";
-import { ArrowUpRight, ChevronDown, ChevronUp, Clock, DollarSign, TrendingUp, FileCheck, ArrowRight } from "lucide-react";
+import { ArrowUpRight, ChevronDown, ChevronUp, DollarSign, Receipt, TrendingUp, AlertCircle, ArrowRight } from "lucide-react";
 import Link from "next/link";
 
-interface ContractKPIData {
-  avgCycleTime: { value: number; change: string; chartData: number[] };
-  avgAlcoholCogs: { value: number; change: string; chartData: number[] };
-  avgRevenuePerHour: { value: number; change: string; chartData: number[] };
-  totalSigned: { value: number; change: string; chartData: number[] };
-}
+type KpiData = { value: number; change: string; chartData: number[] };
 
-interface KPIConfig {
+interface KpiConfigItem {
   title: string;
   icon: React.ElementType;
   description: string;
@@ -21,69 +16,70 @@ interface KPIConfig {
   tips: string[];
   dataHref: string;
   dataLabel: string;
-  getValue: (kpis: ContractKPIData) => { value: string; change: string; chartData: number[] };
+  format: (v: number) => string;
 }
 
-const kpiConfig: Record<string, KPIConfig> = {
-  "avg-cycle-time": {
-    title: "Avg Cycle Time", icon: Clock,
-    description: "Average days from inquiry to signed contract. Shorter cycles mean faster revenue and happier clients.",
+const kpiConfig: Record<string, KpiConfigItem> = {
+  "total-outstanding": {
+    title: "Total Outstanding", icon: DollarSign,
+    description: "Total unpaid balance across all invoices. Track your accounts receivable to maintain healthy cash flow.",
     industryStandards: [
-      { metric: "Lead-to-Contract", range: "5-14 days", status: "Good" },
-      { metric: "Quote-to-Sign", range: "2-7 days", status: "Excellent" },
-      { metric: "Follow-up Response", range: "< 24 hours", status: "Excellent" },
+      { metric: "AR to Revenue", range: "< 15%", status: "Excellent" },
+      { metric: "Days Outstanding", range: "< 30 days", status: "Good" },
+      { metric: "Collection Rate", range: "> 90%", status: "Excellent" },
     ],
-    tips: ["Respond to inquiries within 5 minutes", "Use templates to speed up contract creation", "Automate follow-up reminders", "Set clear expectations upfront"],
-    dataHref: "/contracts", dataLabel: "View All Contracts",
-    getValue: (k) => ({ value: k.avgCycleTime.value > 0 ? `${k.avgCycleTime.value} days` : "0 days", change: k.avgCycleTime.change, chartData: k.avgCycleTime.chartData }),
+    tips: ["Send payment reminders 3 days before due date", "Offer early payment discounts (2/10 Net 30)", "Set up automated follow-up sequences", "Require deposits for new clients"],
+    dataHref: "/billing", dataLabel: "View All Invoices",
+    format: (v) => `$${v.toLocaleString()}`,
   },
-  "alcohol-cogs": {
-    title: "Alcohol COGS", icon: DollarSign,
-    description: "Average alcohol cost of goods sold as a percentage of revenue. Lower percentages mean healthier margins.",
+  "total-paid": {
+    title: "Total Paid", icon: Receipt,
+    description: "Total revenue collected from paid invoices. This represents your confirmed cash inflow.",
     industryStandards: [
-      { metric: "Target Range", range: "15-25%", status: "Excellent" },
-      { metric: "Pour Cost", range: "18-24%", status: "Good" },
-      { metric: "Waste Allowance", range: "< 5%", status: "Excellent" },
+      { metric: "Payment Rate", range: "> 85%", status: "Excellent" },
+      { metric: "Avg Days to Pay", range: "< 14 days", status: "Good" },
+      { metric: "Repeat Payers", range: "> 50%", status: "Excellent" },
     ],
-    tips: ["Negotiate bulk pricing with suppliers", "Track pour costs per drink", "Optimize menu pricing based on cost", "Reduce waste with batch prep"],
-    dataHref: "/contracts", dataLabel: "View All Contracts",
-    getValue: (k) => ({ value: k.avgAlcoholCogs.value > 0 ? `${k.avgAlcoholCogs.value}%` : "0%", change: k.avgAlcoholCogs.change, chartData: k.avgAlcoholCogs.chartData }),
+    tips: ["Send invoices immediately after service", "Offer multiple payment methods", "Follow up on overdue accounts weekly", "Track payment trends by client type"],
+    dataHref: "/billing", dataLabel: "View All Invoices",
+    format: (v) => `$${v.toLocaleString()}`,
   },
-  "revenue-per-hour": {
-    title: "Revenue/Hour", icon: TrendingUp,
-    description: "Average revenue generated per labor hour across all contracts. Higher values indicate better staffing efficiency.",
+  "total-quoted": {
+    title: "Total Quoted", icon: TrendingUp,
+    description: "Total value of active quotes in your pipeline. This represents potential future revenue.",
     industryStandards: [
-      { metric: "Target", range: "$150-$250/hr", status: "Good" },
-      { metric: "Premium Events", range: "$250-$400/hr", status: "Excellent" },
-      { metric: "Minimum Viable", range: "$100-$150/hr", status: "Average" },
+      { metric: "Quote-to-Close", range: "20-30%", status: "Good" },
+      { metric: "Avg Quote Value", range: "$2,000-$5,000", status: "Good" },
+      { metric: "Response Time", range: "< 24 hours", status: "Excellent" },
     ],
-    tips: ["Optimize staffing per event size", "Bundle premium add-on services", "Review pricing quarterly", "Track peak hours for premium rates"],
-    dataHref: "/contracts", dataLabel: "View All Contracts",
-    getValue: (k) => ({ value: k.avgRevenuePerHour.value > 0 ? `$${k.avgRevenuePerHour.value}` : "$0", change: k.avgRevenuePerHour.change, chartData: k.avgRevenuePerHour.chartData }),
+    tips: ["Follow up within 24 hours of sending a quote", "Bundle services to increase quote value", "Track which package types convert best", "Set expiration dates to create urgency"],
+    dataHref: "/billing", dataLabel: "View All Quotes",
+    format: (v) => `$${v.toLocaleString()}`,
   },
-  "signed-contracts": {
-    title: "Signed Contracts", icon: FileCheck,
-    description: "Total signed and completed contracts. Track momentum and forecast future revenue.",
+  "overdue-count": {
+    title: "Overdue Invoices", icon: AlertCircle,
+    description: "Invoices past their due date. Minimizing overdue invoices is critical for cash flow health.",
     industryStandards: [
-      { metric: "Monthly Target", range: "10-25", status: "Excellent" },
-      { metric: "Conversion Rate", range: "20-30%", status: "Good" },
-      { metric: "Repeat Clients", range: "40-60%", status: "Excellent" },
+      { metric: "Overdue Rate", range: "< 5%", status: "Excellent" },
+      { metric: "Resolution Time", range: "< 7 days", status: "Good" },
+      { metric: "Bad Debt", range: "< 2%", status: "Excellent" },
     ],
-    tips: ["Send contracts within 24 hours of quote acceptance", "Offer early bird discounts for quick signatures", "Follow up within 48 hours of sending", "Track contract velocity by source"],
-    dataHref: "/contracts", dataLabel: "View All Contracts",
-    getValue: (k) => ({ value: k.totalSigned.value.toString(), change: k.totalSigned.change, chartData: k.totalSigned.chartData }),
+    tips: ["Send overdue notices immediately", "Offer payment plan options", "Pause services for accounts > 60 days overdue", "Review credit terms for repeat offenders"],
+    dataHref: "/billing", dataLabel: "View Overdue Invoices",
+    format: (v) => `${v} invoices`,
   },
 };
 
-export function ContractsKpiClient({ slug, kpis }: { slug: string; kpis: ContractKPIData }) {
+export function BillingKpiClient({ slug, kpis }: { slug: string; kpis: Record<string, KpiData> }) {
   const config = kpiConfig[slug];
+  const data = kpis[slug];
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({});
 
-  if (!config) {
+  if (!config || !data) {
     return (
       <div className="space-y-6">
         <h1 className="text-warm-white">KPI Not Found</h1>
-        <Link href="/contracts" className="text-olive-gold hover:text-warm-white">← Back to Contracts</Link>
+        <Link href="/billing" className="text-olive-gold hover:text-warm-white">← Back to Billing</Link>
       </div>
     );
   }
@@ -92,11 +88,12 @@ export function ContractsKpiClient({ slug, kpis }: { slug: string; kpis: Contrac
     setOpenSections(prev => ({ ...prev, [section]: !prev[section] }));
   };
 
-  const { value, change, chartData } = config.getValue(kpis);
+  const { value, change, chartData } = data;
+  const displayValue = config.format(value);
 
   return (
     <div className="space-y-6">
-      <Link href="/contracts" className="text-olive-gold hover:text-warm-white inline-flex items-center gap-1">← Back to Contracts</Link>
+      <Link href="/billing" className="text-olive-gold hover:text-warm-white inline-flex items-center gap-1">← Back to Billing</Link>
 
       <div className="flex flex-col lg:flex-row gap-6">
         <Card className="bg-charcoal border-warm-sand/20 lg:w-1/2">
@@ -106,8 +103,8 @@ export function ContractsKpiClient({ slug, kpis }: { slug: string; kpis: Contrac
             </div>
             <p className="text-section-title text-warm-white mb-2">{config.title}</p>
             <div className="flex items-end gap-4">
-              <p className="text-4xl font-bold text-warm-white">{value}</p>
-              {change && (
+              <p className="text-4xl font-bold text-warm-white">{displayValue}</p>
+              {change && value > 0 && (
                 <div className="flex items-center gap-1 text-sm text-olive-gold mb-1">
                   <ArrowUpRight className="w-4 h-4" /><span>{change}</span>
                 </div>
@@ -122,7 +119,7 @@ export function ContractsKpiClient({ slug, kpis }: { slug: string; kpis: Contrac
         </Card>
         <Card className="bg-charcoal border-warm-sand/20 lg:w-1/2">
           <CardContent className="p-6">
-            <DetailedLineChart data={chartData} color="#7D7254" height={200} title="30-Day Trend" />
+            <DetailedLineChart data={chartData.length > 0 ? chartData : [0]} color="#7D7254" height={200} title="30-Day Trend" />
           </CardContent>
         </Card>
       </div>

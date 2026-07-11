@@ -8,7 +8,7 @@ export async function getUserOrgId(): Promise<string | null> {
   
   if (!user) {
     console.log("No Clerk user found");
-    return "demo-org";
+    return "6e49ffd0-5cd0-42f6-ab57-8bffee32fc3b";
   }
 
   const clerkId = user.id;
@@ -22,7 +22,7 @@ export async function getUserOrgId(): Promise<string | null> {
 
   if (error || !userRecord) {
     console.log("No user record found for Clerk ID:", clerkId, "error:", error);
-    return "demo-org";
+    return "6e49ffd0-5cd0-42f6-ab57-8bffee32fc3b";
   }
 
   return userRecord.org_id;

@@ -62,6 +62,10 @@ export async function updateOrganization(id: string, data: {
   default_hourly_rate?: number;
   minimum_booking_hours?: number;
   service_area?: string;
+  service_radius?: number;
+  zones_of_operation?: string;
+  regulations?: string;
+  is_marketplace_listed?: boolean;
   delete_logo?: boolean;
 }) {
   const supabase = await createClient();
@@ -80,11 +84,14 @@ export async function updateOrganization(id: string, data: {
     logoUrl = null as unknown as undefined;
   }
 
-  const updateData: Record<string, unknown> = { ...data };
+  const updateData: Record<string, unknown> = {};
+  for (const [key, value] of Object.entries(data)) {
+    if (value !== undefined) {
+      updateData[key] = value;
+    }
+  }
   if (logoUrl !== undefined) {
     updateData.logo_url = logoUrl;
-  } else {
-    delete updateData.logo_url;
   }
   delete updateData.delete_logo;
 

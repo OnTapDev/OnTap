@@ -74,6 +74,7 @@ export async function createQuote(orgId: string, quote: {
   }
 
   revalidatePath("/quotes");
+  revalidatePath("/billing");
   return data;
 }
 
@@ -104,6 +105,7 @@ export async function updateQuote(id: string, quote: {
   }
 
   revalidatePath("/quotes");
+  revalidatePath("/billing");
   return data;
 }
 
@@ -121,6 +123,7 @@ export async function deleteQuote(id: string) {
   }
 
   revalidatePath("/quotes");
+  revalidatePath("/billing");
   return { success: true };
 }
 

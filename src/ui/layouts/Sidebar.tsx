@@ -16,7 +16,7 @@ import {
   User,
   Settings,
   HelpCircle,
-  Briefcase,
+  Wine,
 } from "lucide-react";
 
 const ONTAP_MASTER_ICON = "/images/png/ontap_master_icon_new_gold.png";
@@ -26,10 +26,10 @@ const navigation = [
   { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { name: "Profile", href: "/profile", icon: User },
   { name: "CRM", href: "/crm", icon: Target },
+  { name: "Events", href: "/events", icon: Wine },
   { name: "Contracts", href: "/contracts", icon: FileSignature },
   { name: "Billing", href: "/billing", icon: Receipt },
   { name: "Staff", href: "/staff", icon: UserCircle },
-  { name: "Business Setup", href: "/business-setup", icon: Briefcase },
   { name: "Support", href: "/support", icon: HelpCircle },
   { name: "Settings", href: "/settings", icon: Settings },
 ];

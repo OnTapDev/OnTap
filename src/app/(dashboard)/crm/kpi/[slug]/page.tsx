@@ -1,5 +1,5 @@
 import { getUserOrgId } from "@/lib/auth";
-import { getCRMKPIs } from "@/modules/dashboard/actions/kpis";
+import { getPipelineKPIs } from "@/modules/crm/actions/contacts";
 import { CRMKpiClient } from "./CRMKpiClient";
 
 interface KPIPageProps {
@@ -12,7 +12,7 @@ export default async function CRMKpiPage({ params }: KPIPageProps) {
     return <div className="text-warm-white">Loading...</div>;
   }
 
-  const kpis = await getCRMKPIs(orgId);
+  const kpis = await getPipelineKPIs(orgId);
   const { slug } = await params;
 
   return <CRMKpiClient slug={slug} kpis={kpis} />;

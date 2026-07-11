@@ -53,11 +53,12 @@ export async function getCRMKPIs(orgId: string) {
     return Math.floor(totalRevenue * (i + 1) / 30);
   });
 
-  const { count: activeQuotes } = await supabase
+  const { data: activeQuoteData } = await supabase
     .from("quotes")
-    .select("*", { count: "exact", head: true })
+    .select("id, status")
     .eq("org_id", orgId)
-    .eq("status", "pending");
+    .in("status", ["draft", "sent"]);
+  const activeQuotes = activeQuoteData?.length || 0;
 
   const activeQuotesChange = 5;
 
@@ -86,7 +87,7 @@ export async function getCRMKPIs(orgId: string) {
           .from("quotes")
           .select("*", { count: "exact", head: true })
           .eq("org_id", orgId)
-          .eq("status", "pending")
+          .in("status", ["draft", "sent"])
           .gte("created_at", dateStr)
           .lt("created_at", new Date(date.getTime() + 24 * 60 * 60 * 1000).toISOString().split("T")[0]);
         cumulative += count || 0;
@@ -141,11 +142,12 @@ export async function getContractKPIs(orgId: string) {
     .eq("org_id", orgId)
     .eq("status", "signed");
 
-  const { count: pendingContracts } = await supabase
+  const { data: pendingContractData } = await supabase
     .from("contracts")
-    .select("*", { count: "exact", head: true })
+    .select("id, status")
     .eq("org_id", orgId)
-    .eq("status", "pending");
+    .in("status", ["draft", "sent", "viewed"]);
+  const pendingContracts = pendingContractData?.length || 0;
 
   const { count: recentSigned } = await supabase
     .from("contracts")
@@ -203,18 +205,13 @@ export async function getInvoiceKPIs(orgId: string) {
     .eq("org_id", orgId)
     .eq("status", "paid");
 
-  const { count: pendingInvoices } = await supabase
+  const { data: pendingInvoiceData } = await supabase
     .from("invoices")
-    .select("*", { count: "exact", head: true })
+    .select("id, status, due_date")
     .eq("org_id", orgId)
-    .eq("status", "pending");
-
-  const { count: overdueInvoices } = await supabase
-    .from("invoices")
-    .select("*", { count: "exact", head: true })
-    .eq("org_id", orgId)
-    .eq("status", "pending")
-    .lt("due_date", today.toISOString().split("T")[0]);
+    .in("status", ["draft", "sent", "partial"]);
+  const pendingInvoices = pendingInvoiceData?.length || 0;
+  const overdueInvoices = pendingInvoiceData?.filter(i => i.due_date && new Date(i.due_date) < today).length || 0;
 
   const { data: paidData } = await supabase
     .from("invoices")

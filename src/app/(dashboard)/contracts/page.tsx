@@ -1,8 +1,7 @@
 import { getContracts, getContractTemplates, getContractKPIs } from "@/modules/contracts/actions/contracts";
 import { getEvents } from "@/modules/events/actions/events";
 import { getContacts } from "@/modules/crm/actions/contacts";
-import { ContractsList } from "@/modules/contracts/components/ContractsList";
-import { ContractKPIs } from "@/modules/contracts/components/ContractKPIs";
+import { ContractsClient } from "@/modules/contracts/components/ContractsClient";
 import { getUserOrgId } from "@/lib/auth";
 
 export default async function ContractsPage() {
@@ -25,13 +24,13 @@ export default async function ContractsPage() {
         <h1 className="text-screen-title text-warm-white">Contracts</h1>
         <p className="text-warm-sand mt-1">Manage your service agreements and templates</p>
       </div>
-      <ContractKPIs kpis={kpis} />
-      <ContractsList 
-        contracts={contracts} 
-        templates={templates} 
+      <ContractsClient
+        contracts={contracts}
+        templates={templates}
         events={events}
         contacts={contacts}
         orgId={orgId}
+        kpis={kpis}
       />
     </div>
   );

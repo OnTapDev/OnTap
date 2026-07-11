@@ -1,5 +1,7 @@
 import { getUserOrgId } from "@/lib/auth";
-import { getDashboardKPIs, getRecentLeads, getUpcomingEventsList, getContactsForDashboard, getEventsForDashboard, getAllEventsForCalendar } from "@/modules/dashboard/actions/dashboard";
+import { getOrganizations } from "@/modules/settings/actions/settings";
+import { getDashboardKPIs, getRecentLeads, getUpcomingEventsList, getContactsForDashboard, getEventsForDashboard, getAllEventsForCalendar, getDashboardAdditionalData } from "@/modules/dashboard/actions/dashboard";
+import { getInventoryItems } from "@/modules/profile/actions/inventory";
 import { DashboardClient } from "./DashboardClient";
 
 export default async function DashboardPage() {
@@ -8,13 +10,16 @@ export default async function DashboardPage() {
     return <div className="text-warm-white">Loading...</div>;
   }
 
-  const [kpis, recentLeads, upcomingEvents, contacts, events, calendarEvents] = await Promise.all([
+  const [kpis, recentLeads, upcomingEvents, contacts, events, calendarEvents, additionalData, organization, inventoryItems] = await Promise.all([
     getDashboardKPIs(orgId),
     getRecentLeads(orgId),
     getUpcomingEventsList(orgId),
     getContactsForDashboard(orgId),
     getEventsForDashboard(orgId),
     getAllEventsForCalendar(orgId),
+    getDashboardAdditionalData(orgId),
+    getOrganizations(orgId),
+    getInventoryItems(orgId),
   ]);
 
   const allContacts = [...recentLeads, ...contacts].filter((c, i, arr) => 
@@ -31,6 +36,9 @@ export default async function DashboardPage() {
       initialEvents={allEvents}
       calendarEvents={calendarEvents}
       kpis={kpis}
+      additionalData={additionalData}
+      organization={organization}
+      inventoryItems={inventoryItems}
     />
   );
 }

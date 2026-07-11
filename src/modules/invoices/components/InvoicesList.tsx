@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { FileText, DollarSign, MoreHorizontal, Check, Clock, AlertCircle, Download } from "lucide-react";
+import { FileText, DollarSign, Check, Clock, AlertCircle, Download, CreditCard } from "lucide-react";
 import { getInvoiceForDownload } from "@/modules/invoices/actions/invoices";
 import { MiniLineChart } from "@/ui/components/MiniLineChart";
 import { Card, CardContent } from "@/ui/primitives";
@@ -36,6 +36,7 @@ const statusConfig: Record<string, { bg: string; text: string; icon: React.React
 export function InvoicesList({ invoices }: InvoicesListProps) {
   const [filter, setFilter] = useState<string>("all");
   const [downloading, setDownloading] = useState<string | null>(null);
+  const [paying, setPaying] = useState<string | null>(null);
 
   const filteredInvoices = filter === "all" 
     ? invoices 
@@ -65,6 +66,27 @@ export function InvoicesList({ invoices }: InvoicesListProps) {
   const totalPaid = invoices
     .filter(i => i.status === "paid")
     .reduce((sum, i) => sum + i.amount, 0);
+
+  const handlePayNow = async (invoiceId: string) => {
+    setPaying(invoiceId);
+    try {
+      const res = await fetch("/api/stripe/create-checkout-session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ invoiceId }),
+      });
+      const data = await res.json();
+      if (data.url) {
+        window.open(data.url, "_blank");
+      } else {
+        alert(data.error || "Failed to create payment");
+      }
+    } catch {
+      alert("Failed to initiate payment");
+    } finally {
+      setPaying(null);
+    }
+  };
 
   const handleDownload = async (invoiceId: string) => {
     setDownloading(invoiceId);
@@ -348,6 +370,20 @@ export function InvoicesList({ invoices }: InvoicesListProps) {
                   </td>
                   <td className="p-4">
                     <div className="flex items-center gap-1">
+                      {invoice.status !== "paid" && invoice.status !== "cancelled" && (
+                        <button
+                          onClick={() => handlePayNow(invoice.id)}
+                          disabled={paying === invoice.id}
+                          className="p-2 text-olive-gold hover:text-olive-gold/70 disabled:opacity-50"
+                          title="Pay Now"
+                        >
+                          {paying === invoice.id ? (
+                            <span className="w-4 h-4 block border-2 border-olive-gold border-t-transparent rounded-full animate-spin" />
+                          ) : (
+                            <CreditCard className="w-4 h-4" />
+                          )}
+                        </button>
+                      )}
                       <button 
                         onClick={() => handleDownload(invoice.id)}
                         disabled={downloading === invoice.id}
@@ -359,9 +395,6 @@ export function InvoicesList({ invoices }: InvoicesListProps) {
                         ) : (
                           <Download className="w-4 h-4" />
                         )}
-                      </button>
-                      <button className="p-2 text-warm-sand hover:text-warm-white">
-                        <MoreHorizontal className="w-4 h-4" />
                       </button>
                     </div>
                   </td>
