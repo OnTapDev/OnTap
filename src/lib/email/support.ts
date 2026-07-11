@@ -1,6 +1,9 @@
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+function getResend() {
+  if (!process.env.RESEND_API_KEY) return null;
+  return new Resend(process.env.RESEND_API_KEY);
+}
 
 export async function sendSupportTicketEmails(
   userEmail: string,
@@ -9,6 +12,9 @@ export async function sendSupportTicketEmails(
   category: string
 ): Promise<{ success: boolean; error?: string }> {
   try {
+    const resend = getResend();
+    if (!resend) return { success: false, error: "Email service not configured" };
+
     // Send confirmation to user
     await resend.emails.send({
       from: "OnTap <ontap@resend.dev>",
