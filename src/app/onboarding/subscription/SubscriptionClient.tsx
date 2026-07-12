@@ -20,7 +20,7 @@ const TIERS = [
     period: "/month",
     originalPrice: "$79",
     badge: "Founding Member",
-    description: "Everything you need to run your bar business. Founding member pricing locked in forever.",
+    description: "All features included during early access. Founding member pricing locked in forever.",
     features: [
       "Unlimited CRM & contacts",
       "Quotes & e-signatures",
@@ -40,9 +40,11 @@ const TIERS = [
   {
     id: "enterprise" as Plan,
     name: "Enterprise",
-    price: "$199",
+    price: "$100",
     period: "/month",
-    description: "For established operations with custom needs.",
+    originalPrice: "$199",
+    badge: "Founding Member",
+    description: "For established operations with custom needs. Founding member pricing locked in forever.",
     features: [
       "Everything in Pro",
       "Multiple locations",
@@ -163,8 +165,8 @@ export function SubscriptionClient({ clerkId, email, name }: Props) {
           Welcome to OnTap{orgName ? `, ${orgName}` : ""}
         </h1>
         <p className="text-lg text-warm-sand max-w-2xl mx-auto">
-          You&apos;re early. Lock in founding member pricing before we go public.
-          This rate stays with your account forever.
+          You&apos;re early. Secure your founding member rate and permanent spot before we go public.
+          Choose the tier that fits your operation.
         </p>
       </div>
 
