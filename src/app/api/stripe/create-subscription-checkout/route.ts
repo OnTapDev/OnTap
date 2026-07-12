@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
       .from("organizations")
       .select("id, name, email, stripe_customer_id")
       .eq("id", orgId)
-      .single();
+      .maybeSingle();
 
     if (!org) {
       return NextResponse.json({ error: "Organization not found" }, { status: 404 });
@@ -54,7 +54,7 @@ export async function POST(req: NextRequest) {
       subscription_data: {
         metadata: { org_id: org.id },
       },
-      success_url: `${PLATFORM_APP_URL}/dashboard`,
+      success_url: `${PLATFORM_APP_URL}/onboarding/processing?orgId=${org.id}`,
       cancel_url: `${PLATFORM_APP_URL}/onboarding/subscription`,
     });
 

@@ -125,7 +125,7 @@ export function SubscriptionClient({ clerkId, email, name }: Props) {
         if (data.redirect) {
           window.location.href = data.redirect;
         } else if (data.orgId) {
-          window.location.href = "/dashboard";
+          window.location.href = `/onboarding/processing?orgId=${data.orgId}`;
         }
         return;
       }
