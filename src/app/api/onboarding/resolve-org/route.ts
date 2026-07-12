@@ -4,7 +4,7 @@ import { randomUUID } from "node:crypto";
 
 export async function POST(request: Request) {
   try {
-    const { clerkId, email, name, plan } = await request.json();
+    const { clerkId, email, name } = await request.json();
     if (!clerkId) {
       return NextResponse.json({ error: "Missing clerkId" }, { status: 400 });
     }
@@ -39,13 +39,10 @@ export async function POST(request: Request) {
 
     orgId = randomUUID();
 
-    const subscriptionStatus = plan === "free" ? "free" : null;
-
     const { error: orgError } = await supabase.from("organizations").insert({
       id: orgId,
       name: name || "My Bar Company",
       slug: `bar-${Date.now()}`,
-      stripe_subscription_status: subscriptionStatus,
     });
     if (orgError) throw orgError;
 

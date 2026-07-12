@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Check, Loader2, ArrowLeft, Sparkles, Star, Crown } from "lucide-react";
+import { Check, Loader2, ArrowLeft, Star, Crown } from "lucide-react";
 import Link from "next/link";
 
 type Props = {
@@ -10,26 +10,9 @@ type Props = {
   name: string;
 };
 
-type Plan = "free" | "pro" | "enterprise";
+type Plan = "pro" | "enterprise";
 
 const TIERS = [
-  {
-    id: "free" as Plan,
-    name: "Starter",
-    price: "$0",
-    period: "forever",
-    description: "Get a feel for OnTap. No credit card needed.",
-    features: [
-      "CRM with up to 10 contacts",
-      "Basic calendar & booking",
-      "1 active contract",
-      "Email support",
-    ],
-    icon: Sparkles,
-    color: "from-warm-sand/20 to-charcoal",
-    border: "border-warm-sand/20 hover:border-warm-sand/40",
-    buttonStyle: "border border-warm-sand/30 text-warm-white hover:bg-warm-sand/10",
-  },
   {
     id: "pro" as Plan,
     name: "Pro",
@@ -115,21 +98,6 @@ export function SubscriptionClient({ clerkId, email, name }: Props) {
     setLoading(true);
 
     try {
-      if (plan === "free") {
-        const res = await fetch("/api/onboarding/resolve-org", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ clerkId, email, name, plan: "free" }),
-        });
-        const data = await res.json();
-        if (data.redirect) {
-          window.location.href = data.redirect;
-        } else if (data.orgId) {
-          window.location.href = `/onboarding/processing?orgId=${data.orgId}`;
-        }
-        return;
-      }
-
       if (plan === "enterprise") {
         window.location.href = "mailto:OnTapInquiries@gmail.com?subject=Enterprise%20Plan%20Inquiry";
         setLoading(false);
@@ -192,15 +160,15 @@ export function SubscriptionClient({ clerkId, email, name }: Props) {
           Back to home
         </Link>
         <h1 className="text-4xl md:text-5xl font-bold text-warm-white mb-4">
-          Pick your plan
+          Welcome to OnTap{orgName ? `, ${orgName}` : ""}
         </h1>
         <p className="text-lg text-warm-sand max-w-2xl mx-auto">
-          Welcome to OnTap{orgName ? `, ${orgName}` : ""}. Choose the plan that fits your bar business.
-          Founding member pricing available for a limited time.
+          You&apos;re early. Lock in founding member pricing before we go public.
+          This rate stays with your account forever.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 max-w-5xl mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-3xl mx-auto">
         {TIERS.map((tier) => {
           const Icon = tier.icon;
           const isSelected = selectedPlan === tier.id;
@@ -266,8 +234,6 @@ export function SubscriptionClient({ clerkId, email, name }: Props) {
                     <Loader2 className="w-4 h-4 animate-spin" />
                     {tier.id === "pro" ? "Opening checkout..." : "Setting up..."}
                   </>
-                ) : tier.id === "free" ? (
-                  "Get started free"
                 ) : tier.id === "enterprise" ? (
                   "Contact sales"
                 ) : (
@@ -280,7 +246,7 @@ export function SubscriptionClient({ clerkId, email, name }: Props) {
       </div>
 
       <p className="text-center text-xs text-warm-sand/60 mt-8">
-        All plans include a 14-day free trial. No hidden fees. Cancel anytime.
+        Founding member pricing locked in forever. Cancel anytime. No hidden fees.
       </p>
     </div>
   );
