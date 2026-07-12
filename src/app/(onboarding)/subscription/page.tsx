@@ -16,7 +16,7 @@ export default async function SubscriptionPage() {
 
   const supabase = await createClient();
 
-  let { data: userRecord } = await supabase
+  const { data: userRecord } = await supabase
     .from("users")
     .select("org_id")
     .eq("clerk_id", clerkId)
