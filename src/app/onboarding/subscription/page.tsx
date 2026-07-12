@@ -1,7 +1,7 @@
 import { currentUser } from "@clerk/nextjs/server";
 import { createClient } from "@/core/db/server";
 import { redirect } from "next/navigation";
-import crypto from "crypto";
+import { randomUUID } from "node:crypto";
 import { SubscriptionClient } from "./SubscriptionClient";
 
 export const dynamic = "force-dynamic";
@@ -35,7 +35,7 @@ export default async function SubscriptionPage() {
   }
 
   if (!orgId || !org) {
-    orgId = crypto.randomUUID();
+    orgId = randomUUID();
 
     const { error: orgError } = await supabase.from("organizations").insert({
       id: orgId,
