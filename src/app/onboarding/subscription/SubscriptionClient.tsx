@@ -33,9 +33,9 @@ const TIERS = [
   {
     id: "pro" as Plan,
     name: "Pro",
-    price: "$79",
+    price: "$20",
     period: "/month",
-    originalPrice: "$199",
+    originalPrice: "$79",
     badge: "Founding Member",
     description: "Everything you need to run your bar business. Founding member pricing locked in forever.",
     features: [
@@ -238,7 +238,7 @@ export function SubscriptionClient({ clerkId, email, name }: Props) {
                   <div className="flex items-center gap-2 mt-1">
                     <span className="text-sm text-warm-sand/60 line-through">{tier.originalPrice}</span>
                     <span className="text-xs bg-olive-gold/20 text-olive-gold px-2 py-0.5 rounded-full font-medium">
-                      Save 60%
+                      Limited time
                     </span>
                   </div>
                 )}
