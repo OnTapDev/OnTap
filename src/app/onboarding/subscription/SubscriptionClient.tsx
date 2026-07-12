@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Check, Loader2, Sparkles } from "lucide-react";
 
 const FEATURES = [
@@ -16,14 +16,45 @@ const FEATURES = [
 ];
 
 type Props = {
-  orgId: string;
-  orgName: string;
+  clerkId: string;
+  email: string;
+  name: string;
 };
 
-export function SubscriptionClient({ orgId, orgName }: Props) {
+export function SubscriptionClient({ clerkId, email, name }: Props) {
   const [loading, setLoading] = useState(false);
+  const [resolving, setResolving] = useState(true);
+  const [orgId, setOrgId] = useState<string | null>(null);
+  const [orgName, setOrgName] = useState("");
+
+  useEffect(() => {
+    async function resolveOrg() {
+      try {
+        const res = await fetch("/api/onboarding/resolve-org", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ clerkId, email, name }),
+        });
+        const data = await res.json();
+        if (data.redirect) {
+          window.location.href = data.redirect;
+          return;
+        }
+        if (data.orgId) {
+          setOrgId(data.orgId);
+          setOrgName(data.orgName || name);
+        }
+      } catch {
+        // Will retry on next render
+      } finally {
+        setResolving(false);
+      }
+    }
+    resolveOrg();
+  }, [clerkId, email, name]);
 
   const handleSubscribe = async () => {
+    if (!orgId) return;
     setLoading(true);
     try {
       const res = await fetch("/api/stripe/create-subscription-checkout", {
@@ -43,6 +74,15 @@ export function SubscriptionClient({ orgId, orgName }: Props) {
       setLoading(false);
     }
   };
+
+  if (resolving) {
+    return (
+      <div className="flex flex-col items-center gap-4">
+        <Loader2 className="w-8 h-8 text-olive-gold animate-spin" />
+        <p className="text-warm-sand">Setting up your account...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-lg w-full">
@@ -82,7 +122,7 @@ export function SubscriptionClient({ orgId, orgName }: Props) {
         <div className="p-6 pt-0">
           <button
             onClick={handleSubscribe}
-            disabled={loading}
+            disabled={loading || !orgId}
             className="w-full bg-olive-gold text-charcoal py-3 rounded-lg font-semibold hover:bg-olive-gold/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             {loading ? (
