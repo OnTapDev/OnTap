@@ -25,7 +25,7 @@ export default async function DashboardLayout({
 
   const subscriptionStatus = org?.stripe_subscription_status;
 
-  if (!subscriptionStatus || subscriptionStatus === "inactive" || subscriptionStatus === "canceled" || subscriptionStatus === "unpaid") {
+  if (!subscriptionStatus || subscriptionStatus === "canceled" || subscriptionStatus === "unpaid") {
     redirect("/onboarding/subscription");
   }
 
