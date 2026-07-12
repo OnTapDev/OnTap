@@ -5,11 +5,7 @@ import { createClient } from "@/core/db/server";
 
 export async function getUserOrgId(): Promise<string | null> {
   const user = await currentUser();
-  
-  if (!user) {
-    console.log("No Clerk user found");
-    return "6e49ffd0-5cd0-42f6-ab57-8bffee32fc3b";
-  }
+  if (!user) return null;
 
   const clerkId = user.id;
   const supabase = await createClient();
@@ -20,10 +16,7 @@ export async function getUserOrgId(): Promise<string | null> {
     .eq("clerk_id", clerkId)
     .single();
 
-  if (error || !userRecord) {
-    console.log("No user record found for Clerk ID:", clerkId, "error:", error);
-    return "6e49ffd0-5cd0-42f6-ab57-8bffee32fc3b";
-  }
+  if (error || !userRecord) return null;
 
   return userRecord.org_id;
 }

@@ -54,8 +54,8 @@ export async function POST(req: NextRequest) {
       subscription_data: {
         metadata: { org_id: org.id },
       },
-      success_url: `${PLATFORM_APP_URL}/settings?tab=payments&subscription=success`,
-      cancel_url: `${PLATFORM_APP_URL}/settings?tab=payments&subscription=cancelled`,
+      success_url: `${PLATFORM_APP_URL}/dashboard`,
+      cancel_url: `${PLATFORM_APP_URL}/onboarding/subscription`,
     });
 
     return NextResponse.json({ url: session.url });
