@@ -20,7 +20,7 @@ export default async function SubscriptionPage() {
     .from("users")
     .select("org_id")
     .eq("clerk_id", clerkId)
-    .single();
+    .maybeSingle();
 
   let orgId = userRecord?.org_id;
   let org: { id: string; stripe_subscription_status: string | null; name: string } | null = null;
@@ -30,7 +30,7 @@ export default async function SubscriptionPage() {
       .from("organizations")
       .select("id, stripe_subscription_status, name")
       .eq("id", orgId)
-      .single();
+      .maybeSingle();
     org = o;
   }
 

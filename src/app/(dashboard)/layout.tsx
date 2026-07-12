@@ -21,7 +21,7 @@ export default async function DashboardLayout({
     .from("organizations")
     .select("stripe_subscription_status")
     .eq("id", orgId)
-    .single();
+    .maybeSingle();
 
   const subscriptionStatus = org?.stripe_subscription_status;
 
