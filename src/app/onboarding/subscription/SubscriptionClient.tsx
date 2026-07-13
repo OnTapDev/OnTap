@@ -1,13 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Check, Loader2, ArrowLeft, Star, Crown } from "lucide-react";
 import Link from "next/link";
 
 type Props = {
-  clerkId: string;
-  email: string;
-  name: string;
+  orgId: string;
+  orgName: string;
 };
 
 type Plan = "pro" | "enterprise";
@@ -62,38 +61,9 @@ const TIERS = [
   },
 ];
 
-export function SubscriptionClient({ clerkId, email, name }: Props) {
+export function SubscriptionClient({ orgId, orgName }: Props) {
   const [loading, setLoading] = useState(false);
-  const [resolving, setResolving] = useState(true);
   const [selectedPlan, setSelectedPlan] = useState<Plan | null>(null);
-  const [orgId, setOrgId] = useState<string | null>(null);
-  const [orgName, setOrgName] = useState("");
-
-  useEffect(() => {
-    async function resolveOrg() {
-      try {
-        const res = await fetch("/api/onboarding/resolve-org", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ clerkId, email, name }),
-        });
-        const data = await res.json();
-        if (data.redirect) {
-          window.location.href = data.redirect;
-          return;
-        }
-        if (data.orgId) {
-          setOrgId(data.orgId);
-          setOrgName(data.orgName || name);
-        }
-      } catch {
-        // retry not needed
-      } finally {
-        setResolving(false);
-      }
-    }
-    resolveOrg();
-  }, [clerkId, email, name]);
 
   const handleSelect = async (plan: Plan) => {
     setSelectedPlan(plan);
@@ -102,13 +72,6 @@ export function SubscriptionClient({ clerkId, email, name }: Props) {
     try {
       if (plan === "enterprise") {
         window.location.href = "mailto:OnTapInquiries@gmail.com?subject=Enterprise%20Plan%20Inquiry";
-        setLoading(false);
-        setSelectedPlan(null);
-        return;
-      }
-
-      if (!orgId) {
-        alert("Account not ready. Please refresh and try again.");
         setLoading(false);
         setSelectedPlan(null);
         return;
@@ -133,15 +96,6 @@ export function SubscriptionClient({ clerkId, email, name }: Props) {
       setSelectedPlan(null);
     }
   };
-
-  if (resolving) {
-    return (
-      <div className="flex flex-col items-center gap-4">
-        <Loader2 className="w-8 h-8 text-olive-gold animate-spin" />
-        <p className="text-warm-sand">Setting up your account...</p>
-      </div>
-    );
-  }
 
   return (
     <div className="w-full max-w-6xl mx-auto px-4 py-8">
