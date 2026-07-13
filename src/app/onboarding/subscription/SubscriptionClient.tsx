@@ -107,16 +107,8 @@ export function SubscriptionClient({ clerkId, email, name }: Props) {
         return;
       }
 
-      const resolvedRes = await fetch("/api/onboarding/resolve-org", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ clerkId, email, name }),
-      });
-      const resolvedData = await resolvedRes.json();
-      const resolvedOrgId = resolvedData.orgId || orgId;
-
-      if (!resolvedOrgId) {
-        alert("Failed to set up your account. Please try again.");
+      if (!orgId) {
+        alert("Account not ready. Please refresh and try again.");
         setLoading(false);
         setSelectedPlan(null);
         return;
@@ -125,18 +117,18 @@ export function SubscriptionClient({ clerkId, email, name }: Props) {
       const checkoutRes = await fetch("/api/stripe/create-subscription-checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ orgId: resolvedOrgId }),
+        body: JSON.stringify({ orgId }),
       });
       const checkoutData = await checkoutRes.json();
       if (checkoutData.url) {
         window.location.href = checkoutData.url;
       } else {
-        alert(checkoutData.error || "Failed to create subscription");
+        alert(checkoutData.error || `Checkout failed (${checkoutRes.status})`);
         setLoading(false);
         setSelectedPlan(null);
       }
-    } catch {
-      alert("Something went wrong. Please try again.");
+    } catch (e) {
+      alert(e instanceof Error ? e.message : "Something went wrong. Please try again.");
       setLoading(false);
       setSelectedPlan(null);
     }
