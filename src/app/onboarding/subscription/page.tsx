@@ -2,15 +2,20 @@ import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { createClient } from "@supabase/supabase-js";
 import { randomUUID } from "node:crypto";
+import { SubscriptionError } from "./SubscriptionError";
 import { SubscriptionClient } from "./SubscriptionClient";
 
 export const dynamic = "force-dynamic";
 
 async function resolveOrg(clerkId: string, email: string, name: string) {
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+  if (!supabaseUrl || !supabaseKey) {
+    throw new Error("Missing Supabase configuration");
+  }
+
+  const supabase = createClient(supabaseUrl, supabaseKey);
 
   const { data: userRecord } = await supabase
     .from("users")
@@ -42,7 +47,7 @@ async function resolveOrg(clerkId: string, email: string, name: string) {
     name: name || "My Bar Company",
     slug: `bar-${Date.now()}`,
   });
-  if (orgError) throw orgError;
+  if (orgError) throw new Error(`Failed to create organization: ${orgError.message}`);
 
   const { error: userError } = await supabase.from("users").insert({
     org_id: orgId,
@@ -51,7 +56,7 @@ async function resolveOrg(clerkId: string, email: string, name: string) {
     name: name || "",
     role: "owner",
   });
-  if (userError) throw userError;
+  if (userError) throw new Error(`Failed to create user: ${userError.message}`);
 
   const stages = [
     { name: "New Inquiry", order: 0, color: "#7D7254" },
@@ -61,7 +66,8 @@ async function resolveOrg(clerkId: string, email: string, name: string) {
     { name: "Completed", order: 4, color: "#7D7254" },
   ];
   for (const stage of stages) {
-    await supabase.from("pipeline_stages").insert({ org_id: orgId, ...stage });
+    const { error: stageError } = await supabase.from("pipeline_stages").insert({ org_id: orgId, ...stage });
+    if (stageError) throw new Error(`Failed to create pipeline stage: ${stageError.message}`);
   }
 
   return { orgId, orgName: name || "My Bar Company" };
@@ -84,11 +90,7 @@ export default async function SubscriptionPage() {
 
     return <SubscriptionClient orgId={result.orgId} orgName={result.orgName} />;
   } catch (error) {
-    console.error("Subscription page: failed to resolve org:", error);
-    throw new Error(
-      `Failed to set up your account. Please try again or contact support. ${
-        error instanceof Error ? error.message : ""
-      }`
-    );
+    console.error("Subscription page error:", error);
+    return <SubscriptionError message={error instanceof Error ? error.message : "Unknown error"} />;
   }
 }
