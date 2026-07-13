@@ -1,6 +1,7 @@
 import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { createClient } from "@supabase/supabase-js";
+import { randomUUID } from "node:crypto";
 import { SubscriptionClient } from "./SubscriptionClient";
 
 export const dynamic = "force-dynamic";
@@ -34,7 +35,7 @@ async function resolveOrg(clerkId: string, email: string, name: string) {
     }
   }
 
-  orgId = crypto.randomUUID();
+  orgId = randomUUID();
 
   const { error: orgError } = await supabase.from("organizations").insert({
     id: orgId,
@@ -74,11 +75,20 @@ export default async function SubscriptionPage() {
   const email = user.emailAddresses?.[0]?.emailAddress || "";
   const name = [user.firstName, user.lastName].filter(Boolean).join(" ") || email;
 
-  const result = await resolveOrg(clerkId, email, name);
+  try {
+    const result = await resolveOrg(clerkId, email, name);
 
-  if (result.redirect) {
-    redirect(result.redirect);
+    if (result.redirect) {
+      redirect(result.redirect);
+    }
+
+    return <SubscriptionClient orgId={result.orgId} orgName={result.orgName} />;
+  } catch (error) {
+    console.error("Subscription page: failed to resolve org:", error);
+    throw new Error(
+      `Failed to set up your account. Please try again or contact support. ${
+        error instanceof Error ? error.message : ""
+      }`
+    );
   }
-
-  return <SubscriptionClient orgId={result.orgId} orgName={result.orgName} />;
 }
