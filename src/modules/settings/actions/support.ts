@@ -37,6 +37,34 @@ export async function createSupportRequest(request: {
   return data;
 }
 
+export async function getMySupportRequests() {
+  const supabase = await createClient();
+  const { currentUser } = await import("@clerk/nextjs/server");
+  const user = await currentUser();
+  if (!user) return [];
+
+  const { data: userRecord } = await supabase
+    .from("users")
+    .select("org_id")
+    .eq("clerk_id", user.id)
+    .maybeSingle();
+
+  if (!userRecord?.org_id) return [];
+
+  const { data, error } = await supabase
+    .from("support_requests")
+    .select("*")
+    .eq("org_id", userRecord.org_id)
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error("Error fetching support requests:", error);
+    return [];
+  }
+
+  return data || [];
+}
+
 export async function getSupportRequests(orgId: string) {
   const supabase = await createClient();
   

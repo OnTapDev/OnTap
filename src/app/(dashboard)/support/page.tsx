@@ -1,10 +1,9 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle, Button, Input, Textarea, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/ui/primitives";
-import { createSupportRequest } from "@/modules/settings/actions/support";
-import { HelpCircle, Lightbulb, Bug, MessageCircle, Send, Check } from "lucide-react";
+import { createSupportRequest, getMySupportRequests } from "@/modules/settings/actions/support";
+import { HelpCircle, Lightbulb, Bug, MessageCircle, Send, Check, Ticket, Clock } from "lucide-react";
 
 const typeOptions = [
   { value: "help" as const, label: "Help", icon: HelpCircle, desc: "I need help with..." },
@@ -13,10 +12,32 @@ const typeOptions = [
   { value: "other" as const, label: "Other", icon: MessageCircle, desc: "I want to share..." },
 ];
 
+const typeLabels: Record<string, string> = {
+  help: "Help",
+  bug: "Bug",
+  feature: "Feature",
+  other: "Other",
+};
+
+const priorityColors: Record<string, string> = {
+  low: "text-blue-400",
+  normal: "text-warm-sand",
+  high: "text-orange-400",
+  urgent: "text-red-400",
+};
+
+const statusColors: Record<string, string> = {
+  open: "bg-green-500/10 text-green-400",
+  in_progress: "bg-blue-500/10 text-blue-400",
+  resolved: "bg-warm-sand/10 text-warm-sand",
+  closed: "bg-warm-sand/5 text-warm-sand/60",
+};
+
 export default function SupportPage() {
-  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [tickets, setTickets] = useState<any[]>([]);
+  const [ticketsLoading, setTicketsLoading] = useState(true);
   const [form, setForm] = useState({
     type: "help" as "help" | "bug" | "feature" | "other",
     subject: "",
@@ -24,10 +45,24 @@ export default function SupportPage() {
     priority: "normal" as "low" | "normal" | "high" | "urgent",
   });
 
+  useEffect(() => {
+    async function loadTickets() {
+      try {
+        const data = await getMySupportRequests();
+        setTickets(data);
+      } catch (e) {
+        console.error("Failed to load tickets:", e);
+      } finally {
+        setTicketsLoading(false);
+      }
+    }
+    loadTickets();
+  }, [submitted]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    
+
     try {
       await createSupportRequest({
         type: form.type,
@@ -50,7 +85,7 @@ export default function SupportPage() {
           <h1 className="text-screen-title text-warm-white">Support</h1>
           <p className="text-warm-sand mt-1">Get help or share your ideas</p>
         </div>
-        
+
         <Card className="bg-charcoal border-warm-sand/20">
           <CardContent className="p-8 text-center">
             <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -58,11 +93,13 @@ export default function SupportPage() {
             </div>
             <h2 className="text-xl font-bold text-warm-white mb-2">Request Submitted!</h2>
             <p className="text-warm-sand mb-6">Thank you for your feedback. We&apos;ll get back to you soon.</p>
-            <Button onClick={() => router.push("/dashboard")}>
-              Back to Dashboard
+            <Button onClick={() => { setSubmitted(false); setForm({ type: "help", subject: "", description: "", priority: "normal" }); }}>
+              Submit Another
             </Button>
           </CardContent>
         </Card>
+
+        {tickets.length > 0 && <TicketsList tickets={tickets} />}
       </div>
     );
   }
@@ -160,7 +197,7 @@ export default function SupportPage() {
               <a href="https://ontap.io/docs" target="_blank" className="block p-3 bg-warm-sand/10 rounded-lg text-warm-sand hover:text-warm-white">
                 📚 Documentation
               </a>
-              <a href="mailto:support@ontap.io" className="block p-3 bg-warm-sand/10 rounded-lg text-warm-sand hover:text-warm-white">
+              <a href="mailto:OnTapInquiries@gmail.com" className="block p-3 bg-warm-sand/10 rounded-lg text-warm-sand hover:text-warm-white">
                 ✉️ Email Support
               </a>
               <p className="text-xs text-warm-sand/60 mt-4">
@@ -170,6 +207,68 @@ export default function SupportPage() {
           </Card>
         </div>
       </div>
+
+      <TicketsList tickets={tickets} loading={ticketsLoading} />
     </div>
+  );
+}
+
+function TicketsList({ tickets, loading }: { tickets: any[]; loading?: boolean }) {
+  if (loading) {
+    return (
+      <Card className="bg-charcoal border-warm-sand/20">
+        <CardHeader>
+          <CardTitle className="text-warm-white">My Requests</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-warm-sand text-sm">Loading...</p>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (tickets.length === 0) return null;
+
+  return (
+    <Card className="bg-charcoal border-warm-sand/20">
+      <CardHeader>
+        <CardTitle className="text-warm-white flex items-center gap-2">
+          <Ticket className="w-5 h-5" />
+          My Requests ({tickets.length})
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-3">
+          {tickets.map((ticket) => (
+            <div
+              key={ticket.id}
+              className="p-4 rounded-lg bg-warm-sand/5 border border-warm-sand/10 hover:border-warm-sand/20 transition-colors"
+            >
+              <div className="flex items-start justify-between gap-4">
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="text-xs px-2 py-0.5 rounded-full bg-olive-gold/10 text-olive-gold font-medium">
+                      {typeLabels[ticket.type] || ticket.type}
+                    </span>
+                    <span className={`text-xs font-medium ${priorityColors[ticket.priority] || ""}`}>
+                      {ticket.priority}
+                    </span>
+                    <span className={`text-xs px-2 py-0.5 rounded-full ${statusColors[ticket.status] || ""}`}>
+                      {ticket.status.replace("_", " ")}
+                    </span>
+                  </div>
+                  <h3 className="text-sm font-medium text-warm-white truncate">{ticket.subject}</h3>
+                  <p className="text-xs text-warm-sand/70 mt-0.5 line-clamp-2">{ticket.description}</p>
+                </div>
+                <div className="flex items-center gap-2 text-xs text-warm-sand/50 flex-shrink-0">
+                  <Clock className="w-3 h-3" />
+                  {new Date(ticket.created_at).toLocaleDateString()}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </CardContent>
+    </Card>
   );
 }

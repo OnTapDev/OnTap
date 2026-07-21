@@ -16,6 +16,7 @@ import { MiniLineChart } from "@/ui/components/MiniLineChart";
 import { createContact, updateContact, deleteContact } from "@/modules/crm/actions/contacts";
 import { sendEmail, sendSMS } from "@/modules/crm/actions/messaging";
 import type { PipelineKPIs } from "@/modules/crm/actions/contacts";
+import { CommentsSection } from "@/modules/crm/components/CommentsSection";
 
 type Contact = {
   id: string;
@@ -1252,6 +1253,10 @@ export function CRMDashboard({
                   ) : (
                     <p className="text-sm text-warm-sand">No events associated with this contact</p>
                   )}
+                </div>
+
+                <div className="border-t border-warm-sand/10 pt-4">
+                  <CommentsSection entityType="contact" entityId={selectedContact.id} />
                 </div>
 
                 <div>

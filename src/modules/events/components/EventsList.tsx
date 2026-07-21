@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Calendar, MapPin, Users, MoreHorizontal, Clock, Phone, Mail, MessageSquare, Send } from "lucide-react";
 import { getMessages } from "@/modules/crm/actions/messaging";
 import { MessagePanel } from "@/modules/crm/components/MessagePanel";
+import { CommentsSection } from "@/modules/crm/components/CommentsSection";
 
 type Event = {
   id: string;
@@ -304,6 +305,10 @@ export function EventsList({ events, orgId }: EventsListProps) {
                   <p className="text-warm-white text-sm whitespace-pre-wrap">{selectedEvent.notes}</p>
                 </div>
               )}
+
+              <div className="border-t border-warm-sand/10 pt-4 mt-4">
+                <CommentsSection entityType="event" entityId={selectedEvent.id} />
+              </div>
             </div>
 
             {selectedEvent.contact?.id && (
