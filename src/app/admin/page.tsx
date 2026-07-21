@@ -17,10 +17,14 @@ export default async function AdminPage() {
     process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   );
 
-  const { data: tickets } = await supabase
-    .from("support_requests")
-    .select("*")
-    .order("created_at", { ascending: false });
+  const [{ data: requests }, { data: tickets }] = await Promise.all([
+    supabase.from("support_requests").select("*").order("created_at", { ascending: false }),
+    supabase.from("support_tickets").select("*").order("created_at", { ascending: false }),
+  ]);
 
-  return <AdminSupportPage tickets={tickets || []} />;
+  const allTickets = [...(requests || []), ...(tickets || [])].sort(
+    (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+  );
+
+  return <AdminSupportPage tickets={allTickets} />;
 }
