@@ -65,6 +65,27 @@ export async function getMySupportRequests() {
   return data || [];
 }
 
+export async function getAllSupportRequests() {
+  const supabase = await createClient();
+  const { currentUser } = await import("@clerk/nextjs/server");
+  const user = await currentUser();
+  if (!user) return [];
+  const email = user.emailAddresses?.[0]?.emailAddress || "";
+  if (email !== "ontap.inquiries@gmail.com") return [];
+
+  const { data, error } = await supabase
+    .from("support_requests")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error("Error fetching all support requests:", error);
+    return [];
+  }
+
+  return data || [];
+}
+
 export async function getSupportRequests(orgId: string) {
   const supabase = await createClient();
   

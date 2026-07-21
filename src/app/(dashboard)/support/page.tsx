@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle, Button, Input, Textarea, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/ui/primitives";
-import { createSupportRequest, getMySupportRequests } from "@/modules/settings/actions/support";
-import { HelpCircle, Lightbulb, Bug, MessageCircle, Send, Check, Ticket, Clock } from "lucide-react";
+import { createSupportRequest, getMySupportRequests, getAllSupportRequests } from "@/modules/settings/actions/support";
+import { HelpCircle, Lightbulb, Bug, MessageCircle, Send, Check, Ticket, Clock, Shield } from "lucide-react";
 
 const typeOptions = [
   { value: "help" as const, label: "Help", icon: HelpCircle, desc: "I need help with..." },
@@ -38,6 +38,9 @@ export default function SupportPage() {
   const [submitted, setSubmitted] = useState(false);
   const [tickets, setTickets] = useState<any[]>([]);
   const [ticketsLoading, setTicketsLoading] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [showAllTickets, setShowAllTickets] = useState(false);
+  const [allTickets, setAllTickets] = useState<any[]>([]);
   const [form, setForm] = useState({
     type: "help" as "help" | "bug" | "feature" | "other",
     subject: "",
@@ -48,8 +51,15 @@ export default function SupportPage() {
   useEffect(() => {
     async function loadTickets() {
       try {
-        const data = await getMySupportRequests();
-        setTickets(data);
+        const [myData, adminData] = await Promise.all([
+          getMySupportRequests(),
+          getAllSupportRequests(),
+        ]);
+        setTickets(myData);
+        if (adminData.length > 0) {
+          setIsAdmin(true);
+          setAllTickets(adminData);
+        }
       } catch (e) {
         console.error("Failed to load tickets:", e);
       } finally {
@@ -209,6 +219,51 @@ export default function SupportPage() {
       </div>
 
       <TicketsList tickets={tickets} loading={ticketsLoading} />
+
+      {isAdmin && (
+        <Card className="bg-charcoal border-warm-sand/20">
+          <CardHeader>
+            <CardTitle className="text-warm-white flex items-center gap-2">
+              <Shield className="w-5 h-5 text-olive-gold" />
+              Admin
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <button
+              onClick={() => setShowAllTickets(!showAllTickets)}
+              className="w-full flex items-center justify-between px-4 py-3 bg-olive-gold/10 hover:bg-olive-gold/20 rounded-lg text-sm text-olive-gold font-medium transition-colors"
+            >
+              <span>All Support Requests ({allTickets.length})</span>
+              <span>{showAllTickets ? "▲" : "▼"}</span>
+            </button>
+            {showAllTickets && (
+              <div className="mt-3 space-y-2 max-h-96 overflow-y-auto">
+                {allTickets.map((ticket) => (
+                  <div
+                    key={ticket.id}
+                    className="p-3 rounded-lg bg-warm-sand/5 border border-warm-sand/10"
+                  >
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-xs px-2 py-0.5 rounded-full bg-olive-gold/10 text-olive-gold font-medium">
+                        {ticket.type}
+                      </span>
+                      <span className={`text-xs px-2 py-0.5 rounded-full ${statusColors[ticket.status] || ""}`}>
+                        {ticket.status.replace("_", " ")}
+                      </span>
+                      <span className="text-xs text-warm-sand/50">{ticket.email || "—"}</span>
+                    </div>
+                    <p className="text-sm font-medium text-warm-white">{ticket.subject}</p>
+                    <p className="text-xs text-warm-sand/70 mt-0.5 line-clamp-2">{ticket.description}</p>
+                    <p className="text-xs text-warm-sand/40 mt-1">
+                      {new Date(ticket.created_at).toLocaleDateString()}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 }
