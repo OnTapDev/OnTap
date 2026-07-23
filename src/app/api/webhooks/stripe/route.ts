@@ -115,12 +115,14 @@ export async function POST(req: NextRequest) {
       case "invoice.paid": {
         const invoice = event.data.object;
         const subId = invoice.subscription;
-        const orgId = invoice.metadata?.org_id;
+        if (!subId) break;
 
-        if (orgId && subId) {
-          const sub = await stripe.subscriptions.retrieve(
-            typeof subId === "string" ? subId : subId.id
-          );
+        const sub = typeof subId === "string"
+          ? await stripe.subscriptions.retrieve(subId)
+          : subId;
+        const orgId = sub.metadata?.org_id;
+
+        if (orgId) {
           await updateSubscription(orgId, {
             stripe_subscription_status: sub.status,
             stripe_subscription_period_end: new Date(
@@ -133,7 +135,14 @@ export async function POST(req: NextRequest) {
 
       case "invoice.payment_failed": {
         const failedInvoice = event.data.object;
-        const failedOrgId = failedInvoice.metadata?.org_id;
+        const failedSubId = failedInvoice.subscription;
+        if (!failedSubId) break;
+
+        const failedSub = typeof failedSubId === "string"
+          ? await stripe.subscriptions.retrieve(failedSubId)
+          : failedSubId;
+        const failedOrgId = failedSub.metadata?.org_id;
+
         if (failedOrgId) {
           await supabase
             .from("organizations")
