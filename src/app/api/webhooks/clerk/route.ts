@@ -47,7 +47,7 @@ export async function POST(request: Request) {
         .insert({
           id: orgId,
           name: name || "My Bar Company",
-          slug: `bar-${Date.now()}`,
+          slug: (name || "my-bar").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "") + `-${Date.now().toString(36)}`,
         })
         .select()
         .single();

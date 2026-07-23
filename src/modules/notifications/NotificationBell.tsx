@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
+import { useRouter } from "next/navigation";
 import { Bell, CheckCheck, Loader2, Calendar, Phone, Mail, MessageSquare, Info } from "lucide-react";
 import { getNotifications, getUnreadCount, markAsRead, markAllAsRead } from "./actions";
 
@@ -43,7 +44,16 @@ const TYPE_ICONS: Record<string, React.ReactNode> = {
   info: <Info className="w-4 h-4" />,
 };
 
+const ENTITY_ROUTES: Record<string, string> = {
+  event: "/events",
+  follow_up: "/crm",
+  call: "/crm",
+  email: "/crm",
+  message: "/crm",
+};
+
 export function NotificationBell() {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [unread, setUnread] = useState(0);
@@ -86,10 +96,17 @@ export function NotificationBell() {
     return () => document.removeEventListener("mousedown", handleClick);
   }, [open]);
 
-  const handleMarkRead = async (id: string) => {
-    await markAsRead(id);
-    setNotifications((prev) => prev.map((n) => (n.id === id ? { ...n, is_read: true } : n)));
-    setUnread((prev) => Math.max(0, prev - 1));
+  const handleNotificationClick = async (n: Notification) => {
+    if (!n.is_read) {
+      await markAsRead(n.id);
+      setNotifications((prev) => prev.map((nn) => (nn.id === n.id ? { ...nn, is_read: true } : nn)));
+      setUnread((prev) => Math.max(0, prev - 1));
+    }
+    setOpen(false);
+    const route = n.related_entity_type && ENTITY_ROUTES[n.related_entity_type];
+    if (route) {
+      router.push(route);
+    }
   };
 
   const handleMarkAll = async () => {
@@ -142,7 +159,7 @@ export function NotificationBell() {
               notifications.map((n) => (
                 <div
                   key={n.id}
-                  onClick={() => !n.is_read && handleMarkRead(n.id)}
+                  onClick={() => handleNotificationClick(n)}
                   className={`p-3 border-b border-warm-sand/5 cursor-pointer transition-colors ${
                     n.is_read ? "opacity-60 hover:opacity-80" : "hover:bg-warm-sand/5"
                   }`}

@@ -1,14 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import { Input, Card, CardHeader, CardTitle, CardContent } from "@/ui/primitives";
-import { Bell, User, Lock, Mail, LogOut, HelpCircle, AlertTriangle, CreditCard, Download } from "lucide-react";
+import { Input, Card, CardHeader, CardTitle, CardContent, Button } from "@/ui/primitives";
+import { Bell, User, Lock, Mail, LogOut, HelpCircle, AlertTriangle, CreditCard, Download, Calendar, Copy, Check, ExternalLink, Eye, EyeOff, Globe } from "lucide-react";
 import { SignOutButton } from "@clerk/nextjs";
 import { deleteUserAccount } from "@/lib/auth/actions";
 import { updateUserPreferences, UserPreferences } from "@/lib/preferences/actions";
 import { submitSupportTicket } from "@/lib/support/actions";
 import { createStripeConnectLink, disconnectStripe } from "@/modules/settings/actions/stripe-connect";
 import { exportInvoicesCSV } from "@/modules/billing/actions/export";
+import { updateOrgSlug, updateBookingEnabled, updatePackageBookingVisibility } from "@/modules/settings/actions/settings";
 
 function SupportForm() {
   const [category, setCategory] = useState("general");
@@ -102,6 +103,229 @@ function SupportForm() {
         {sending ? "Sending..." : "Send Message"}
       </button>
     </form>
+  );
+}
+
+function BookingTabContent({ orgId, orgSlug, bookingEnabled, packages }: {
+  orgId?: string;
+  orgSlug?: string;
+  bookingEnabled: boolean;
+  packages: Package_[];
+}) {
+  const [slug, setSlug] = useState(orgSlug || "");
+  const [slugError, setSlugError] = useState("");
+  const [slugSaving, setSlugSaving] = useState(false);
+  const [slugSuccess, setSlugSuccess] = useState(false);
+  const [bookingOn, setBookingOn] = useState(bookingEnabled);
+  const [bookingToggling, setBookingToggling] = useState(false);
+  const [packageVisibilities, setPackageVisibilities] = useState<Record<string, boolean>>(
+    Object.fromEntries(packages.map(p => [p.id, p.show_on_booking ?? true]))
+  );
+  const [pkgToggling, setPkgToggling] = useState<Set<string>>(new Set());
+  const [copied, setCopied] = useState(false);
+
+  const appUrl = typeof window !== "undefined" ? window.location.origin : process.env.NEXT_PUBLIC_APP_URL || "https://wereontap.com";
+  const bookingUrl = `${appUrl}/book/${orgSlug || slug}`;
+
+  const handleCopyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(bookingUrl);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      const input = document.createElement("input");
+      input.value = bookingUrl;
+      document.body.appendChild(input);
+      input.select();
+      document.execCommand("copy");
+      document.body.removeChild(input);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
+  };
+
+  const handleSaveSlug = async () => {
+    if (!orgId) return;
+    setSlugError("");
+    setSlugSuccess(false);
+    setSlugSaving(true);
+    try {
+      const result = await updateOrgSlug(orgId, slug);
+      setSlug(result.slug);
+      setSlugSuccess(true);
+      setTimeout(() => setSlugSuccess(false), 3000);
+    } catch (err) {
+      setSlugError(err instanceof Error ? err.message : "Failed to update slug");
+    } finally {
+      setSlugSaving(false);
+    }
+  };
+
+  const handleToggleBooking = async () => {
+    if (!orgId) return;
+    setBookingToggling(true);
+    try {
+      const result = await updateBookingEnabled(orgId, !bookingOn);
+      setBookingOn(result.enabled);
+    } catch {
+      // revert on error
+    } finally {
+      setBookingToggling(false);
+    }
+  };
+
+  const handleTogglePackage = async (pkgId: string) => {
+    setPkgToggling(prev => new Set(prev).add(pkgId));
+    const newVal = !packageVisibilities[pkgId];
+    try {
+      await updatePackageBookingVisibility(pkgId, newVal);
+      setPackageVisibilities(prev => ({ ...prev, [pkgId]: newVal }));
+    } catch {
+      // revert on error
+    } finally {
+      setPkgToggling(prev => {
+        const next = new Set(prev);
+        next.delete(pkgId);
+        return next;
+      });
+    }
+  };
+
+  if (!orgId) return null;
+
+  return (
+    <div className="space-y-6">
+      <Card>
+        <CardHeader>
+          <CardTitle>Booking Link</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <p className="text-warm-sand text-sm">
+            Share this link on social media, your website, or anywhere you promote your services.
+            Customers can book without creating an account.
+          </p>
+          <div className="flex items-center gap-2 p-3 bg-warm-sand/5 rounded-lg border border-warm-sand/20">
+            <Globe className="w-4 h-4 text-olive-gold shrink-0" />
+            <code className="flex-1 text-sm text-warm-white truncate">{bookingUrl}</code>
+            <button
+              onClick={handleCopyLink}
+              className="shrink-0 p-2 text-warm-sand hover:text-olive-gold transition-colors rounded-lg hover:bg-warm-sand/10"
+              title="Copy link"
+            >
+              {copied ? <Check className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
+            </button>
+            <a
+              href={bookingUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="shrink-0 p-2 text-warm-sand hover:text-olive-gold transition-colors rounded-lg hover:bg-warm-sand/10"
+              title="Preview"
+            >
+              <ExternalLink className="w-4 h-4" />
+            </a>
+          </div>
+          <p className="text-xs text-warm-sand/60">
+            {bookingOn ? "Your booking page is live." : "Enable booking below to make this page accessible."}
+          </p>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Booking Page Settings</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="flex items-center justify-between p-4 bg-warm-sand/5 rounded-lg border border-warm-sand/10">
+            <div className="flex items-center gap-3">
+              {bookingOn ? <Eye className="w-5 h-5 text-green-400" /> : <EyeOff className="w-5 h-5 text-warm-sand" />}
+              <div>
+                <h4 className="text-warm-white font-medium">Public Booking</h4>
+                <p className="text-warm-sand text-sm">
+                  {bookingOn ? "Customers can book via your public link" : "Public booking is disabled"}
+                </p>
+              </div>
+            </div>
+            <button
+              onClick={handleToggleBooking}
+              disabled={bookingToggling}
+              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                bookingOn ? "bg-olive-gold" : "bg-warm-sand/30"
+              }`}
+            >
+              <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                bookingOn ? "translate-x-6" : "translate-x-1"
+              }`} />
+            </button>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Customize Your Link</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="flex items-center gap-2 text-sm text-warm-sand mb-2">
+            <Globe className="w-4 h-4" />
+            <span>{appUrl}/book/</span>
+            <input
+              type="text"
+              value={slug}
+              onChange={(e) => { setSlug(e.target.value); setSlugError(""); setSlugSuccess(false); }}
+              placeholder="your-bar-name"
+              className="flex-1 bg-charcoal border border-warm-sand/20 rounded-lg px-3 py-1.5 text-warm-white text-sm focus:border-olive-gold focus:outline-none"
+            />
+          </div>
+          {slugError && <p className="text-sm text-red-400">{slugError}</p>}
+          {slugSuccess && <p className="text-sm text-green-400">Link updated!</p>}
+          <Button
+            onClick={handleSaveSlug}
+            disabled={slugSaving || !slug.trim() || slug === orgSlug}
+            size="sm"
+          >
+            {slugSaving ? "Saving..." : "Save"}
+          </Button>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Packages on Booking Page</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          <p className="text-warm-sand text-sm mb-2">Toggle which packages appear on your public booking page.</p>
+          {packages.length === 0 ? (
+            <p className="text-warm-sand text-sm p-4 bg-warm-sand/5 rounded-lg text-center">
+              No packages yet. Create packages in your profile settings.
+            </p>
+          ) : (
+            packages.map(pkg => {
+              const visible = packageVisibilities[pkg.id] ?? true;
+              const toggling = pkgToggling.has(pkg.id);
+              return (
+                <div key={pkg.id} className="flex items-center justify-between p-3 bg-warm-sand/5 rounded-lg border border-warm-sand/10">
+                  <div>
+                    <h4 className="text-warm-white font-medium text-sm">{pkg.name}</h4>
+                    <p className="text-xs text-warm-sand">${pkg.base_price} / {pkg.pricing_type === "per_guest" ? "guest" : pkg.pricing_type}</p>
+                  </div>
+                  <button
+                    onClick={() => handleTogglePackage(pkg.id)}
+                    disabled={toggling}
+                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                      visible ? "bg-olive-gold" : "bg-warm-sand/30"
+                    }`}
+                  >
+                    <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                      visible ? "translate-x-6" : "translate-x-1"
+                    }`} />
+                  </button>
+                </div>
+              );
+            })
+          )}
+        </CardContent>
+      </Card>
+    </div>
   );
 }
 
@@ -221,6 +445,16 @@ function StripeConnectButton({ orgId }: { orgId?: string }) {
   );
 }
 
+type Package_ = {
+  id: string;
+  name: string;
+  description: string | null;
+  base_price: number;
+  pricing_type: string;
+  is_active: boolean;
+  show_on_booking: boolean | null;
+};
+
 interface SettingsClientProps {
   userEmail?: string | null;
   emailVerified?: boolean;
@@ -233,6 +467,9 @@ interface SettingsClientProps {
     created_at: string;
   }>;
   orgId?: string;
+  orgSlug?: string;
+  bookingEnabled?: boolean;
+  packages?: Package_[];
   stripeConnectStatus?: { connected: boolean; status: string | null; accountId?: string | null };
   subscriptionStatus?: {
     status: string;
@@ -241,7 +478,7 @@ interface SettingsClientProps {
   };
 }
 
-export function SettingsClient({ userEmail, emailVerified, preferences, tickets = [], orgId, stripeConnectStatus, subscriptionStatus }: SettingsClientProps) {
+export function SettingsClient({ userEmail, emailVerified, preferences, tickets = [], orgId, orgSlug, bookingEnabled = false, packages = [], stripeConnectStatus, subscriptionStatus }: SettingsClientProps) {
   const [activeTab, setActiveTab] = useState("account");
   const [deleting, setDeleting] = useState(false);
 
@@ -251,6 +488,7 @@ export function SettingsClient({ userEmail, emailVerified, preferences, tickets 
     { id: "account", label: "Account", icon: User },
     { id: "security", label: "Security", icon: Lock },
     { id: "payments", label: "Payments", icon: CreditCard },
+    { id: "booking", label: "Booking", icon: Calendar },
     { id: "notifications", label: "Notifications", icon: Bell },
     { id: "support", label: "Support", icon: HelpCircle },
   ];
@@ -622,6 +860,10 @@ export function SettingsClient({ userEmail, emailVerified, preferences, tickets 
             </CardContent>
           </Card>
         </div>
+      )}
+
+      {activeTab === "booking" && (
+        <BookingTabContent orgId={orgId} orgSlug={orgSlug} bookingEnabled={bookingEnabled} packages={packages} />
       )}
 
       {activeTab === "notifications" && (

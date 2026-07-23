@@ -42,7 +42,7 @@ export async function POST(request: Request) {
     const { error: orgError } = await supabase.from("organizations").insert({
       id: orgId,
       name: name || "My Bar Company",
-      slug: `bar-${Date.now()}`,
+      slug: (name || "my-bar").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "") + `-${Date.now().toString(36)}`,
     });
     if (orgError) throw orgError;
 

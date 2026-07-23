@@ -66,6 +66,19 @@ export async function POST(req: NextRequest) {
             .eq("org_id", orgId);
         }
 
+        const depositEventId = session.metadata?.event_id;
+        const depositOrgId = session.metadata?.org_id;
+        if (session.mode === "payment" && session.metadata?.type === "booking_deposit" && depositEventId && depositOrgId) {
+          await supabase
+            .from("events")
+            .update({
+              status: "deposit_paid",
+              stripe_deposit_paid: true,
+            })
+            .eq("id", depositEventId)
+            .eq("org_id", depositOrgId);
+        }
+
         if (session.mode === "subscription") {
           const subId = session.subscription;
           const sub = typeof subId === "string"

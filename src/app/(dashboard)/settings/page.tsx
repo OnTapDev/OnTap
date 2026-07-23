@@ -5,6 +5,7 @@ import { getUserTickets } from "@/lib/support/actions";
 import { getUserOrgId } from "@/lib/auth";
 import { getStripeConnectStatus } from "@/modules/settings/actions/stripe-connect";
 import { createClient } from "@/core/db/server";
+import { getPackages } from "@/modules/settings/actions/settings";
 
 export default async function SettingsPage() {
   const user = await currentUser();
@@ -17,11 +18,14 @@ export default async function SettingsPage() {
   const stripeStatus = orgId ? await getStripeConnectStatus(orgId) : { connected: false, status: null };
 
   let subscriptionStatus: { status: string; periodEnd?: string; subscriberCount?: number } | undefined;
+  let orgSlug: string | undefined;
+  let bookingEnabled = false;
+  let packages: Awaited<ReturnType<typeof getPackages>> = [];
   if (orgId) {
     const supabase = await createClient();
     const { data: org } = await supabase
       .from("organizations")
-      .select("stripe_subscription_status, stripe_subscription_period_end")
+      .select("stripe_subscription_status, stripe_subscription_period_end, slug, booking_enabled")
       .eq("id", orgId)
       .single();
     if (org) {
@@ -29,6 +33,8 @@ export default async function SettingsPage() {
         status: org.stripe_subscription_status || "inactive",
         periodEnd: org.stripe_subscription_period_end || undefined,
       };
+      orgSlug = org.slug;
+      bookingEnabled = org.booking_enabled ?? false;
     }
 
     const { count } = await supabase
@@ -39,6 +45,8 @@ export default async function SettingsPage() {
     if (subscriptionStatus) {
       subscriptionStatus.subscriberCount = count || 0;
     }
+
+    packages = await getPackages(orgId);
   }
 
   return (
@@ -48,6 +56,9 @@ export default async function SettingsPage() {
       preferences={preferences}
       tickets={tickets}
       orgId={orgId || undefined}
+      orgSlug={orgSlug}
+      bookingEnabled={bookingEnabled}
+      packages={packages}
       stripeConnectStatus={stripeStatus}
       subscriptionStatus={subscriptionStatus}
     />

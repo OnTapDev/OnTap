@@ -299,6 +299,76 @@ export async function updatePackage(id: string, data: {
   return packageData;
 }
 
+export async function updateOrgSlug(orgId: string, newSlug: string) {
+  const supabase = await createClient();
+
+  const cleanSlug = newSlug
+    .toLowerCase()
+    .replace(/[^a-z0-9-]/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-+|-+$/g, "");
+
+  if (!cleanSlug || cleanSlug.length < 3) {
+    throw new Error("Slug must be at least 3 characters (letters, numbers, hyphens)");
+  }
+
+  const { data: existing } = await supabase
+    .from("organizations")
+    .select("id")
+    .eq("slug", cleanSlug)
+    .neq("id", orgId)
+    .maybeSingle();
+
+  if (existing) {
+    throw new Error("This slug is already taken. Try a different one.");
+  }
+
+  const { error } = await supabase
+    .from("organizations")
+    .update({ slug: cleanSlug })
+    .eq("id", orgId);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  revalidatePath("/settings");
+  return { slug: cleanSlug };
+}
+
+export async function updateBookingEnabled(orgId: string, enabled: boolean) {
+  const supabase = await createClient();
+
+  const { error } = await supabase
+    .from("organizations")
+    .update({ booking_enabled: enabled })
+    .eq("id", orgId);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  revalidatePath("/settings");
+  return { enabled };
+}
+
+export async function updatePackageBookingVisibility(packageId: string, showOnBooking: boolean) {
+  const supabase = await createClient();
+
+  const { error } = await supabase
+    .from("packages")
+    .update({ show_on_booking: showOnBooking })
+    .eq("id", packageId);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  revalidatePath("/settings");
+  revalidatePath("/profile");
+  return { show_on_booking: showOnBooking };
+}
+
 export async function deletePackage(id: string) {
   const supabase = await createClient();
   
