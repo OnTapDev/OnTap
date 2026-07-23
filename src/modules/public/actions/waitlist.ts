@@ -38,9 +38,23 @@ export async function getWaitlistCount() {
   return contactCount || 0;
 }
 
+export async function getTakenSpots() {
+  const supabase = createAdminClient();
+
+  const waitlistCount = await getWaitlistCount();
+
+  const { count: subscriberCount } = await supabase
+    .from("organizations")
+    .select("*", { count: "exact", head: true })
+    .in("stripe_subscription_status", ["active", "trialing"]);
+
+  const total = waitlistCount + (subscriberCount || 0);
+  return total;
+}
+
 export async function getAvailableSpots() {
-  const count = await getWaitlistCount();
-  const available = MAX_SPOTS - count;
+  const taken = await getTakenSpots();
+  const available = MAX_SPOTS - taken;
   return available > 0 ? available : 0;
 }
 
