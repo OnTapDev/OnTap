@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { FileText, MoreHorizontal, Check, X, Clock } from "lucide-react";
+import { FileText, MoreHorizontal, Check, X, Clock, Link as LinkIcon, CheckCheck } from "lucide-react";
 
 type Quote = {
   id: string;
@@ -34,6 +34,14 @@ const statusConfig: Record<string, { bg: string; text: string; icon: React.React
 
 export function QuotesList({ quotes }: QuotesListProps) {
   const [filter, setFilter] = useState<string>("all");
+  const [copied, setCopied] = useState<string | null>(null);
+
+  const copyQuoteLink = async (id: string) => {
+    const link = `${window.location.origin}/public/quote/${id}`;
+    await navigator.clipboard.writeText(link);
+    setCopied(id);
+    setTimeout(() => setCopied(null), 2000);
+  };
 
   const filteredQuotes = filter === "all" 
     ? quotes 
@@ -139,9 +147,22 @@ export function QuotesList({ quotes }: QuotesListProps) {
                     {formatDate(quote.created_at)}
                   </td>
                   <td className="p-4">
-                    <button className="p-2 text-warm-sand hover:text-warm-white">
-                      <MoreHorizontal className="w-4 h-4" />
-                    </button>
+                    <div className="flex items-center gap-1">
+                      <button
+                        onClick={() => copyQuoteLink(quote.id)}
+                        className="p-2 text-warm-sand hover:text-olive-gold"
+                        title="Copy shareable link"
+                      >
+                        {copied === quote.id ? (
+                          <CheckCheck className="w-4 h-4 text-olive-gold" />
+                        ) : (
+                          <LinkIcon className="w-4 h-4" />
+                        )}
+                      </button>
+                      <button className="p-2 text-warm-sand hover:text-warm-white">
+                        <MoreHorizontal className="w-4 h-4" />
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))

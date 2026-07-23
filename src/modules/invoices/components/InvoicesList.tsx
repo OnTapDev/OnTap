@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { FileText, DollarSign, Check, Clock, AlertCircle, Download, CreditCard } from "lucide-react";
+import { FileText, DollarSign, Check, Clock, AlertCircle, Download, CreditCard, Link as LinkIcon, CheckCheck } from "lucide-react";
 import { getInvoiceForDownload } from "@/modules/invoices/actions/invoices";
 import { MiniLineChart } from "@/ui/components/MiniLineChart";
 import { Card, CardContent } from "@/ui/primitives";
@@ -37,6 +37,14 @@ export function InvoicesList({ invoices }: InvoicesListProps) {
   const [filter, setFilter] = useState<string>("all");
   const [downloading, setDownloading] = useState<string | null>(null);
   const [paying, setPaying] = useState<string | null>(null);
+  const [copied, setCopied] = useState<string | null>(null);
+
+  const copyInvoiceLink = async (id: string) => {
+    const link = `${window.location.origin}/public/invoice/${id}`;
+    await navigator.clipboard.writeText(link);
+    setCopied(id);
+    setTimeout(() => setCopied(null), 2000);
+  };
 
   const filteredInvoices = filter === "all" 
     ? invoices 
@@ -394,6 +402,17 @@ export function InvoicesList({ invoices }: InvoicesListProps) {
                           <span className="w-4 h-4 block border-2 border-warm-sand border-t-transparent rounded-full animate-spin" />
                         ) : (
                           <Download className="w-4 h-4" />
+                        )}
+                      </button>
+                      <button
+                        onClick={() => copyInvoiceLink(invoice.id)}
+                        className="p-2 text-warm-sand hover:text-olive-gold disabled:opacity-50"
+                        title="Copy shareable link"
+                      >
+                        {copied === invoice.id ? (
+                          <CheckCheck className="w-4 h-4 text-olive-gold" />
+                        ) : (
+                          <LinkIcon className="w-4 h-4" />
                         )}
                       </button>
                     </div>
