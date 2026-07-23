@@ -78,12 +78,6 @@ export function HomeClient({ availableSpots: initialSpots }: HomeClientProps) {
 
   return (
     <main className="min-h-screen bg-charcoal">
-      {/* Maintenance Banner */}
-      <div className="bg-olive-gold/10 border-b border-olive-gold/20 px-4 py-2 text-center">
-        <p className="text-sm text-olive-gold">
-          We&apos;re currently working on sign-up and sign-in issues. Thanks for your patience.
-        </p>
-      </div>
       {/* Sticky Header */}
       <header className="sticky top-0 z-50 bg-charcoal/90 backdrop-blur-md border-b border-warm-sand/10">
         <div className="max-w-6xl mx-auto px-4 md:px-6 py-3 md:py-4 flex items-center justify-between">
