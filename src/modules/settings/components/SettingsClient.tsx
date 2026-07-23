@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Input, Card, CardHeader, CardTitle, CardContent } from "@/ui/primitives";
-import { Bell, Link2, User, Lock, Mail, LogOut, HelpCircle, AlertTriangle, CreditCard, Download } from "lucide-react";
+import { Bell, User, Lock, Mail, LogOut, HelpCircle, AlertTriangle, CreditCard, Download } from "lucide-react";
 import { SignOutButton } from "@clerk/nextjs";
 import { deleteUserAccount } from "@/lib/auth/actions";
 import { updateUserPreferences, UserPreferences } from "@/lib/preferences/actions";
@@ -251,7 +251,6 @@ export function SettingsClient({ userEmail, emailVerified, preferences, tickets 
     { id: "account", label: "Account", icon: User },
     { id: "security", label: "Security", icon: Lock },
     { id: "payments", label: "Payments", icon: CreditCard },
-    { id: "integrations", label: "Integrations", icon: Link2 },
     { id: "notifications", label: "Notifications", icon: Bell },
     { id: "support", label: "Support", icon: HelpCircle },
   ];
@@ -623,39 +622,6 @@ export function SettingsClient({ userEmail, emailVerified, preferences, tickets 
             </CardContent>
           </Card>
         </div>
-      )}
-
-      {activeTab === "integrations" && (
-        <Card>
-          <CardHeader>
-            <CardTitle>Integrations</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-6 max-w-lg">
-              <div className="flex items-center justify-between p-4 bg-warm-sand/5 rounded-lg border border-warm-sand/20">
-                <div>
-                  <h4 className="text-warm-white font-medium">Twilio</h4>
-                  <p className="text-warm-sand text-sm">SMS notifications for clients</p>
-                </div>
-                <span className="text-green-400 text-sm">Connected</span>
-              </div>
-              <div className="flex items-center justify-between p-4 bg-warm-sand/5 rounded-lg border border-warm-sand/20">
-                <div>
-                  <h4 className="text-warm-white font-medium">Resend</h4>
-                  <p className="text-warm-sand text-sm">Email notifications for clients</p>
-                </div>
-                <span className="text-green-400 text-sm">Connected</span>
-              </div>
-              <div className="flex items-center justify-between p-4 bg-warm-sand/5 rounded-lg border border-warm-sand/20">
-                <div>
-                  <h4 className="text-warm-white font-medium">Supabase</h4>
-                  <p className="text-warm-sand text-sm">Database and authentication</p>
-                </div>
-                <span className="text-green-400 text-sm">Connected</span>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
       )}
 
       {activeTab === "notifications" && (

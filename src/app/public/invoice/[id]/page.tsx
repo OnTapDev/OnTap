@@ -1,14 +1,18 @@
 import { createClient } from "@supabase/supabase-js";
 import { notFound } from "next/navigation";
+import { PayButton } from "../PayButton";
 
 export const dynamic = "force-dynamic";
 
 export default async function PublicInvoicePage({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ paid?: string }>;
 }) {
   const { id } = await params;
+  const { paid } = await searchParams;
 
   const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -23,7 +27,7 @@ export default async function PublicInvoicePage({
         id, name, date, venue_name, venue_address,
         contact:contacts(name, email, phone)
       ),
-      organization:organizations(name)
+      organization:organizations(id, name, stripe_account_id)
     `)
     .eq("id", id)
     .maybeSingle();
@@ -42,9 +46,22 @@ export default async function PublicInvoicePage({
     partial: "bg-yellow-500/10 text-yellow-400",
   };
 
+  const canPay = invoice.status !== "paid" && invoice.status !== "cancelled" && !!invoice.organization?.stripe_account_id;
+
   return (
     <div className="min-h-screen bg-[#0D0D0D] flex items-center justify-center p-4">
       <div className="w-full max-w-2xl bg-[#1A1A1A] border border-warm-sand/10 rounded-2xl overflow-hidden">
+        {paid === "success" && (
+          <div className="p-4 bg-green-500/10 border-b border-green-500/20 text-center">
+            <p className="text-sm text-green-400 font-medium">Payment successful! Thank you.</p>
+          </div>
+        )}
+        {paid === "cancelled" && (
+          <div className="p-4 bg-yellow-500/10 border-b border-yellow-500/20 text-center">
+            <p className="text-sm text-yellow-400 font-medium">Payment was cancelled. No charges were made.</p>
+          </div>
+        )}
+
         <div className="p-6 sm:p-8 border-b border-warm-sand/10">
           <div className="flex items-center justify-between">
             <div>
@@ -129,8 +146,14 @@ export default async function PublicInvoicePage({
           </div>
         </div>
 
-        <div className="p-6 sm:p-8 border-t border-warm-sand/10 text-center">
-          <p className="text-xs text-warm-sand/40">Powered by OnTap — The operating system for mobile bar operators</p>
+        <PayButton
+          invoiceId={id}
+          balanceDue={invoice.balance_due}
+          canPay={canPay}
+        />
+
+        <div className="p-6 border-t border-warm-sand/10 text-center">
+          <p className="text-xs text-warm-sand/40">Powered by OnTap</p>
         </div>
       </div>
     </div>
