@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle, Button, Input, Textarea, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/ui/primitives";
 import { createSupportRequest, getMySupportRequests, getAllSupportRequests } from "@/modules/settings/actions/support";
-import { HelpCircle, Lightbulb, Bug, MessageCircle, Send, Check, Ticket, Clock, Shield } from "lucide-react";
+import { HelpCircle, Lightbulb, Bug, MessageCircle, Send, Check, Ticket, Clock, Shield, Mail } from "lucide-react";
 
 const typeOptions = [
   { value: "help" as const, label: "Help", icon: HelpCircle, desc: "I need help with..." },
@@ -201,16 +201,14 @@ export default function SupportPage() {
         <div className="space-y-4">
           <Card className="bg-charcoal border-warm-sand/20">
             <CardHeader>
-              <CardTitle className="text-warm-white">Quick Help</CardTitle>
+              <CardTitle className="text-warm-white">Need Help?</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
-              <a href="https://ontap.io/docs" target="_blank" className="block p-3 bg-warm-sand/10 rounded-lg text-warm-sand hover:text-warm-white">
-                📚 Documentation
+              <a href="mailto:OnTapInquiries@gmail.com" className="flex items-center gap-3 p-3 bg-warm-sand/10 rounded-lg text-warm-sand hover:text-warm-white hover:bg-warm-sand/20 transition-colors">
+                <Mail className="w-4 h-4 text-olive-gold" />
+                <span>Email us at OnTapInquiries@gmail.com</span>
               </a>
-              <a href="mailto:OnTapInquiries@gmail.com" className="block p-3 bg-warm-sand/10 rounded-lg text-warm-sand hover:text-warm-white">
-                ✉️ Email Support
-              </a>
-              <p className="text-xs text-warm-sand/60 mt-4">
+              <p className="text-xs text-warm-sand/60">
                 We typically respond within 24 hours.
               </p>
             </CardContent>
