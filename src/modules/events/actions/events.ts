@@ -2,6 +2,7 @@
 
 import { createClient } from "@/core/db/server";
 import { revalidatePath } from "next/cache";
+import { currentUser } from "@clerk/nextjs/server";
 
 export async function getEvents(orgId: string) {
   const supabase = await createClient();
@@ -69,6 +70,23 @@ export async function createEvent(orgId: string, event: {
   if (error) {
     console.error("Error creating event:", error);
     throw new Error(error.message);
+  }
+
+  try {
+    const user = await currentUser();
+    if (user) {
+      await supabase.from("notifications").insert({
+        org_id: orgId,
+        user_id: user.id,
+        title: `New event: ${event.name}`,
+        message: `${event.name} on ${new Date(event.date).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}${event.venue_name ? ` at ${event.venue_name}` : ""}`,
+        type: "event",
+        related_entity_type: "event",
+        related_entity_id: data.id,
+      });
+    }
+  } catch (e) {
+    console.error("Failed to create notification:", e);
   }
 
   revalidatePath("/events");

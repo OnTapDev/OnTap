@@ -56,6 +56,22 @@ export async function createComment(
     throw new Error("Failed to create comment");
   }
 
+  if (activityType === "follow_up") {
+    try {
+      await supabase.from("notifications").insert({
+        org_id: userRecord.org_id,
+        user_id: user.id,
+        title: `Follow-up: ${content.length > 60 ? content.slice(0, 60) + "..." : content}`,
+        message: entityType === "contact" ? "Follow up on this contact" : "Follow up on this event",
+        type: "follow_up",
+        related_entity_type: entityType,
+        related_entity_id: entityId,
+      });
+    } catch (e) {
+      console.error("Failed to create notification:", e);
+    }
+  }
+
   const path = entityType === "contact" ? "/crm" : "/events";
   revalidatePath(path);
 }

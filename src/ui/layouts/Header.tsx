@@ -1,7 +1,8 @@
 "use client";
 
-import { Bell, Search } from "lucide-react";
+import { Search } from "lucide-react";
 import { UserButton } from "@clerk/nextjs";
+import { NotificationBell } from "@/modules/notifications/NotificationBell";
 
 export function Header() {
   return (
@@ -18,10 +19,7 @@ export function Header() {
       </div>
 
       <div className="flex items-center gap-4">
-        <button className="relative rounded-lg p-2 text-warm-sand transition-colors hover:bg-warm-sand/10 hover:text-warm-white">
-          <Bell className="h-5 w-5" />
-          <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-olive-gold" />
-        </button>
+        <NotificationBell />
         <UserButton
           appearance={{
             elements: {
