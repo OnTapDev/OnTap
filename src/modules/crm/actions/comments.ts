@@ -25,7 +25,8 @@ export async function getComments(entityType: "contact" | "event", entityId: str
 export async function createComment(
   entityType: "contact" | "event",
   entityId: string,
-  content: string
+  content: string,
+  activityType: "note" | "call" | "email" | "meeting" | "task" | "follow_up" = "note"
 ) {
   const user = await currentUser();
   if (!user) throw new Error("Not authenticated");
@@ -47,6 +48,7 @@ export async function createComment(
     author_id: user.id,
     author_name: [user.firstName, user.lastName].filter(Boolean).join(" ") || user.emailAddresses?.[0]?.emailAddress || "Unknown",
     content,
+    activity_type: activityType,
   });
 
   if (error) {
