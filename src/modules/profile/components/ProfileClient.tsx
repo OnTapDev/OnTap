@@ -8,6 +8,7 @@ import {
   Box, Wine, Utensils, Sparkles, Edit3, Trash2
 } from "lucide-react";
 import { updateOrganization, createPackage, updatePackage, deletePackage } from "@/modules/settings/actions/settings";
+import { uploadLogo } from "@/core/storage/upload";
 import { createDocument, deleteDocumentRecord } from "@/modules/profile/actions/documents";
 import { createGalleryItem, deleteGalleryItem, updateGalleryItem, reorderGalleryItems } from "@/modules/profile/actions/gallery";
 import { createInventoryItem, updateInventoryItem, deleteInventoryItem } from "@/modules/profile/actions/inventory";
@@ -198,8 +199,22 @@ export function ProfileClient({
       const minBookingHours = form.minimum_booking_hours ? parseInt(form.minimum_booking_hours) : undefined;
       const serviceRadius = form.service_radius ? parseInt(form.service_radius) : undefined;
 
+      let logoUrl = form.logo_url || undefined;
+
+      if (logoUrl?.startsWith("data:")) {
+        try {
+          logoUrl = await uploadLogo(organization.id, logoUrl);
+          setForm(prev => ({ ...prev, logo_url: logoUrl! }));
+        } catch (err: any) {
+          console.error("Logo upload error:", err);
+          alert("Failed to upload logo: " + (err?.message || "Unknown error"));
+          setSaving(false);
+          return;
+        }
+      }
+
       await updateOrganization(organization.id, {
-        name: form.name, logo_url: form.logo_url || undefined,
+        name: form.name, logo_url: logoUrl,
         description: form.description || undefined, website: form.website || undefined,
         instagram: form.instagram || undefined, facebook: form.facebook || undefined,
         twitter: form.twitter || undefined, phone: form.phone || undefined,
