@@ -5,7 +5,7 @@ import { Button, Input, Card, CardHeader, CardTitle, CardContent, Textarea } fro
 import {
   Save, Upload, Globe, Instagram, Facebook, Twitter, MapPin, Clock, DollarSign, FileText, X, AlertTriangle,
   Shield, CheckCircle2, Circle, Plus, Package, Store, Gavel, Building2, ChevronDown,
-  Box, Wine, Utensils, Sparkles, Edit3, Trash2
+  Box, Wine, Utensils, Sparkles, Edit3, Trash2, Phone, Mail
 } from "lucide-react";
 import { updateOrganization, createPackage, updatePackage, deletePackage } from "@/modules/settings/actions/settings";
 import { uploadLogo } from "@/core/storage/upload";
@@ -467,11 +467,46 @@ export function ProfileClient({
                   </div>
                 </div>
                 {form.description && <div><h4 className="text-warm-sand text-sm font-medium mb-1">About</h4><p className="text-warm-white text-sm">{form.description}</p></div>}
-                {(form.phone || form.email) && <div><h4 className="text-warm-sand text-sm font-medium mb-1">Contact</h4><div className="space-y-1">{form.phone && <p className="text-warm-white text-sm">📞 {form.phone}</p>}{form.email && <p className="text-warm-white text-sm">✉️ {form.email}</p>}</div></div>}
+                {(form.phone || form.email) && (
+                  <div>
+                    <h4 className="text-warm-sand text-sm font-medium mb-1">Contact</h4>
+                    <div className="space-y-1">
+                      {form.phone && (
+                        <p className="text-warm-white text-sm flex items-center gap-2">
+                          <Phone className="w-4 h-4 text-olive-gold" /> {form.phone}
+                        </p>
+                      )}
+                      {form.email && (
+                        <p className="text-warm-white text-sm flex items-center gap-2">
+                          <Mail className="w-4 h-4 text-olive-gold" /> {form.email}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                )}
                 {form.zones_of_operation && <div><h4 className="text-warm-sand text-sm font-medium mb-1">Service Area</h4><p className="text-warm-white text-sm">{form.zones_of_operation}</p></div>}
-                {form.website && <div><h4 className="text-warm-sand text-sm font-medium mb-1">Website</h4><p className="text-olive-gold text-sm">{form.website}</p></div>}
+                {form.website && <div><h4 className="text-warm-sand text-sm font-medium mb-1">Website</h4><p className="text-olive-gold text-sm flex items-center gap-2"><Globe className="w-4 h-4" /> {form.website}</p></div>}
                 {(form.instagram || form.facebook || form.twitter) && (
-                  <div><h4 className="text-warm-sand text-sm font-medium mb-1">Social</h4><div className="flex gap-2">{form.instagram && <span className="text-olive-gold text-sm">📸 {form.instagram}</span>}{form.facebook && <span className="text-olive-gold text-sm">📘 {form.facebook}</span>}{form.twitter && <span className="text-olive-gold text-sm">🐦 {form.twitter}</span>}</div></div>
+                  <div>
+                    <h4 className="text-warm-sand text-sm font-medium mb-1">Social</h4>
+                    <div className="flex gap-2 flex-wrap">
+                      {form.instagram && (
+                        <a href={`https://instagram.com/${form.instagram.replace('@', '')}`} target="_blank" rel="noopener noreferrer" className="text-olive-gold hover:text-warm-white transition-colors flex items-center gap-1">
+                          <Instagram className="w-4 h-4" /> {form.instagram}
+                        </a>
+                      )}
+                      {form.facebook && (
+                        <a href={form.facebook.startsWith('http') ? form.facebook : `https://facebook.com/${form.facebook}`} target="_blank" rel="noopener noreferrer" className="text-olive-gold hover:text-warm-white transition-colors flex items-center gap-1">
+                          <Facebook className="w-4 h-4" /> {form.facebook}
+                        </a>
+                      )}
+                      {form.twitter && (
+                        <a href={form.twitter.startsWith('http') ? form.twitter : `https://x.com/${form.twitter.replace('@', '')}`} target="_blank" rel="noopener noreferrer" className="text-olive-gold hover:text-warm-white transition-colors flex items-center gap-1">
+                          <Twitter className="w-4 h-4" /> {form.twitter}
+                        </a>
+                      )}
+                    </div>
+                  </div>
                 )}
                 {packages.length > 0 && (
                   <div><h4 className="text-warm-sand text-sm font-medium mb-2">Packages</h4><div className="space-y-2">{packages.slice(0, 3).map(pkg => (
