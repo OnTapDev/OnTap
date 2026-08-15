@@ -68,6 +68,7 @@ export async function updateOrganization(id: string, data: {
   is_marketplace_listed?: boolean;
   delete_logo?: boolean;
 }) {
+  console.log("updateOrganization CALLED with id:", id, "data keys:", Object.keys(data));
   const supabase = await createClient();
   
   let logoUrl: string | undefined = data.logo_url;
