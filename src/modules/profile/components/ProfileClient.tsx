@@ -189,6 +189,11 @@ export function ProfileClient({
   const handleSave = async () => {
     setSaving(true);
     try {
+      if (!organization?.id) {
+        alert("Unable to save: organization not loaded. Please refresh the page.");
+        return;
+      }
+
       const hourlyRate = form.default_hourly_rate ? parseFloat(form.default_hourly_rate) : undefined;
       const minBookingHours = form.minimum_booking_hours ? parseInt(form.minimum_booking_hours) : undefined;
       const serviceRadius = form.service_radius ? parseInt(form.service_radius) : undefined;
