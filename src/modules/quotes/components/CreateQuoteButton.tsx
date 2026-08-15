@@ -74,7 +74,7 @@ export function CreateQuoteButton({ packages, addOns, contacts, orgId }: CreateQ
     const total = subtotal + tax;
     
     return { subtotal, tax, total };
-  }, [selectedPackage, form.guest_count, form.add_ons]);
+  }, [selectedPackage, form.guest_count, form.add_ons, addOns]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

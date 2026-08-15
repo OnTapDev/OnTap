@@ -7,7 +7,7 @@ import {
   Shield, CheckCircle2, Circle, Plus, Package, Store, Gavel, Building2, ChevronDown,
   Box, Wine, Utensils, Sparkles, Edit3, Trash2, Phone, Mail
 } from "lucide-react";
-import { updateOrganization, createPackage, updatePackage, deletePackage, getAddOns, createAddOn, updateAddOn, deleteAddOn } from "@/modules/settings/actions/settings";
+import { updateOrganization, createPackage, updatePackage, deletePackage, createAddOn, updateAddOn, deleteAddOn } from "@/modules/settings/actions/settings";
 import { uploadLogo } from "@/core/storage/upload";
 import { createDocument, deleteDocumentRecord } from "@/modules/profile/actions/documents";
 import { createGalleryItem, deleteGalleryItem, updateGalleryItem, reorderGalleryItems } from "@/modules/profile/actions/gallery";
