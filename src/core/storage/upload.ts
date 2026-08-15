@@ -1,18 +1,12 @@
 "use server";
 
-import { createServerClient } from "@supabase/ssr";
+import { createClient } from "@supabase/supabase-js";
 import { randomUUID } from "crypto";
 
 export async function uploadLogo(orgId: string, base64Data: string) {
-  const supabase = createServerClient(
+  const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() { return []; },
-        setAll() {},
-      },
-    }
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   );
 
   const base64Metadata = base64Data.match(/^data:([^/]+);base64,(.+)$/);
@@ -48,15 +42,9 @@ export async function uploadLogo(orgId: string, base64Data: string) {
 }
 
 export async function deleteLogo(orgId: string) {
-  const supabase = createServerClient(
+  const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() { return []; },
-        setAll() {},
-      },
-    }
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   );
 
   const filePath = `logos/${orgId}/logo`;
@@ -71,15 +59,9 @@ export async function deleteLogo(orgId: string) {
 }
 
 export async function uploadDocument(orgId: string, base64Data: string, fileName: string, docType: string) {
-  const supabase = createServerClient(
+  const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() { return []; },
-        setAll() {},
-      },
-    }
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   );
 
   const base64Metadata = base64Data.match(/^data:([^/]+);base64,(.+)$/);
@@ -115,15 +97,9 @@ export async function uploadDocument(orgId: string, base64Data: string, fileName
 }
 
 export async function deleteDocument(fileUrl: string) {
-  const supabase = createServerClient(
+  const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() { return []; },
-        setAll() {},
-      },
-    }
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   );
 
   const urlParts = fileUrl.split("/");
@@ -139,15 +115,9 @@ export async function deleteDocument(fileUrl: string) {
 }
 
 export async function uploadFile(orgId: string, base64Data: string, fileName: string, folder: string) {
-  const supabase = createServerClient(
+  const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() { return []; },
-        setAll() {},
-      },
-    }
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   );
 
   const base64Metadata = base64Data.match(/^data:([^/]+);base64,(.+)$/);
@@ -183,15 +153,9 @@ export async function uploadFile(orgId: string, base64Data: string, fileName: st
 }
 
 export async function deleteFile(fileUrl: string) {
-  const supabase = createServerClient(
+  const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() { return []; },
-        setAll() {},
-      },
-    }
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   );
 
   const urlParts = fileUrl.split("/");
@@ -207,15 +171,9 @@ export async function deleteFile(fileUrl: string) {
 }
 
 export async function getSignedDocumentUrl(fileUrl: string, expiresIn: number = 300) {
-  const supabase = createServerClient(
+  const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() { return []; },
-        setAll() {},
-      },
-    }
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   );
 
   const urlParts = fileUrl.split("/");
