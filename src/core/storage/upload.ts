@@ -31,7 +31,7 @@ export async function uploadLogo(orgId: string, base64Data: string) {
 
   if (error) {
     console.error("Error uploading logo:", error);
-    throw new Error("Failed to upload logo");
+    throw new Error(`Failed to upload logo: ${error.message}`);
   }
 
   const { data: publicUrlData } = supabase.storage
