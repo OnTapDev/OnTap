@@ -92,24 +92,27 @@ export async function updateOrganization(id: string, data: {
   }
   if (logoUrl !== undefined) {
     updateData.logo_url = logoUrl;
-  }
-  delete updateData.delete_logo;
+   }
+   delete updateData.delete_logo;
 
-  const { data: organization, error } = await supabase
-    .from("organizations")
-    .update(updateData)
-    .eq("id", id)
-    .select()
-    .single();
+   console.log("updateOrganization: updateData keys:", Object.keys(updateData));
+   console.log("updateOrganization: updateData:", JSON.stringify(updateData));
 
-  if (error) {
-    console.error("Error updating organization:", error);
-    throw new Error(error.message);
-  }
+   const { data: organization, error } = await supabase
+     .from("organizations")
+     .update(updateData)
+     .eq("id", id)
+     .select()
+     .single();
 
-  revalidatePath("/profile");
-  revalidatePath("/settings");
-  return organization;
+   if (error) {
+     console.error("Error updating organization:", error);
+     throw new Error(error.message);
+   }
+
+   revalidatePath("/profile");
+   revalidatePath("/settings");
+   return organization;
 }
 
 export async function getPipelineStages(orgId: string) {
