@@ -68,8 +68,9 @@ export async function updateOrganization(id: string, data: {
   is_marketplace_listed?: boolean;
   delete_logo?: boolean;
 }) {
-  console.log("updateOrganization CALLED with id:", id, "data keys:", Object.keys(data));
-  const supabase = await createClient();
+  try {
+    console.log("updateOrganization CALLED with id:", id, "data keys:", Object.keys(data));
+    const supabase = await createClient();
   
   let logoUrl: string | undefined = data.logo_url;
   
@@ -111,9 +112,21 @@ export async function updateOrganization(id: string, data: {
      throw new Error(error.message);
    }
 
-   revalidatePath("/profile");
-   revalidatePath("/settings");
-   return organization;
+    revalidatePath("/profile");
+    revalidatePath("/settings");
+    return organization;
+  } catch (err: any) {
+    console.error("updateOrganization FATAL ERROR:", {
+      message: err?.message,
+      stack: err?.stack,
+      code: err?.code,
+      details: err?.details,
+      hint: err?.hint,
+      data_keys: Object.keys(data),
+      data_sample: JSON.stringify(data).substring(0, 500),
+    });
+    throw new Error(err?.message || "Failed to update organization");
+  }
 }
 
 export async function getPipelineStages(orgId: string) {
