@@ -189,6 +189,10 @@ export function ProfileClient({
   const handleSave = async () => {
     setSaving(true);
     try {
+      const hourlyRate = form.default_hourly_rate ? parseFloat(form.default_hourly_rate) : undefined;
+      const minBookingHours = form.minimum_booking_hours ? parseInt(form.minimum_booking_hours) : undefined;
+      const serviceRadius = form.service_radius ? parseInt(form.service_radius) : undefined;
+
       await updateOrganization(organization.id, {
         name: form.name, logo_url: form.logo_url || undefined,
         description: form.description || undefined, website: form.website || undefined,
@@ -197,10 +201,10 @@ export function ProfileClient({
         email: form.email || undefined, address: form.address || undefined,
         city: form.city || undefined, state: form.state || undefined,
         zip: form.zip || undefined,
-        default_hourly_rate: form.default_hourly_rate ? parseFloat(form.default_hourly_rate) : undefined,
-        minimum_booking_hours: form.minimum_booking_hours ? parseInt(form.minimum_booking_hours) : undefined,
+        default_hourly_rate: !isNaN(hourlyRate as number) ? hourlyRate : undefined,
+        minimum_booking_hours: !isNaN(minBookingHours as number) ? minBookingHours : undefined,
         service_area: form.service_area || undefined,
-        service_radius: form.service_radius ? parseInt(form.service_radius) : undefined,
+        service_radius: !isNaN(serviceRadius as number) ? serviceRadius : undefined,
         zones_of_operation: form.zones_of_operation || undefined,
         regulations: form.regulations || undefined,
         is_marketplace_listed: form.is_marketplace_listed,
