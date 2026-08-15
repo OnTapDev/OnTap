@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { Check, ChevronLeft, ChevronRight, Calendar, Clock, Users, MapPin, CheckCircle } from "lucide-react";
+import { Check, ChevronLeft, ChevronRight, CheckCircle } from "lucide-react";
 import { publicBookEvent } from "@/lib/public";
 
 type Package = {
