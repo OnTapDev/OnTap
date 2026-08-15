@@ -9,7 +9,7 @@ export async function uploadLogo(orgId: string, base64Data: string) {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   );
 
-  const base64Metadata = base64Data.match(/^data:([^/]+);base64,(.+)$/);
+  const base64Metadata = base64Data.match(/^data:([^;]+);base64,(.+)$/);
   if (!base64Metadata) {
     throw new Error("Invalid base64 data");
   }
@@ -64,7 +64,7 @@ export async function uploadDocument(orgId: string, base64Data: string, fileName
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   );
 
-  const base64Metadata = base64Data.match(/^data:([^/]+);base64,(.+)$/);
+  const base64Metadata = base64Data.match(/^data:([^;]+);base64,(.+)$/);
   if (!base64Metadata) {
     throw new Error("Invalid base64 data");
   }
@@ -120,7 +120,7 @@ export async function uploadFile(orgId: string, base64Data: string, fileName: st
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   );
 
-  const base64Metadata = base64Data.match(/^data:([^/]+);base64,(.+)$/);
+  const base64Metadata = base64Data.match(/^data:([^;]+);base64,(.+)$/);
   if (!base64Metadata) {
     throw new Error("Invalid base64 data");
   }
