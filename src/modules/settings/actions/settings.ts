@@ -403,3 +403,117 @@ export async function deletePackage(id: string) {
   revalidatePath("/profile");
   return { success: true };
 }
+
+export type AddOn = {
+  id: string;
+  org_id: string;
+  name: string;
+  description: string | null;
+  price: number;
+  is_active: boolean;
+  display_order: number;
+  created_at: string;
+  updated_at: string;
+};
+
+export async function getAddOns(orgId: string): Promise<AddOn[]> {
+  const supabase = await createClient();
+  
+  const { data, error } = await supabase
+    .from("add_ons")
+    .select("*")
+    .eq("org_id", orgId)
+    .order("display_order", { ascending: true });
+  
+  if (error) {
+    console.error("Error fetching add-ons:", error);
+    return [];
+  }
+  
+  return data || [];
+}
+
+export async function createAddOn(orgId: string, addOn: {
+  name: string;
+  description?: string;
+  price: number;
+  is_active?: boolean;
+}): Promise<AddOn | null> {
+  const supabase = await createClient();
+  
+  const { data: maxOrder } = await supabase
+    .from("add_ons")
+    .select("display_order")
+    .eq("org_id", orgId)
+    .order("display_order", { ascending: false })
+    .limit(1)
+    .single();
+  
+  const newOrder = (maxOrder?.display_order ?? -1) + 1;
+  
+  const { data, error } = await supabase
+    .from("add_ons")
+    .insert({
+      org_id: orgId,
+      name: addOn.name,
+      description: addOn.description || null,
+      price: addOn.price,
+      is_active: addOn.is_active ?? true,
+      display_order: newOrder,
+    })
+    .select()
+    .single();
+  
+  if (error) {
+    console.error("Error creating add-on:", error);
+    throw new Error(error.message);
+  }
+  
+  revalidatePath("/profile");
+  return data;
+}
+
+export async function updateAddOn(id: string, data: {
+  name?: string;
+  description?: string;
+  price?: number;
+  is_active?: boolean;
+  display_order?: number;
+}): Promise<AddOn | null> {
+  const supabase = await createClient();
+  
+  const { data: addOn, error } = await supabase
+    .from("add_ons")
+    .update({
+      ...data,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", id)
+    .select()
+    .single();
+  
+  if (error) {
+    console.error("Error updating add-on:", error);
+    throw new Error(error.message);
+  }
+  
+  revalidatePath("/profile");
+  return addOn;
+}
+
+export async function deleteAddOn(id: string): Promise<{ success: boolean }> {
+  const supabase = await createClient();
+  
+  const { error } = await supabase
+    .from("add_ons")
+    .delete()
+    .eq("id", id);
+  
+  if (error) {
+    console.error("Error deleting add-on:", error);
+    throw new Error(error.message);
+  }
+  
+  revalidatePath("/profile");
+  return { success: true };
+}

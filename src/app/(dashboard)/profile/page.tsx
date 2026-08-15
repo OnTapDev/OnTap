@@ -1,4 +1,4 @@
-import { getOrganizations, getPackages } from "@/modules/settings/actions/settings";
+import { getOrganizations, getPackages, getAddOns } from "@/modules/settings/actions/settings";
 import { getDocuments } from "@/modules/profile/actions/documents";
 import { getGalleryItems } from "@/modules/profile/actions/gallery";
 import { getInventoryItems } from "@/modules/profile/actions/inventory";
@@ -12,10 +12,11 @@ export default async function ProfilePage() {
     return <div>Loading...</div>;
   }
 
-  const [organization, documents, packages, galleryItems, inventoryItems, setupProgress] = await Promise.all([
+  const [organization, documents, packages, addOns, galleryItems, inventoryItems, setupProgress] = await Promise.all([
     getOrganizations(orgId),
     getDocuments(orgId),
     getPackages(orgId),
+    getAddOns(orgId),
     getGalleryItems(orgId),
     getInventoryItems(orgId),
     getSetupProgress(orgId),
@@ -32,6 +33,7 @@ export default async function ProfilePage() {
         organization={organization}
         documents={documents}
         packages={packages}
+        addOns={addOns}
         galleryItems={galleryItems}
         inventoryItems={inventoryItems}
         setupProgress={setupProgress}

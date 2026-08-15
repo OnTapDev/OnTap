@@ -7,7 +7,7 @@ import {
   Shield, CheckCircle2, Circle, Plus, Package, Store, Gavel, Building2, ChevronDown,
   Box, Wine, Utensils, Sparkles, Edit3, Trash2, Phone, Mail
 } from "lucide-react";
-import { updateOrganization, createPackage, updatePackage, deletePackage } from "@/modules/settings/actions/settings";
+import { updateOrganization, createPackage, updatePackage, deletePackage, getAddOns, createAddOn, updateAddOn, deleteAddOn } from "@/modules/settings/actions/settings";
 import { uploadLogo } from "@/core/storage/upload";
 import { createDocument, deleteDocumentRecord } from "@/modules/profile/actions/documents";
 import { createGalleryItem, deleteGalleryItem, updateGalleryItem, reorderGalleryItems } from "@/modules/profile/actions/gallery";
@@ -62,6 +62,18 @@ type Package = {
   is_active: boolean | null;
 };
 
+type AddOn = {
+  id: string;
+  org_id: string;
+  name: string;
+  description: string | null;
+  price: number;
+  is_active: boolean;
+  display_order: number;
+  created_at: string;
+  updated_at: string;
+};
+
 type GalleryItem = {
   id: string;
   org_id: string;
@@ -89,6 +101,7 @@ interface ProfileClientProps {
   organization: Organization;
   documents?: Document[];
   packages?: Package[];
+  addOns?: AddOn[];
   galleryItems?: GalleryItem[];
   inventoryItems?: InventoryItem[];
   setupProgress?: SetupProgress;
@@ -105,7 +118,7 @@ const INVENTORY_CATEGORIES = [
 ];
 
 export function ProfileClient({
-  organization, documents = [], packages = [], galleryItems = [],
+  organization, documents = [], packages = [], addOns = [], galleryItems = [],
   inventoryItems: initialInventory = [], setupProgress: initialProgress
 }: ProfileClientProps) {
   const [activeTab, setActiveTab] = useState("overview");
@@ -114,6 +127,8 @@ export function ProfileClient({
   const [uploading, setUploading] = useState(false);
   const [showPackageForm, setShowPackageForm] = useState(false);
   const [editingPackage, setEditingPackage] = useState<Package | null>(null);
+  const [showAddOnForm, setShowAddOnForm] = useState(false);
+  const [editingAddOn, setEditingAddOn] = useState<AddOn | null>(null);
   const [mediaFilter, setMediaFilter] = useState("all");
   const [editMode, setEditMode] = useState(false);
 
@@ -161,6 +176,10 @@ export function ProfileClient({
   const [pkgForm, setPkgForm] = useState({
     name: "", description: "", base_price: "", pricing_type: "per_hour",
     min_guests: "", max_guests: "", includes_bartenders: "1", includes_glassware: true,
+  });
+
+  const [addOnForm, setAddOnForm] = useState({
+    name: "", description: "", price: "", is_active: true,
   });
 
   const tabs = [
@@ -333,6 +352,58 @@ export function ProfileClient({
       console.error("Error deleting package:", error);
       alert("Failed to delete package");
     }
+  };
+
+  const handleCreateAddOn = async () => {
+    if (!addOnForm.name || !addOnForm.price) { alert("Fill required fields"); return; }
+    setSaving(true);
+    try {
+      await createAddOn(organization.id, {
+        name: addOnForm.name, description: addOnForm.description || undefined,
+        price: parseFloat(addOnForm.price), is_active: addOnForm.is_active,
+      });
+      setShowAddOnForm(false);
+      setAddOnForm({ name: "", description: "", price: "", is_active: true });
+      alert("Add-on created!");
+    } catch (error) {
+      console.error("Error creating add-on:", error);
+      alert("Failed to create add-on");
+    } finally { setSaving(false); }
+  };
+
+  const handleUpdateAddOn = async () => {
+    if (!editingAddOn || !addOnForm.name || !addOnForm.price) { alert("Fill required fields"); return; }
+    setSaving(true);
+    try {
+      await updateAddOn(editingAddOn.id, {
+        name: addOnForm.name, description: addOnForm.description || undefined,
+        price: parseFloat(addOnForm.price), is_active: addOnForm.is_active,
+      });
+      setEditingAddOn(null);
+      setAddOnForm({ name: "", description: "", price: "", is_active: true });
+      alert("Add-on updated!");
+    } catch (error) {
+      console.error("Error updating add-on:", error);
+      alert("Failed to update add-on");
+    } finally { setSaving(false); }
+  };
+
+  const handleDeleteAddOn = async (addOnId: string) => {
+    if (!confirm("Delete this add-on?")) return;
+    try {
+      await deleteAddOn(addOnId);
+    } catch (error) {
+      console.error("Error deleting add-on:", error);
+      alert("Failed to delete add-on");
+    }
+  };
+
+  const startEditAddOn = (addOn: AddOn) => {
+    setEditingAddOn(addOn);
+    setAddOnForm({
+      name: addOn.name, description: addOn.description || "", price: addOn.price.toString(),
+      is_active: addOn.is_active,
+    });
   };
 
   const startEditPackage = (pkg: Package) => {
@@ -858,6 +929,60 @@ export function ProfileClient({
                   <div className="flex gap-2 mt-4">
                     <Button onClick={editingPackage ? handleUpdatePackage : handleCreatePackage} disabled={saving}>{saving ? "Saving..." : editingPackage ? "Update Package" : "Create Package"}</Button>
                     <Button variant="secondary" onClick={() => { setShowPackageForm(false); setEditingPackage(null); setPkgForm({ name: "", description: "", base_price: "", pricing_type: "per_hour", min_guests: "", max_guests: "", includes_bartenders: "1", includes_glassware: true }); }}>Cancel</Button>
+                  </div>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between">
+              <CardTitle>Add-Ons</CardTitle>
+              <Button onClick={() => setShowAddOnForm(true)} variant="secondary" className="text-sm">+ Add Add-On</Button>
+            </CardHeader>
+            <CardContent>
+              {addOns.length === 0 ? (
+                <div className="text-center py-8"><p className="text-warm-sand mb-4">No add-ons created yet</p><p className="text-warm-sand text-sm">Create add-ons to offer optional extras on quotes and bookings</p></div>
+              ) : (
+                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                  {addOns.map(addOn => (
+                    <div key={addOn.id} className="p-4 bg-warm-sand/5 rounded-lg border border-warm-sand/20">
+                      <div className="flex items-start justify-between mb-3">
+                        <div>
+                          <h4 className="text-warm-white font-medium">{addOn.name}</h4>
+                          <p className="text-olive-gold font-bold text-lg">${addOn.price}</p>
+                        </div>
+                        <div className="flex gap-1">
+                          <button onClick={() => startEditAddOn(addOn)} className="p-1.5 text-warm-sand hover:text-warm-white">Edit</button>
+                          <button onClick={() => handleDeleteAddOn(addOn.id)} className="p-1.5 text-warm-sand hover:text-red-400">Delete</button>
+                        </div>
+                      </div>
+                      {addOn.description && <p className="text-warm-sand text-sm mb-3">{addOn.description}</p>}
+                      <div className="flex items-center gap-2 text-xs">
+                        <span className={`px-2 py-0.5 rounded ${addOn.is_active ? "bg-green-500/20 text-green-400" : "bg-gray-500/20 text-gray-400"}`}>
+                          {addOn.is_active ? "Active" : "Inactive"}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {(showAddOnForm || editingAddOn) && (
+                <div className="mt-6 p-4 bg-warm-sand/5 rounded-lg border border-warm-sand/20">
+                  <h4 className="text-warm-white font-medium mb-4">{editingAddOn ? "Edit Add-On" : "Create New Add-On"}</h4>
+                  <div className="grid gap-4 md:grid-cols-2">
+                    <div><label className="label">Add-On Name *</label><Input value={addOnForm.name} onChange={e => setAddOnForm({ ...addOnForm, name: e.target.value })} placeholder="Signature Cocktails" /></div>
+                    <div><label className="label">Price *</label><Input value={addOnForm.price} onChange={e => setAddOnForm({ ...addOnForm, price: e.target.value })} placeholder="150" type="number" /></div>
+                    <div className="md:col-span-2"><label className="label">Description</label><Textarea value={addOnForm.description} onChange={e => setAddOnForm({ ...addOnForm, description: e.target.value })} placeholder="What's included..." rows={2} /></div>
+                    <div className="md:col-span-2 flex items-center gap-2">
+                      <input type="checkbox" checked={addOnForm.is_active} onChange={e => setAddOnForm({ ...addOnForm, is_active: e.target.checked })} className="w-4 h-4 accent-olive-gold" />
+                      <span className="text-warm-sand text-sm">Active (available on quotes/bookings)</span>
+                    </div>
+                  </div>
+                  <div className="flex gap-2 mt-4">
+                    <Button onClick={editingAddOn ? handleUpdateAddOn : handleCreateAddOn} disabled={saving}>{saving ? "Saving..." : editingAddOn ? "Update Add-On" : "Create Add-On"}</Button>
+                    <Button variant="secondary" onClick={() => { setShowAddOnForm(false); setEditingAddOn(null); setAddOnForm({ name: "", description: "", price: "", is_active: true }); }}>Cancel</Button>
                   </div>
                 </div>
               )}

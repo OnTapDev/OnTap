@@ -21,24 +21,24 @@ type Package = {
   includes_glassware: boolean;
 };
 
+type AddOn = {
+  id: string;
+  name: string;
+  description: string | null;
+  price: number;
+  is_active: boolean;
+};
+
 interface CreateQuoteButtonProps {
   packages: Package[];
+  addOns: AddOn[];
   contacts: Contact[];
   orgId: string;
 }
 
-const availableAddOns = [
-  { id: "signature_cocktails", name: "Signature Cocktails", price: 150 },
-  { id: "glassware_upgrade", name: "Premium Glassware", price: 200 },
-  { id: "smoke_gun", name: "Smoke Gun", price: 175 },
-  { id: "nitrogen", name: "Nitrogen Cocktails", price: 125 },
-  { id: "coffee_bar", name: "Coffee Bar", price: 250 },
-  { id: "mocktail_station", name: "Mocktail Station", price: 150 },
-];
-
 const TAX_RATE = 0.0875; // 8.75% tax rate
 
-export function CreateQuoteButton({ packages, contacts, orgId }: CreateQuoteButtonProps) {
+export function CreateQuoteButton({ packages, addOns, contacts, orgId }: CreateQuoteButtonProps) {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
@@ -65,7 +65,7 @@ export function CreateQuoteButton({ packages, contacts, orgId }: CreateQuoteButt
     }
     
     const addOnsTotal = form.add_ons.reduce((sum, addOnId) => {
-      const addOn = availableAddOns.find(a => a.id === addOnId);
+      const addOn = addOns.find((a: AddOn) => a.id === addOnId);
       return sum + (addOn?.price || 0);
     }, 0);
     
@@ -82,7 +82,7 @@ export function CreateQuoteButton({ packages, contacts, orgId }: CreateQuoteButt
     
     try {
       const addOnsObject = form.add_ons.reduce((acc, id) => {
-        const addOn = availableAddOns.find(a => a.id === id);
+        const addOn = addOns.find((a: AddOn) => a.id === id);
         if (addOn) acc[id] = addOn.price;
         return acc;
       }, {} as Record<string, number>);
@@ -184,7 +184,7 @@ export function CreateQuoteButton({ packages, contacts, orgId }: CreateQuoteButt
               <div>
                 <label className="label">Add-ons</label>
                 <div className="grid grid-cols-2 gap-2 mt-2">
-                  {availableAddOns.map((addOn) => (
+                  {addOns.filter((a: AddOn) => a.is_active).map((addOn: AddOn) => (
                     <button
                       key={addOn.id}
                       type="button"

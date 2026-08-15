@@ -1,5 +1,6 @@
 import { getQuotes, getPackages } from "@/modules/quotes/actions/quotes";
 import { getContacts } from "@/modules/crm/actions/contacts";
+import { getAddOns } from "@/modules/settings/actions/settings";
 import { QuotesList } from "@/modules/quotes/components/QuotesList";
 import { CreateQuoteButton } from "@/modules/quotes/components/CreateQuoteButton";
 import { getUserOrgId } from "@/lib/auth";
@@ -10,10 +11,11 @@ export default async function QuotesPage() {
     return <div>Loading...</div>;
   }
 
-  const [quotes, packages, contacts] = await Promise.all([
+  const [quotes, packages, contacts, addOns] = await Promise.all([
     getQuotes(orgId),
     getPackages(orgId),
     getContacts(orgId),
+    getAddOns(orgId),
   ]);
 
   return (
@@ -23,7 +25,7 @@ export default async function QuotesPage() {
           <h1 className="text-screen-title text-warm-white">Quotes</h1>
           <p className="text-warm-sand mt-1">Create and manage quotes for your clients</p>
         </div>
-        <CreateQuoteButton packages={packages} contacts={contacts} orgId={orgId} />
+        <CreateQuoteButton packages={packages} addOns={addOns} contacts={contacts} orgId={orgId} />
       </div>
 
       <QuotesList quotes={quotes} />
