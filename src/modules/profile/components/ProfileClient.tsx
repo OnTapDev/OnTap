@@ -210,9 +210,13 @@ export function ProfileClient({
         is_marketplace_listed: form.is_marketplace_listed,
       });
       alert("Profile saved successfully!");
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error saving profile:", error);
-      alert("Failed to save profile");
+      const detailedMsg = error?.message || error?.toString() || "Unknown error";
+      const errorMsg = detailedMsg.includes("Server Components render")
+        ? "Server action failed. Check server logs for digest: " + error?.digest
+        : detailedMsg;
+      alert("Failed to save profile: " + errorMsg);
     } finally {
       setSaving(false);
     }
