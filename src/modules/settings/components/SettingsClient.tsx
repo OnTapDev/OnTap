@@ -2,14 +2,14 @@
 
 import { useState } from "react";
 import { Input, Card, CardHeader, CardTitle, CardContent, Button } from "@/ui/primitives";
-import { Bell, User, Lock, Mail, LogOut, HelpCircle, AlertTriangle, CreditCard, Download, Calendar, Copy, Check, ExternalLink, Eye, EyeOff, Globe } from "lucide-react";
+import { Bell, User, Lock, Mail, LogOut, HelpCircle, AlertTriangle, CreditCard, Download, Calendar, Copy, Check, ExternalLink, Globe } from "lucide-react";
 import { SignOutButton } from "@clerk/nextjs";
 import { deleteUserAccount } from "@/lib/auth/actions";
 import { updateUserPreferences, UserPreferences } from "@/lib/preferences/actions";
 import { submitSupportTicket } from "@/lib/support/actions";
 import { createStripeConnectLink, disconnectStripe } from "@/modules/settings/actions/stripe-connect";
 import { exportInvoicesCSV } from "@/modules/billing/actions/export";
-import { updateOrgSlug, updateBookingEnabled, updatePackageBookingVisibility } from "@/modules/settings/actions/settings";
+import { updateOrgSlug, updatePackageBookingVisibility } from "@/modules/settings/actions/settings";
 
 function SupportForm() {
   const [category, setCategory] = useState("general");
@@ -117,7 +117,6 @@ function BookingTabContent({ orgId, orgSlug, bookingEnabled, packages }: {
   const [slugSaving, setSlugSaving] = useState(false);
   const [slugSuccess, setSlugSuccess] = useState(false);
   const [bookingOn, setBookingOn] = useState(bookingEnabled);
-  const [bookingToggling, setBookingToggling] = useState(false);
   const [packageVisibilities, setPackageVisibilities] = useState<Record<string, boolean>>(
     Object.fromEntries(packages.map(p => [p.id, p.show_on_booking ?? true]))
   );
@@ -158,19 +157,6 @@ function BookingTabContent({ orgId, orgSlug, bookingEnabled, packages }: {
       setSlugError(err instanceof Error ? err.message : "Failed to update slug");
     } finally {
       setSlugSaving(false);
-    }
-  };
-
-  const handleToggleBooking = async () => {
-    if (!orgId) return;
-    setBookingToggling(true);
-    try {
-      const result = await updateBookingEnabled(orgId, !bookingOn);
-      setBookingOn(result.enabled);
-    } catch {
-      // revert on error
-    } finally {
-      setBookingToggling(false);
     }
   };
 
@@ -225,38 +211,8 @@ function BookingTabContent({ orgId, orgSlug, bookingEnabled, packages }: {
             </a>
           </div>
           <p className="text-xs text-warm-sand/60">
-            {bookingOn ? "Your booking page is live." : "Enable booking below to make this page accessible."}
+            {bookingOn ? "Your booking page is live." : "Turn on online bookings from your Events page to make this link accessible."}
           </p>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>Booking Page Settings</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="flex items-center justify-between p-4 bg-warm-sand/5 rounded-lg border border-warm-sand/10">
-            <div className="flex items-center gap-3">
-              {bookingOn ? <Eye className="w-5 h-5 text-green-400" /> : <EyeOff className="w-5 h-5 text-warm-sand" />}
-              <div>
-                <h4 className="text-warm-white font-medium">Public Booking</h4>
-                <p className="text-warm-sand text-sm">
-                  {bookingOn ? "Customers can book via your public link" : "Public booking is disabled"}
-                </p>
-              </div>
-            </div>
-            <button
-              onClick={handleToggleBooking}
-              disabled={bookingToggling}
-              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                bookingOn ? "bg-olive-gold" : "bg-warm-sand/30"
-              }`}
-            >
-              <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                bookingOn ? "translate-x-6" : "translate-x-1"
-              }`} />
-            </button>
-          </div>
         </CardContent>
       </Card>
 

@@ -4,6 +4,7 @@ import { getPackages } from "@/modules/quotes/actions/quotes";
 import { EventsList } from "@/modules/events/components/EventsList";
 import { BookingModal } from "@/modules/events/components/BookingModal";
 import { CopyBookingLink } from "@/modules/events/components/CopyBookingLink";
+import { BookingToggle } from "@/modules/events/components/BookingToggle";
 import { getUserOrgId } from "@/lib/auth";
 import { createClient } from "@/core/db/server";
 
@@ -16,7 +17,7 @@ export default async function EventsPage() {
   const supabase = await createClient();
   const { data: org } = await supabase
     .from("organizations")
-    .select("slug")
+    .select("slug, booking_enabled")
     .eq("id", orgId)
     .single();
 
@@ -34,6 +35,7 @@ export default async function EventsPage() {
           <p className="text-warm-sand mt-1">Manage your bookings and inquiries</p>
         </div>
         <div className="flex items-center gap-2">
+          <BookingToggle orgId={orgId} enabled={org?.booking_enabled ?? false} />
           {org && <CopyBookingLink slug={org.slug} />}
           <BookingModal contacts={contacts} packages={packages} orgId={orgId} />
         </div>
