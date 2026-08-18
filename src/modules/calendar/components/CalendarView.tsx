@@ -260,7 +260,7 @@ export function CalendarView({ events }: CalendarViewProps) {
               <div className="grid grid-cols-7 gap-1">
                 {(view === "week" ? weekDays : monthDays).map((day, index) => {
                   if (!day) {
-                    return <div key={`empty-${index}`} className="aspect-square" />;
+                    return <div key={`empty-${index}`} className={view === "week" ? "aspect-square" : "h-[80px]"} />;
                   }
                   
                   const isToday = day.toDateString() === today.toDateString();
@@ -276,7 +276,7 @@ export function CalendarView({ events }: CalendarViewProps) {
                       disabled={isPast && !hasEvent}
                       className={`
                         rounded-lg flex flex-col items-center justify-start pt-1 text-sm transition-all relative overflow-hidden
-                        ${view === "week" ? "aspect-square" : "min-h-[80px]"}
+                        ${view === "week" ? "aspect-square" : "h-[80px]"}
                         ${isSelected 
                           ? "bg-olive-gold text-charcoal font-semibold" 
                           : isToday 
