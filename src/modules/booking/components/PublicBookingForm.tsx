@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { Check, ChevronLeft, ChevronRight, CheckCircle } from "lucide-react";
+import Link from "next/link";
+import { Check, ChevronLeft, ChevronRight, CheckCircle, Home } from "lucide-react";
 import { submitPublicBooking } from "@/modules/booking/actions/booking";
 
 type Package = {
@@ -252,6 +253,13 @@ export function PublicBookingForm({ orgId, orgSlug, orgName, packages }: PublicB
         <p className="text-sm text-warm-white/50">
           Reference ID: <span className="text-olive-gold font-mono">{submittedEventId.slice(0, 8)}</span>
         </p>
+        <Link
+          href="/"
+          className="mt-8 inline-flex items-center justify-center gap-2 h-12 px-6 bg-warm-sand/10 text-warm-white font-semibold rounded-xl hover:bg-warm-sand/20 transition-colors"
+        >
+          <Home className="w-4 h-4" />
+          Back to OnTap Home
+        </Link>
       </div>
     );
   }
