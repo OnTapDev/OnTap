@@ -5,7 +5,7 @@ import { Button, Input, Card, CardHeader, CardTitle, CardContent, Textarea } fro
 import {
   Save, Upload, Globe, Instagram, Facebook, Twitter, MapPin, Clock, DollarSign, FileText, X, AlertTriangle,
   Shield, CheckCircle2, Circle, Plus, Package, Store, Gavel, Building2, ChevronDown,
-  Box, Wine, Utensils, Sparkles, Edit3, Trash2, Phone, Mail
+  Box, Wine, Utensils, Sparkles, Edit3, Trash2, Phone, Mail, Info
 } from "lucide-react";
 import { updateOrganization, createPackage, updatePackage, deletePackage, createAddOn, updateAddOn, deleteAddOn } from "@/modules/settings/actions/settings";
 import { uploadLogo } from "@/core/storage/upload";
@@ -1004,6 +1004,13 @@ export function ProfileClient({
 
       {activeTab === "insurance" && (
         <div className="space-y-6">
+          <div className="bg-warm-sand/5 border border-warm-sand/20 rounded-xl p-4">
+            <p className="text-warm-sand text-sm">
+              <Info className="w-4 h-4 text-olive-gold inline mr-2 align-[-2px]" />
+              The providers and links below are suggestions only — we do not have partnerships or affiliate relationships with any of them.
+              If you already have your own insurance, permits, or licenses, simply check the item off and continue setting up your profile.
+            </p>
+          </div>
           <div className="grid gap-6 md:grid-cols-3">
             <Card>
               <CardHeader>
