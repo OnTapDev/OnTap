@@ -1,5 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
 import { notFound } from "next/navigation";
+import { QuoteResponse } from "./QuoteResponse";
 
 export const dynamic = "force-dynamic";
 
@@ -129,6 +130,8 @@ export default async function PublicQuotePage({
             </p>
           )}
         </div>
+
+        <QuoteResponse quoteId={quote.id} status={quote.status} hasEvent={!!quote.event_id} />
 
         <div className="p-6 sm:p-8 border-t border-warm-sand/10 text-center">
           <p className="text-xs text-warm-sand/40">Powered by OnTap — The operating system for mobile bar operators</p>
