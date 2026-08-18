@@ -21,7 +21,7 @@ export default async function BookPage({ params }: BookPageProps) {
 
   if (!bookingEnabled) {
     return (
-      <div className="min-h-screen bg-[#0f0f0f] flex items-center justify-center p-8">
+      <div className="min-h-screen bg-charcoal flex items-center justify-center p-8">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-warm-white mb-2">Booking Unavailable</h1>
           <p className="text-warm-sand">This operator is not currently accepting online bookings.</p>
@@ -31,7 +31,7 @@ export default async function BookPage({ params }: BookPageProps) {
   }
 
   return (
-    <div className="min-h-screen bg-[#0f0f0f]">
+    <div className="min-h-screen bg-charcoal">
       <div className="max-w-3xl mx-auto px-4 py-12">
         <PublicBookingForm orgId={organization.id} orgSlug={organization.slug} orgName={organization.name} packages={packages} />
       </div>
