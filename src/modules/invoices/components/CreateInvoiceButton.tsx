@@ -6,21 +6,33 @@ import { createInvoice } from "@/modules/invoices/actions/invoices";
 
 type Event = {
   id: string;
+  contact_id: string;
   name: string;
   date: string;
   total_price: number;
+  contact: { id: string; name: string; email: string | null } | null;
+};
+
+type Quote = {
+  id: string;
+  event_id: string | null;
+  total: number;
+  status: string;
+  contact: { name: string; email: string } | null;
 };
 
 interface CreateInvoiceButtonProps {
   events: Event[];
+  quotes: Quote[];
   orgId: string;
 }
 
-export function CreateInvoiceButton({ events, orgId }: CreateInvoiceButtonProps) {
+export function CreateInvoiceButton({ events, quotes, orgId }: CreateInvoiceButtonProps) {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
     event_id: "",
+    quote_id: "",
     amount: "",
     deposit_amount: "",
     balance_due: "",
@@ -28,6 +40,29 @@ export function CreateInvoiceButton({ events, orgId }: CreateInvoiceButtonProps)
   });
 
   const selectedEvent = events.find(e => e.id === form.event_id);
+  const eventQuotes = quotes.filter(q => q.event_id === form.event_id);
+  const selectedQuote = quotes.find(q => q.id === form.quote_id);
+
+  const handleEventChange = (eventId: string) => {
+    const event = events.find(e => e.id === eventId);
+    setForm(prev => ({
+      ...prev,
+      event_id: eventId,
+      quote_id: "",
+      amount: event ? event.total_price.toString() : "",
+      balance_due: event ? event.total_price.toString() : "",
+    }));
+  };
+
+  const handleQuoteChange = (quoteId: string) => {
+    const quote = quotes.find(q => q.id === quoteId);
+    setForm(prev => ({
+      ...prev,
+      quote_id: quoteId,
+      amount: quote ? quote.total.toString() : prev.amount,
+      balance_due: quote ? quote.total.toString() : prev.balance_due,
+    }));
+  };
 
   const handleAmountChange = (field: string, value: string) => {
     setForm(prev => {
@@ -50,6 +85,7 @@ export function CreateInvoiceButton({ events, orgId }: CreateInvoiceButtonProps)
     try {
       await createInvoice(orgId, {
         event_id: form.event_id,
+        quote_id: form.quote_id || undefined,
         amount: parseFloat(form.amount),
         deposit_amount: form.deposit_amount ? parseFloat(form.deposit_amount) : undefined,
         balance_due: parseFloat(form.balance_due) || parseFloat(form.amount),
@@ -59,6 +95,7 @@ export function CreateInvoiceButton({ events, orgId }: CreateInvoiceButtonProps)
       setOpen(false);
       setForm({
         event_id: "",
+        quote_id: "",
         amount: "",
         deposit_amount: "",
         balance_due: "",
@@ -91,18 +128,7 @@ export function CreateInvoiceButton({ events, orgId }: CreateInvoiceButtonProps)
                 <label className="label">Event *</label>
                 <Select
                   value={form.event_id}
-                  onValueChange={(value) => {
-                    setForm({ ...form, event_id: value });
-                    const event = events.find(e => e.id === value);
-                    if (event) {
-                      setForm(prev => ({
-                        ...prev,
-                        event_id: value,
-                        amount: event.total_price.toString(),
-                        balance_due: event.total_price.toString(),
-                      }));
-                    }
-                  }}
+                  onValueChange={handleEventChange}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select event" />
@@ -110,9 +136,41 @@ export function CreateInvoiceButton({ events, orgId }: CreateInvoiceButtonProps)
                   <SelectContent>
                     {events.map((event) => (
                       <SelectItem key={event.id} value={event.id}>
-                        {event.name} - {new Date(event.date).toLocaleDateString()}
+                        {event.name} - {new Date(event.date).toLocaleDateString()}{event.contact?.name ? ` (${event.contact.name})` : ""}
                       </SelectItem>
                     ))}
+                  </SelectContent>
+                </Select>
+                {selectedEvent?.contact?.name && (
+                  <p className="text-xs text-warm-sand mt-1">
+                    Client: <span className="text-warm-white">{selectedEvent.contact.name}</span>
+                    {selectedEvent.contact.email ? ` · ${selectedEvent.contact.email}` : ""}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <label className="label">Quote (optional)</label>
+                <Select
+                  value={form.quote_id}
+                  onValueChange={handleQuoteChange}
+                  disabled={!form.event_id}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder={form.event_id ? "Link a quote (optional)" : "Select an event first"} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {eventQuotes.length === 0 ? (
+                      <div className="px-3 py-2 text-sm text-warm-sand">
+                        {form.event_id ? "No quotes linked to this event yet" : "Select an event to link a quote"}
+                      </div>
+                    ) : (
+                      eventQuotes.map((quote) => (
+                        <SelectItem key={quote.id} value={quote.id}>
+                          #{quote.id.slice(0, 8)} - ${quote.total.toLocaleString()} ({quote.status})
+                        </SelectItem>
+                      ))
+                    )}
                   </SelectContent>
                 </Select>
               </div>
@@ -152,6 +210,9 @@ export function CreateInvoiceButton({ events, orgId }: CreateInvoiceButtonProps)
               {selectedEvent && (
                 <div className="bg-warm-sand/10 rounded-lg p-3 text-sm">
                   <p className="text-warm-sand">Event Total: <span className="text-warm-white">${selectedEvent.total_price.toLocaleString()}</span></p>
+                  {selectedQuote && (
+                    <p className="text-warm-sand mt-1">Linked Quote: <span className="text-warm-white">#{selectedQuote.id.slice(0, 8)} (${selectedQuote.status})</span></p>
+                  )}
                 </div>
               )}
               

@@ -2,6 +2,8 @@ import { Suspense } from "react";
 import { redirect } from "next/navigation";
 import { getContacts, getPipelineStages, getPipelineKPIs } from "@/modules/crm/actions/contacts";
 import { getEvents } from "@/modules/events/actions/events";
+import { getQuotes } from "@/modules/quotes/actions/quotes";
+import { getInvoices } from "@/modules/invoices/actions/invoices";
 import { getOrgMessages } from "@/modules/crm/actions/messaging";
 import { CRMDashboard } from "@/modules/crm/components/CRMDashboard";
 import { getUserOrgId } from "@/lib/auth";
@@ -25,15 +27,19 @@ async function CRMContent({ searchParams }: CRMPageProps) {
   let contacts: Awaited<ReturnType<typeof getContacts>> = [];
   let stages: Awaited<ReturnType<typeof getPipelineStages>> = [];
   let events: Awaited<ReturnType<typeof getEvents>> = [];
+  let quotes: Awaited<ReturnType<typeof getQuotes>> = [];
+  let invoices: Awaited<ReturnType<typeof getInvoices>> = [];
   let pipelineKpis: Awaited<ReturnType<typeof getPipelineKPIs>> | undefined;
   let messages: Awaited<ReturnType<typeof getOrgMessages>> = [];
   let fetchError = "";
 
   try {
-    [contacts, stages, events, pipelineKpis, messages] = await Promise.all([
+    [contacts, stages, events, quotes, invoices, pipelineKpis, messages] = await Promise.all([
       getContacts(orgId),
       getPipelineStages(orgId),
       getEvents(orgId),
+      getQuotes(orgId),
+      getInvoices(orgId),
       getPipelineKPIs(orgId),
       getOrgMessages(orgId),
     ]);
@@ -48,7 +54,7 @@ async function CRMContent({ searchParams }: CRMPageProps) {
           <p className="text-red-400 text-sm">{fetchError}</p>
         </div>
       )}
-      <CRMDashboard contacts={contacts} stages={stages} events={events} messages={messages} initialView={initialView} pipelineKpis={pipelineKpis} orgId={orgId} />
+      <CRMDashboard contacts={contacts} stages={stages} events={events} quotes={quotes} invoices={invoices} messages={messages} initialView={initialView} pipelineKpis={pipelineKpis} orgId={orgId} />
     </div>
   );
 }

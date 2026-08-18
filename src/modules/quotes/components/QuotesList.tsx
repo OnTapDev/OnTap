@@ -18,6 +18,7 @@ type Quote = {
   created_at: string;
   contact: { name: string; email: string } | null;
   package: { name: string } | null;
+  event: { id: string; name: string; date: string } | null;
 };
 
 interface QuotesListProps {
@@ -87,8 +88,8 @@ export function QuotesList({ quotes }: QuotesListProps) {
         ))}
       </div>
 
-      <div className="bg-charcoal border border-warm-sand/20 rounded-xl overflow-hidden">
-        <table className="w-full">
+      <div className="bg-charcoal border border-warm-sand/20 rounded-xl overflow-x-auto">
+        <table className="w-full min-w-[720px]">
           <thead>
             <tr className="border-b border-warm-sand/20">
               <th className="text-left p-4 text-sm font-medium text-warm-sand">Quote</th>
@@ -126,7 +127,14 @@ export function QuotesList({ quotes }: QuotesListProps) {
                       <p className="text-sm text-warm-sand">{quote.contact?.email}</p>
                     </div>
                   </td>
-                  <td className="p-4 text-warm-white">{quote.package?.name || "-"}</td>
+                  <td className="p-4">
+                    <div>
+                      <p className="text-warm-white">{quote.package?.name || "-"}</p>
+                      {quote.event && (
+                        <p className="text-sm text-warm-sand">{quote.event.name}</p>
+                      )}
+                    </div>
+                  </td>
                   <td className="p-4 text-warm-white">{quote.guest_count}</td>
                   <td className="p-4">
                     <span className="text-warm-white font-medium">${quote.total.toLocaleString()}</span>

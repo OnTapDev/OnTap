@@ -35,8 +35,27 @@ type Message = {
   created_at: string;
 };
 
+type Quote = {
+  id: string;
+  event_id: string | null;
+  total: number;
+  status: string;
+  created_at: string;
+};
+
+type Invoice = {
+  id: string;
+  event_id: string;
+  amount: number;
+  balance_due: number;
+  status: string;
+  due_date: string | null;
+};
+
 interface EventsListProps {
   events: Event[];
+  quotes: Quote[];
+  invoices: Invoice[];
   orgId: string;
 }
 
@@ -60,7 +79,7 @@ const eventTypeLabels: Record<string, string> = {
   other: "Other",
 };
 
-export function EventsList({ events, orgId }: EventsListProps) {
+export function EventsList({ events, quotes, invoices, orgId }: EventsListProps) {
   const [filter, setFilter] = useState<string>("all");
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -305,6 +324,37 @@ export function EventsList({ events, orgId }: EventsListProps) {
                   <p className="text-warm-white text-sm whitespace-pre-wrap">{selectedEvent.notes}</p>
                 </div>
               )}
+
+              {(() => {
+                const eventQuotes = quotes.filter(q => q.event_id === selectedEvent.id);
+                const eventInvoices = invoices.filter(i => i.event_id === selectedEvent.id);
+                if (eventQuotes.length === 0 && eventInvoices.length === 0) return null;
+                return (
+                  <div className="bg-warm-sand/5 rounded-lg p-3">
+                    <p className="text-xs text-warm-sand mb-2">Linked Documents</p>
+                    <div className="space-y-2">
+                      {eventQuotes.map(q => (
+                        <div key={q.id} className="flex items-center justify-between text-sm">
+                          <span className="text-warm-white">Quote #{q.id.slice(0, 8)}</span>
+                          <span className="flex items-center gap-2">
+                            <span className="text-warm-sand text-xs">{q.status}</span>
+                            <span className="text-olive-gold font-medium">${q.total.toLocaleString()}</span>
+                          </span>
+                        </div>
+                      ))}
+                      {eventInvoices.map(inv => (
+                        <div key={inv.id} className="flex items-center justify-between text-sm">
+                          <span className="text-warm-white">Invoice #{inv.id.slice(0, 8)}</span>
+                          <span className="flex items-center gap-2">
+                            <span className="text-warm-sand text-xs">{inv.status}</span>
+                            <span className="text-olive-gold font-medium">${inv.amount.toLocaleString()}</span>
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })()}
 
               <div className="border-t border-warm-sand/10 pt-4 mt-4">
                 <CommentsSection entityType="event" entityId={selectedEvent.id} />

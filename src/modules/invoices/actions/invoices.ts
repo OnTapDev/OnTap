@@ -10,7 +10,13 @@ export async function getInvoices(orgId: string) {
     .from("invoices")
     .select(`
       *,
-      event:events(name, date, venue_name)
+      event:events(
+        name,
+        date,
+        venue_name,
+        contact_id,
+        contact:contacts(id, name, email)
+      )
     `)
     .eq("org_id", orgId)
     .order("created_at", { ascending: false });

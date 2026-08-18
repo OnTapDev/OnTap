@@ -29,24 +29,37 @@ type AddOn = {
   is_active: boolean;
 };
 
+type Event = {
+  id: string;
+  contact_id: string;
+  name: string;
+  type: string;
+  date: string;
+  guest_count: number;
+};
+
 interface CreateQuoteButtonProps {
   packages: Package[];
   addOns: AddOn[];
   contacts: Contact[];
+  events: Event[];
   orgId: string;
 }
 
 const TAX_RATE = 0.0875; // 8.75% tax rate
 
-export function CreateQuoteButton({ packages, addOns, contacts, orgId }: CreateQuoteButtonProps) {
+export function CreateQuoteButton({ packages, addOns, contacts, events, orgId }: CreateQuoteButtonProps) {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
     contact_id: "",
+    event_id: "",
     package_id: "",
     guest_count: "75",
     add_ons: [] as string[],
   });
+
+  const contactEvents = events.filter(e => e.contact_id === form.contact_id);
 
   const selectedPackage = packages.find(p => p.id === form.package_id);
   
@@ -89,6 +102,7 @@ export function CreateQuoteButton({ packages, addOns, contacts, orgId }: CreateQ
       
       await createQuote(orgId, {
         contact_id: form.contact_id,
+        event_id: form.event_id || undefined,
         package_id: form.package_id || undefined,
         guest_count: parseInt(form.guest_count),
         add_ons: addOnsObject,
@@ -100,6 +114,7 @@ export function CreateQuoteButton({ packages, addOns, contacts, orgId }: CreateQ
       setOpen(false);
       setForm({
         contact_id: "",
+        event_id: "",
         package_id: "",
         guest_count: "75",
         add_ons: [],
@@ -140,7 +155,7 @@ export function CreateQuoteButton({ packages, addOns, contacts, orgId }: CreateQ
                 <label className="label">Contact *</label>
                 <Select
                   value={form.contact_id}
-                  onValueChange={(value) => setForm({ ...form, contact_id: value })}
+                  onValueChange={(value) => setForm({ ...form, contact_id: value, event_id: "" })}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select contact" />
@@ -151,6 +166,32 @@ export function CreateQuoteButton({ packages, addOns, contacts, orgId }: CreateQ
                         {contact.name}
                       </SelectItem>
                     ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div>
+                <label className="label">Event (optional)</label>
+                <Select
+                  value={form.event_id}
+                  onValueChange={(value) => setForm({ ...form, event_id: value })}
+                  disabled={!form.contact_id}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder={form.contact_id ? "Select event" : "Select a contact first"} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {contactEvents.length === 0 ? (
+                      <div className="px-3 py-2 text-sm text-warm-sand">
+                        {form.contact_id ? "No events for this contact yet" : "Select a contact to see its events"}
+                      </div>
+                    ) : (
+                      contactEvents.map((event) => (
+                        <SelectItem key={event.id} value={event.id}>
+                          {event.name} - {new Date(event.date).toLocaleDateString()}
+                        </SelectItem>
+                      ))
+                    )}
                   </SelectContent>
                 </Select>
               </div>

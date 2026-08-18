@@ -11,7 +11,8 @@ export async function getQuotes(orgId: string) {
     .select(`
       *,
       contact:contacts(name, email),
-      package:packages(name)
+      package:packages(name),
+      event:events(id, name, date)
     `)
     .eq("org_id", orgId)
     .order("created_at", { ascending: false });

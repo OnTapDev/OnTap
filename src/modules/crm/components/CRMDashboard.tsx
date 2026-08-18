@@ -9,7 +9,7 @@ import {
 import {
   Users, DollarSign, Clock, Plus, Search, Mail, MoreHorizontal,
   MessageSquare, Phone, Calendar, X, ArrowUpRight, Trash2, Edit3,
-  MapPin, Send, ChevronRight, FileText, User, Tag, Loader2
+  MapPin, Send, ChevronRight, FileText, User, Tag, Loader2, Receipt
 } from "lucide-react";
 import Link from "next/link";
 import { MiniLineChart } from "@/ui/components/MiniLineChart";
@@ -66,10 +66,47 @@ type Message = {
   contact: { name: string; email: string | null; phone: string | null } | null;
 };
 
+type Quote = {
+  id: string;
+  contact_id: string;
+  event_id: string | null;
+  package_id: string | null;
+  guest_count: number;
+  subtotal: number;
+  tax: number;
+  total: number;
+  status: string;
+  created_at: string;
+  contact: { name: string; email: string } | null;
+  package: { name: string } | null;
+  event: { id: string; name: string; date: string } | null;
+};
+
+type Invoice = {
+  id: string;
+  event_id: string;
+  quote_id: string | null;
+  amount: number;
+  deposit_amount: number | null;
+  balance_due: number;
+  status: string;
+  due_date: string | null;
+  created_at: string;
+  event: {
+    name: string;
+    date: string;
+    venue_name: string | null;
+    contact_id: string;
+    contact: { id: string; name: string; email: string | null } | null;
+  } | null;
+};
+
 interface CRMDashboardProps {
   contacts: Contact[];
   stages: Stage[];
   events: Event[];
+  quotes: Quote[];
+  invoices: Invoice[];
   messages: Message[];
   initialView?: "overview" | "pipeline" | "contacts" | "messages";
   pipelineKpis?: PipelineKPIs;
@@ -92,8 +129,18 @@ const EVENT_STATUS_BADGE: Record<string, "warning" | "default" | "success" | "se
   booked: "success", deposit_paid: "success", completed: "success", cancelled: "destructive",
 };
 
+const QUOTE_STATUS_BADGE: Record<string, "warning" | "default" | "success" | "secondary" | "destructive"> = {
+  draft: "secondary", sent: "default", accepted: "success",
+  rejected: "destructive", expired: "secondary",
+};
+
+const INVOICE_STATUS_BADGE: Record<string, "warning" | "default" | "success" | "secondary" | "destructive"> = {
+  draft: "secondary", sent: "default", paid: "success",
+  partial: "warning", overdue: "destructive", cancelled: "secondary",
+};
+
 export function CRMDashboard({
-  contacts, stages, events, messages, initialView = "overview",
+  contacts, stages, events, quotes, invoices, messages, initialView = "overview",
   pipelineKpis, orgId
 }: CRMDashboardProps) {
   const router = useRouter();
@@ -407,6 +454,12 @@ export function CRMDashboard({
 
   const contactEvents = (contactId: string) =>
     events.filter(e => e.contact_id === contactId);
+
+  const contactQuotes = (contactId: string) =>
+    quotes.filter(q => q.contact_id === contactId);
+
+  const contactInvoices = (contactId: string) =>
+    invoices.filter(i => i.event?.contact_id === contactId);
 
   const contactMessages = (contactId: string) =>
     messages.filter(m => m.contact_id === contactId);
@@ -1252,6 +1305,69 @@ export function CRMDashboard({
                     </div>
                   ) : (
                     <p className="text-sm text-warm-sand">No events associated with this contact</p>
+                  )}
+                </div>
+
+                <div>
+                  <p className="text-xs text-warm-sand font-medium uppercase tracking-wider mb-3">Quotes</p>
+                  {contactQuotes(selectedContact.id).length > 0 ? (
+                    <div className="space-y-2">
+                      {contactQuotes(selectedContact.id).map((q) => (
+                        <div key={q.id} className="flex items-center justify-between p-3 bg-warm-sand/5 rounded-lg border border-warm-sand/10">
+                          <div className="min-w-0">
+                            <p className="text-sm font-medium text-warm-white">#{q.id.slice(0, 8)}{q.event ? ` - ${q.event.name}` : ""}</p>
+                            <div className="flex items-center gap-2 mt-1 text-xs text-warm-sand">
+                              <FileText className="w-3 h-3" aria-hidden="true" />
+                              <span>{q.guest_count} guests</span>
+                              {q.event && (
+                                <>
+                                  <span>|</span>
+                                  <Calendar className="w-3 h-3" aria-hidden="true" />
+                                  <span>{formatDate(q.event.date)}</span>
+                                </>
+                              )}
+                            </div>
+                          </div>
+                          <div className="text-right shrink-0 ml-2">
+                            <Badge variant={QUOTE_STATUS_BADGE[q.status] || "secondary"} className="text-[10px]">{q.status}</Badge>
+                            <p className="text-xs text-olive-gold font-medium mt-1">{formatCurrency(q.total)}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-sm text-warm-sand">No quotes for this contact</p>
+                  )}
+                </div>
+
+                <div>
+                  <p className="text-xs text-warm-sand font-medium uppercase tracking-wider mb-3">Invoices</p>
+                  {contactInvoices(selectedContact.id).length > 0 ? (
+                    <div className="space-y-2">
+                      {contactInvoices(selectedContact.id).map((inv) => (
+                        <div key={inv.id} className="flex items-center justify-between p-3 bg-warm-sand/5 rounded-lg border border-warm-sand/10">
+                          <div className="min-w-0">
+                            <p className="text-sm font-medium text-warm-white">#{inv.id.slice(0, 8)}{inv.event ? ` - ${inv.event.name}` : ""}</p>
+                            <div className="flex items-center gap-2 mt-1 text-xs text-warm-sand">
+                              <Receipt className="w-3 h-3" aria-hidden="true" />
+                              <span>Due {inv.due_date ? formatDate(inv.due_date) : "N/A"}</span>
+                              {inv.balance_due > 0 && (
+                                <>
+                                  <span>|</span>
+                                  <span>Balance {formatCurrency(inv.balance_due)}</span>
+                                </>
+                              )}
+                            </div>
+                          </div>
+                          <div className="text-right shrink-0 ml-2">
+                            <Badge variant={INVOICE_STATUS_BADGE[inv.status] || "secondary"} className="text-[10px]">{inv.status}</Badge>
+                            <p className="text-xs text-olive-gold font-medium mt-1">{formatCurrency(inv.amount)}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-sm text-warm-sand">No invoices for this contact</p>
                   )}
                 </div>
 

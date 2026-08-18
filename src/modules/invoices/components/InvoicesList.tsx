@@ -10,6 +10,7 @@ import Link from "next/link";
 type Invoice = {
   id: string;
   event_id: string;
+  quote_id: string | null;
   amount: number;
   deposit_amount: number | null;
   balance_due: number;
@@ -17,7 +18,13 @@ type Invoice = {
   due_date: string | null;
   paid_at: string | null;
   created_at: string;
-  event: { name: string; date: string; venue_name: string | null } | null;
+  event: {
+    name: string;
+    date: string;
+    venue_name: string | null;
+    contact_id: string;
+    contact: { id: string; name: string; email: string | null } | null;
+  } | null;
 };
 
 interface InvoicesListProps {
@@ -346,7 +353,7 @@ export function InvoicesList({ invoices }: InvoicesListProps) {
                     <div>
                       <p className="text-warm-white">{invoice.event?.name || "Unknown"}</p>
                       <p className="text-sm text-warm-sand">
-                        {invoice.event?.venue_name || new Date(invoice.event?.date || "").toLocaleDateString()}
+                        {invoice.event?.contact?.name || invoice.event?.venue_name || new Date(invoice.event?.date || "").toLocaleDateString()}
                       </p>
                     </div>
                   </td>

@@ -1,6 +1,7 @@
 import { getEvents } from "@/modules/events/actions/events";
 import { getContacts } from "@/modules/crm/actions/contacts";
-import { getPackages } from "@/modules/quotes/actions/quotes";
+import { getPackages, getQuotes } from "@/modules/quotes/actions/quotes";
+import { getInvoices } from "@/modules/invoices/actions/invoices";
 import { EventsList } from "@/modules/events/components/EventsList";
 import { BookingModal } from "@/modules/events/components/BookingModal";
 import { CopyBookingLink } from "@/modules/events/components/CopyBookingLink";
@@ -21,10 +22,12 @@ export default async function EventsPage() {
     .eq("id", orgId)
     .single();
 
-  const [events, contacts, packages] = await Promise.all([
+  const [events, contacts, packages, quotes, invoices] = await Promise.all([
     getEvents(orgId),
     getContacts(orgId),
     getPackages(orgId),
+    getQuotes(orgId),
+    getInvoices(orgId),
   ]);
 
   return (
@@ -41,7 +44,7 @@ export default async function EventsPage() {
         </div>
       </div>
 
-      <EventsList events={events} orgId={orgId} />
+      <EventsList events={events} quotes={quotes} invoices={invoices} orgId={orgId} />
     </div>
   );
 }
