@@ -742,7 +742,33 @@ export function ProfileClient({
           </div>
         </div>
 
-        <div className="mt-6">{addOnsCard}</div>
+        <div className="mt-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Add-Ons</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {addOns.length === 0 ? (
+                <p className="text-warm-sand text-sm">No add-ons created yet</p>
+              ) : (
+                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                  {addOns.map(addOn => (
+                    <div key={addOn.id} className="p-4 bg-warm-sand/5 rounded-lg border border-warm-sand/20">
+                      <h4 className="text-warm-white font-medium">{addOn.name}</h4>
+                      <p className="text-olive-gold font-bold text-lg">${addOn.price}</p>
+                      {addOn.description && <p className="text-warm-sand text-sm mt-1">{addOn.description}</p>}
+                      <div className="flex items-center gap-2 text-xs mt-2">
+                        <span className={`px-2 py-0.5 rounded ${addOn.is_active ? "bg-green-500/20 text-green-400" : "bg-gray-500/20 text-gray-400"}`}>
+                          {addOn.is_active ? "Active" : "Inactive"}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </div>
         </>
       )}
 
