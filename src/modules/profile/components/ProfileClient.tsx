@@ -5,7 +5,7 @@ import { Button, Input, Card, CardHeader, CardTitle, CardContent, Textarea } fro
 import {
   Save, Upload, Globe, Instagram, Facebook, Twitter, MapPin, Clock, DollarSign, FileText, X, AlertTriangle,
   Shield, CheckCircle2, Circle, Plus, Package, Store, Gavel, Building2, ChevronDown,
-  Box, Wine, Utensils, Sparkles, Edit3, Trash2, Phone, Mail, Info, ShieldCheck
+  Box, Wine, Utensils, Sparkles, Edit3, Trash2, Phone, Mail, Info, ShieldCheck, Download
 } from "lucide-react";
 import { updateOrganization, createPackage, updatePackage, deletePackage, createAddOn, updateAddOn, deleteAddOn } from "@/modules/settings/actions/settings";
 import { uploadLogo } from "@/core/storage/upload";
@@ -1270,7 +1270,16 @@ export function ProfileClient({
             <CardTitle>Gallery</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-warm-sand text-sm mb-4">Showcase your events, drinks, menus, and more.</p>
+            <p className="text-warm-sand text-sm mb-2">Showcase your events, drinks, menus, and more.</p>
+            <div className="bg-warm-sand/5 border border-warm-sand/20 rounded-xl p-4 mb-4">
+              <p className="text-warm-sand text-xs leading-relaxed">
+                <Info className="w-3.5 h-3.5 text-olive-gold inline mr-1.5 align-[-2px]" />
+                OnTap is a service that helps you store and organize your photos and files — we are not responsible for
+                keeping records your business is legally required to hold. You are responsible for maintaining your own
+                copies and records as required by law. We recommend downloading important files and keeping them backed up
+                outside of OnTap.
+              </p>
+            </div>
             <div className="mb-6">
               <div className="flex gap-2 flex-wrap mb-4">
                 {mediaTypes.map(type => (
@@ -1333,6 +1342,8 @@ export function ProfileClient({
                         <span className={`px-2 py-1 bg-charcoal/80 text-xs rounded ${item.is_public ? "text-olive-gold" : "text-warm-sand"}`}>{item.is_public ? "Public" : "Private"}</span>
                       </div>
                       <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <a href={`${item.url}${item.url.includes("?") ? "&" : "?"}download=${encodeURIComponent(item.caption || "photo")}`}
+                          className="p-1 bg-charcoal/80 text-warm-white rounded text-xs" title="Download"><Download className="w-3 h-3" /></a>
                         <button onClick={async () => { try { await updateGalleryItem(item.id, { is_featured: !item.is_featured }); } catch (err) { console.error(err); } }}
                           className={`p-1 rounded text-xs ${item.is_featured ? "bg-olive-gold text-charcoal" : "bg-charcoal/80 text-warm-white"}`}>★</button>
                         <button onClick={async () => { try { await updateGalleryItem(item.id, { is_public: !item.is_public }); } catch (err) { console.error(err); } }}
@@ -1355,7 +1366,16 @@ export function ProfileClient({
             <CardTitle>Business Documents</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-warm-sand text-sm mb-4">Upload important documents like insurance, licenses, and permits.</p>
+            <p className="text-warm-sand text-sm mb-2">Upload important documents like insurance, licenses, and permits.</p>
+            <div className="bg-warm-sand/5 border border-warm-sand/20 rounded-xl p-4 mb-4">
+              <p className="text-warm-sand text-xs leading-relaxed">
+                <Info className="w-3.5 h-3.5 text-olive-gold inline mr-1.5 align-[-2px]" />
+                OnTap is a service that helps you store and organize your files — we are not responsible for keeping records
+                your business is legally required to hold, and we cannot replace official records, licenses, or permits issued
+                by government agencies. You are responsible for maintaining your own copies and records as required by law.
+                We recommend downloading important documents and keeping them backed up outside of OnTap.
+              </p>
+            </div>
             {!showDocForm ? (
               <Button onClick={() => setShowDocForm(true)} className="flex items-center gap-2 mb-6"><Upload className="w-4 h-4" /> Upload Document</Button>
             ) : (
@@ -1402,6 +1422,8 @@ export function ProfileClient({
                     </div>
                     <div className="flex items-center gap-2">
                       <a href={doc.file_url} target="_blank" rel="noopener noreferrer" className="p-2 text-warm-sand hover:text-warm-white">View</a>
+                      <a href={`${doc.file_url}${doc.file_url.includes("?") ? "&" : "?"}download=${encodeURIComponent(doc.name || "document")}`}
+                        className="p-2 text-warm-sand hover:text-warm-white flex items-center gap-1"><Download className="w-3.5 h-3.5" /> Download</a>
                       <button onClick={() => handleDeleteDocument(doc.id)} className="p-2 text-warm-sand hover:text-red-400"><X className="w-4 h-4" /></button>
                     </div>
                   </div>
