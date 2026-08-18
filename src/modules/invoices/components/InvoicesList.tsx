@@ -2,7 +2,10 @@
 
 import { useState } from "react";
 import { FileText, DollarSign, Check, Clock, AlertCircle, Download, CreditCard, Link as LinkIcon, CheckCheck } from "lucide-react";
-import { getInvoiceForDownload } from "@/modules/invoices/actions/invoices";
+import { getInvoiceForDownload, deleteInvoice } from "@/modules/invoices/actions/invoices";
+import { RowActionsMenu } from "@/ui/components/RowActionsMenu";
+import { ConfirmDialog } from "@/ui/components/ConfirmDialog";
+import { EditInvoiceModal } from "@/modules/invoices/components/EditInvoiceModal";
 import { MiniLineChart } from "@/ui/components/MiniLineChart";
 import { Card, CardContent } from "@/ui/primitives";
 import Link from "next/link";
@@ -45,6 +48,24 @@ export function InvoicesList({ invoices }: InvoicesListProps) {
   const [downloading, setDownloading] = useState<string | null>(null);
   const [paying, setPaying] = useState<string | null>(null);
   const [copied, setCopied] = useState<string | null>(null);
+  const [editingInvoice, setEditingInvoice] = useState<Invoice | null>(null);
+  const [deletingInvoice, setDeletingInvoice] = useState<Invoice | null>(null);
+  const [deleting, setDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState("");
+
+  const handleDelete = async () => {
+    if (!deletingInvoice) return;
+    setDeleting(true);
+    setDeleteError("");
+    try {
+      await deleteInvoice(deletingInvoice.id);
+      setDeletingInvoice(null);
+    } catch (err) {
+      setDeleteError(err instanceof Error ? err.message : "Failed to delete invoice");
+    } finally {
+      setDeleting(false);
+    }
+  };
 
   const copyInvoiceLink = async (id: string) => {
     const link = `${window.location.origin}/public/invoice/${id}`;
@@ -422,6 +443,10 @@ export function InvoicesList({ invoices }: InvoicesListProps) {
                           <LinkIcon className="w-4 h-4" />
                         )}
                       </button>
+                      <RowActionsMenu
+                        onEdit={() => setEditingInvoice(invoice)}
+                        onDelete={() => setDeletingInvoice(invoice)}
+                      />
                     </div>
                   </td>
                 </tr>
@@ -430,6 +455,29 @@ export function InvoicesList({ invoices }: InvoicesListProps) {
           </tbody>
         </table>
       </div>
+
+      {editingInvoice && (
+        <EditInvoiceModal
+          invoice={editingInvoice}
+          onClose={() => setEditingInvoice(null)}
+        />
+      )}
+
+      {deletingInvoice && (
+        <ConfirmDialog
+          title="Delete Invoice"
+          message={`Are you sure you want to delete invoice #${deletingInvoice.id.slice(0, 8)}? This cannot be undone.`}
+          loading={deleting}
+          onConfirm={handleDelete}
+          onClose={() => setDeletingInvoice(null)}
+        />
+      )}
+
+      {deleteError && (
+        <div className="mt-4 p-3 bg-red-500/20 border border-red-500/30 rounded-lg">
+          <p className="text-red-400 text-sm">{deleteError}</p>
+        </div>
+      )}
     </div>
   );
 }

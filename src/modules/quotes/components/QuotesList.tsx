@@ -1,7 +1,38 @@
 "use client";
 
 import { useState } from "react";
-import { FileText, MoreHorizontal, Check, X, Clock, Link as LinkIcon, CheckCheck } from "lucide-react";
+import { FileText, Check, X, Clock, Link as LinkIcon, CheckCheck } from "lucide-react";
+import { RowActionsMenu } from "@/ui/components/RowActionsMenu";
+import { ConfirmDialog } from "@/ui/components/ConfirmDialog";
+import { EditQuoteModal } from "@/modules/quotes/components/EditQuoteModal";
+import { deleteQuote } from "@/modules/quotes/actions/quotes";
+
+type Contact = {
+  id: string;
+  name: string;
+};
+
+type Package = {
+  id: string;
+  name: string;
+  base_price: number;
+  pricing_type: "per_guest" | "flat" | "hourly";
+};
+
+type AddOn = {
+  id: string;
+  name: string;
+  description: string | null;
+  price: number;
+  is_active: boolean;
+};
+
+type Event = {
+  id: string;
+  contact_id: string;
+  name: string;
+  date: string;
+};
 
 type Quote = {
   id: string;
@@ -23,6 +54,10 @@ type Quote = {
 
 interface QuotesListProps {
   quotes: Quote[];
+  packages: Package[];
+  addOns: AddOn[];
+  contacts: Contact[];
+  events: Event[];
 }
 
 const statusConfig: Record<string, { bg: string; text: string; icon: React.ReactNode }> = {
@@ -33,9 +68,27 @@ const statusConfig: Record<string, { bg: string; text: string; icon: React.React
   expired: { bg: "bg-gray-500/20", text: "text-gray-400", icon: <Clock className="w-3 h-3" /> },
 };
 
-export function QuotesList({ quotes }: QuotesListProps) {
+export function QuotesList({ quotes, packages, addOns, contacts, events }: QuotesListProps) {
   const [filter, setFilter] = useState<string>("all");
   const [copied, setCopied] = useState<string | null>(null);
+  const [editingQuote, setEditingQuote] = useState<Quote | null>(null);
+  const [deletingQuote, setDeletingQuote] = useState<Quote | null>(null);
+  const [deleting, setDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState("");
+
+  const handleDelete = async () => {
+    if (!deletingQuote) return;
+    setDeleting(true);
+    setDeleteError("");
+    try {
+      await deleteQuote(deletingQuote.id);
+      setDeletingQuote(null);
+    } catch (err) {
+      setDeleteError(err instanceof Error ? err.message : "Failed to delete quote");
+    } finally {
+      setDeleting(false);
+    }
+  };
 
   const copyQuoteLink = async (id: string) => {
     const link = `${window.location.origin}/public/quote/${id}`;
@@ -167,9 +220,10 @@ export function QuotesList({ quotes }: QuotesListProps) {
                           <LinkIcon className="w-4 h-4" />
                         )}
                       </button>
-                      <button className="p-2 text-warm-sand hover:text-warm-white">
-                        <MoreHorizontal className="w-4 h-4" />
-                      </button>
+                      <RowActionsMenu
+                        onEdit={() => setEditingQuote(quote)}
+                        onDelete={() => setDeletingQuote(quote)}
+                      />
                     </div>
                   </td>
                 </tr>
@@ -178,6 +232,33 @@ export function QuotesList({ quotes }: QuotesListProps) {
           </tbody>
         </table>
       </div>
+
+      {editingQuote && (
+        <EditQuoteModal
+          quote={editingQuote}
+          packages={packages}
+          addOns={addOns}
+          contacts={contacts}
+          events={events}
+          onClose={() => setEditingQuote(null)}
+        />
+      )}
+
+      {deletingQuote && (
+        <ConfirmDialog
+          title="Delete Quote"
+          message={`Are you sure you want to delete quote #${deletingQuote.id.slice(0, 8)}? This cannot be undone.`}
+          loading={deleting}
+          onConfirm={handleDelete}
+          onClose={() => setDeletingQuote(null)}
+        />
+      )}
+
+      {deleteError && (
+        <div className="mt-4 p-3 bg-red-500/20 border border-red-500/30 rounded-lg">
+          <p className="text-red-400 text-sm">{deleteError}</p>
+        </div>
+      )}
     </div>
   );
 }
