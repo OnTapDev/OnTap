@@ -822,11 +822,23 @@ export function PublicProfileClient({ organization, packages, galleryItems, cred
               <span className="text-warm-white font-medium">Message via OnTap</span>
             </button>
             
-            <div className="flex items-center gap-3 p-4 rounded-lg border border-warm-sand/20 bg-charcoal">
-              <Phone className="w-6 h-6 text-olive-gold" />
-              <span className="text-warm-white">{organization.phone || "(555) 123-4567"}</span>
+            <div className="flex flex-col items-start gap-2 p-4 rounded-lg border border-warm-sand/20 bg-charcoal">
+              <div className="flex items-center gap-3">
+                <Phone className="w-6 h-6 text-olive-gold" />
+                <span className="text-warm-white">{organization.phone || "(555) 123-4567"}</span>
+              </div>
+              {organization.phone && (
+                <div className="flex gap-2 pl-9">
+                  <a href={`tel:${organization.phone.replace(/[^+\d]/g, "")}`} className="text-sm px-3 py-1.5 rounded-lg bg-olive-gold/20 text-olive-gold hover:bg-olive-gold/30 transition-colors">
+                    Call
+                  </a>
+                  <a href={`sms:${organization.phone.replace(/[^+\d]/g, "")}`} className="text-sm px-3 py-1.5 rounded-lg bg-olive-gold/20 text-olive-gold hover:bg-olive-gold/30 transition-colors">
+                    Text
+                  </a>
+                </div>
+              )}
             </div>
-            
+
             <button 
               onClick={() => setShowEmailPopup(true)}
               className="flex items-center gap-3 p-4 rounded-lg border border-warm-sand/20 bg-charcoal hover:border-olive-gold transition-colors"
