@@ -505,6 +505,62 @@ export function ProfileClient({
     </button>
   );
 
+  const addOnsCard = (
+    <Card>
+      <CardHeader className="flex flex-row items-center justify-between">
+        <CardTitle>Add-Ons</CardTitle>
+        <Button onClick={() => setShowAddOnForm(true)} variant="secondary" className="text-sm">+ Add Add-On</Button>
+      </CardHeader>
+      <CardContent>
+        {addOns.length === 0 ? (
+          <div className="text-center py-8"><p className="text-warm-sand mb-4">No add-ons created yet</p><p className="text-warm-sand text-sm">Create add-ons to offer optional extras on quotes and bookings</p></div>
+        ) : (
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {addOns.map(addOn => (
+              <div key={addOn.id} className="p-4 bg-warm-sand/5 rounded-lg border border-warm-sand/20">
+                <div className="flex items-start justify-between mb-3">
+                  <div>
+                    <h4 className="text-warm-white font-medium">{addOn.name}</h4>
+                    <p className="text-olive-gold font-bold text-lg">${addOn.price}</p>
+                  </div>
+                  <div className="flex gap-1">
+                    <button onClick={() => startEditAddOn(addOn)} className="p-1.5 text-warm-sand hover:text-warm-white">Edit</button>
+                    <button onClick={() => handleDeleteAddOn(addOn.id)} className="p-1.5 text-warm-sand hover:text-red-400">Delete</button>
+                  </div>
+                </div>
+                {addOn.description && <p className="text-warm-sand text-sm mb-3">{addOn.description}</p>}
+                <div className="flex items-center gap-2 text-xs">
+                  <span className={`px-2 py-0.5 rounded ${addOn.is_active ? "bg-green-500/20 text-green-400" : "bg-gray-500/20 text-gray-400"}`}>
+                    {addOn.is_active ? "Active" : "Inactive"}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {(showAddOnForm || editingAddOn) && (
+          <div className="mt-6 p-4 bg-warm-sand/5 rounded-lg border border-warm-sand/20">
+            <h4 className="text-warm-white font-medium mb-4">{editingAddOn ? "Edit Add-On" : "Create New Add-On"}</h4>
+            <div className="grid gap-4 md:grid-cols-2">
+              <div><label className="label">Add-On Name *</label><Input value={addOnForm.name} onChange={e => setAddOnForm({ ...addOnForm, name: e.target.value })} placeholder="Signature Cocktails" /></div>
+              <div><label className="label">Price *</label><Input value={addOnForm.price} onChange={e => setAddOnForm({ ...addOnForm, price: e.target.value })} placeholder="150" type="number" /></div>
+              <div className="md:col-span-2"><label className="label">Description</label><Textarea value={addOnForm.description} onChange={e => setAddOnForm({ ...addOnForm, description: e.target.value })} placeholder="What's included..." rows={2} /></div>
+              <div className="md:col-span-2 flex items-center gap-2">
+                <input type="checkbox" checked={addOnForm.is_active} onChange={e => setAddOnForm({ ...addOnForm, is_active: e.target.checked })} className="w-4 h-4 accent-olive-gold" />
+                <span className="text-warm-sand text-sm">Active (available on quotes/bookings)</span>
+              </div>
+            </div>
+            <div className="flex gap-2 mt-4">
+              <Button onClick={editingAddOn ? handleUpdateAddOn : handleCreateAddOn} disabled={saving}>{saving ? "Saving..." : editingAddOn ? "Update Add-On" : "Create Add-On"}</Button>
+              <Button variant="secondary" onClick={() => { setShowAddOnForm(false); setEditingAddOn(null); setAddOnForm({ name: "", description: "", price: "", is_active: true }); }}>Cancel</Button>
+            </div>
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  );
+
   return (
     <div>
       <div className="flex gap-2 mb-6 overflow-x-auto pb-2 border-b border-warm-sand/20">
@@ -512,7 +568,8 @@ export function ProfileClient({
       </div>
 
       {activeTab === "overview" && (
-        <div className="grid gap-6 lg:grid-cols-2">
+        <>
+          <div className="grid gap-6 lg:grid-cols-2">
           <Card>
             <CardHeader>
               <CardTitle>Public Profile Preview</CardTitle>
@@ -684,6 +741,9 @@ export function ProfileClient({
             </Card>
           </div>
         </div>
+
+        <div className="mt-6">{addOnsCard}</div>
+        </>
       )}
 
       {activeTab === "business" && (
@@ -935,59 +995,7 @@ export function ProfileClient({
             </CardContent>
           </Card>
 
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle>Add-Ons</CardTitle>
-              <Button onClick={() => setShowAddOnForm(true)} variant="secondary" className="text-sm">+ Add Add-On</Button>
-            </CardHeader>
-            <CardContent>
-              {addOns.length === 0 ? (
-                <div className="text-center py-8"><p className="text-warm-sand mb-4">No add-ons created yet</p><p className="text-warm-sand text-sm">Create add-ons to offer optional extras on quotes and bookings</p></div>
-              ) : (
-                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                  {addOns.map(addOn => (
-                    <div key={addOn.id} className="p-4 bg-warm-sand/5 rounded-lg border border-warm-sand/20">
-                      <div className="flex items-start justify-between mb-3">
-                        <div>
-                          <h4 className="text-warm-white font-medium">{addOn.name}</h4>
-                          <p className="text-olive-gold font-bold text-lg">${addOn.price}</p>
-                        </div>
-                        <div className="flex gap-1">
-                          <button onClick={() => startEditAddOn(addOn)} className="p-1.5 text-warm-sand hover:text-warm-white">Edit</button>
-                          <button onClick={() => handleDeleteAddOn(addOn.id)} className="p-1.5 text-warm-sand hover:text-red-400">Delete</button>
-                        </div>
-                      </div>
-                      {addOn.description && <p className="text-warm-sand text-sm mb-3">{addOn.description}</p>}
-                      <div className="flex items-center gap-2 text-xs">
-                        <span className={`px-2 py-0.5 rounded ${addOn.is_active ? "bg-green-500/20 text-green-400" : "bg-gray-500/20 text-gray-400"}`}>
-                          {addOn.is_active ? "Active" : "Inactive"}
-                        </span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {(showAddOnForm || editingAddOn) && (
-                <div className="mt-6 p-4 bg-warm-sand/5 rounded-lg border border-warm-sand/20">
-                  <h4 className="text-warm-white font-medium mb-4">{editingAddOn ? "Edit Add-On" : "Create New Add-On"}</h4>
-                  <div className="grid gap-4 md:grid-cols-2">
-                    <div><label className="label">Add-On Name *</label><Input value={addOnForm.name} onChange={e => setAddOnForm({ ...addOnForm, name: e.target.value })} placeholder="Signature Cocktails" /></div>
-                    <div><label className="label">Price *</label><Input value={addOnForm.price} onChange={e => setAddOnForm({ ...addOnForm, price: e.target.value })} placeholder="150" type="number" /></div>
-                    <div className="md:col-span-2"><label className="label">Description</label><Textarea value={addOnForm.description} onChange={e => setAddOnForm({ ...addOnForm, description: e.target.value })} placeholder="What's included..." rows={2} /></div>
-                    <div className="md:col-span-2 flex items-center gap-2">
-                      <input type="checkbox" checked={addOnForm.is_active} onChange={e => setAddOnForm({ ...addOnForm, is_active: e.target.checked })} className="w-4 h-4 accent-olive-gold" />
-                      <span className="text-warm-sand text-sm">Active (available on quotes/bookings)</span>
-                    </div>
-                  </div>
-                  <div className="flex gap-2 mt-4">
-                    <Button onClick={editingAddOn ? handleUpdateAddOn : handleCreateAddOn} disabled={saving}>{saving ? "Saving..." : editingAddOn ? "Update Add-On" : "Create Add-On"}</Button>
-                    <Button variant="secondary" onClick={() => { setShowAddOnForm(false); setEditingAddOn(null); setAddOnForm({ name: "", description: "", price: "", is_active: true }); }}>Cancel</Button>
-                  </div>
-                </div>
-              )}
-            </CardContent>
-          </Card>
+          {addOnsCard}
         </div>
       )}
 
