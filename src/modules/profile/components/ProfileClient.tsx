@@ -174,7 +174,7 @@ export function ProfileClient({
   });
 
   const [pkgForm, setPkgForm] = useState({
-    name: "", description: "", base_price: "", pricing_type: "per_hour",
+    name: "", description: "", base_price: "", pricing_type: "hourly",
     min_guests: "", max_guests: "", includes_bartenders: "1", includes_glassware: true,
   });
 
@@ -316,7 +316,7 @@ export function ProfileClient({
         includes_bartenders: parseInt(pkgForm.includes_bartenders), includes_glassware: pkgForm.includes_glassware,
       });
       setShowPackageForm(false);
-      setPkgForm({ name: "", description: "", base_price: "", pricing_type: "per_hour", min_guests: "", max_guests: "", includes_bartenders: "1", includes_glassware: true });
+      setPkgForm({ name: "", description: "", base_price: "", pricing_type: "hourly", min_guests: "", max_guests: "", includes_bartenders: "1", includes_glassware: true });
       alert("Package created!");
     } catch (error) {
       console.error("Error creating package:", error);
@@ -336,7 +336,7 @@ export function ProfileClient({
         includes_bartenders: parseInt(pkgForm.includes_bartenders), includes_glassware: pkgForm.includes_glassware,
       });
       setEditingPackage(null);
-      setPkgForm({ name: "", description: "", base_price: "", pricing_type: "per_hour", min_guests: "", max_guests: "", includes_bartenders: "1", includes_glassware: true });
+      setPkgForm({ name: "", description: "", base_price: "", pricing_type: "hourly", min_guests: "", max_guests: "", includes_bartenders: "1", includes_glassware: true });
       alert("Package updated!");
     } catch (error) {
       console.error("Error updating package:", error);
@@ -886,7 +886,7 @@ export function ProfileClient({
                       <div className="flex items-start justify-between mb-3">
                         <div>
                           <h4 className="text-warm-white font-medium">{pkg.name}</h4>
-                          <p className="text-olive-gold font-bold text-lg">${pkg.base_price}<span className="text-warm-sand text-sm font-normal">{pkg.pricing_type === "per_hour" ? "/hr" : pkg.pricing_type === "per_person" ? "/person" : ""}</span></p>
+                          <p className="text-olive-gold font-bold text-lg">${pkg.base_price}<span className="text-warm-sand text-sm font-normal">{pkg.pricing_type === "hourly" ? "/hr" : pkg.pricing_type === "per_guest" ? "/guest" : ""}</span></p>
                         </div>
                         <div className="flex gap-1">
                           <button onClick={() => startEditPackage(pkg)} className="p-1.5 text-warm-sand hover:text-warm-white">Edit</button>
@@ -914,7 +914,7 @@ export function ProfileClient({
                     <div><label className="label">Pricing Type</label>
                       <select value={pkgForm.pricing_type} onChange={e => setPkgForm({ ...pkgForm, pricing_type: e.target.value })}
                         className="w-full px-3 py-2 bg-charcoal border border-warm-sand/30 rounded-lg text-warm-white">
-                        <option value="per_hour">Per Hour</option><option value="per_person">Per Person</option><option value="flat">Flat Rate</option>
+                        <option value="hourly">Per Hour</option><option value="per_guest">Per Guest</option><option value="flat">Flat Rate</option>
                       </select>
                     </div>
                     <div><label className="label">Bartenders</label><Input value={pkgForm.includes_bartenders} onChange={e => setPkgForm({ ...pkgForm, includes_bartenders: e.target.value })} placeholder="1" type="number" /></div>
@@ -928,7 +928,7 @@ export function ProfileClient({
                   </div>
                   <div className="flex gap-2 mt-4">
                     <Button onClick={editingPackage ? handleUpdatePackage : handleCreatePackage} disabled={saving}>{saving ? "Saving..." : editingPackage ? "Update Package" : "Create Package"}</Button>
-                    <Button variant="secondary" onClick={() => { setShowPackageForm(false); setEditingPackage(null); setPkgForm({ name: "", description: "", base_price: "", pricing_type: "per_hour", min_guests: "", max_guests: "", includes_bartenders: "1", includes_glassware: true }); }}>Cancel</Button>
+                    <Button variant="secondary" onClick={() => { setShowPackageForm(false); setEditingPackage(null); setPkgForm({ name: "", description: "", base_price: "", pricing_type: "hourly", min_guests: "", max_guests: "", includes_bartenders: "1", includes_glassware: true }); }}>Cancel</Button>
                   </div>
                 </div>
               )}
