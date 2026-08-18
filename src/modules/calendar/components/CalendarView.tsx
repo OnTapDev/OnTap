@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, type ElementType } from "react";
 import "react-day-picker/dist/style.css";
-import { ChevronLeft, ChevronRight, Calendar, Clock, Users, DollarSign, MapPin } from "lucide-react";
+import { ChevronLeft, ChevronRight, Calendar, Clock, Users, DollarSign, MapPin, Heart, Building2, Cake, PartyPopper, Music, Store, Sparkles } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/ui/primitives";
 
 type Event = {
@@ -27,6 +27,16 @@ const VIEWS = [
   { id: "week", label: "Week" },
   { id: "list", label: "List" },
 ] as const;
+
+const EVENT_TYPE_ICONS: Record<string, ElementType> = {
+  wedding: Heart,
+  corporate: Building2,
+  birthday: Cake,
+  private_party: PartyPopper,
+  festival: Music,
+  popup: Store,
+  other: Sparkles,
+};
 
 export function CalendarView({ events }: CalendarViewProps) {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
@@ -83,6 +93,21 @@ export function CalendarView({ events }: CalendarViewProps) {
     };
     return colors[status] || "bg-warm-sand/20 border-warm-sand text-warm-sand";
   };
+
+  const getChipColor = (status: string) => {
+    const colors: Record<string, string> = {
+      new_inquiry: "bg-warm-sand/10 text-warm-sand",
+      quoted: "bg-olive-gold/15 text-olive-gold",
+      tentative: "bg-yellow-500/10 text-yellow-400",
+      booked: "bg-olive-gold/15 text-olive-gold",
+      deposit_paid: "bg-green-500/10 text-green-400",
+      completed: "bg-gray-500/10 text-gray-400",
+      cancelled: "bg-red-500/10 text-red-400",
+    };
+    return colors[status] || "bg-warm-sand/10 text-warm-sand";
+  };
+
+  const getEventTypeIcon = (type: string): ElementType => EVENT_TYPE_ICONS[type] || Sparkles;
 
   const getMonthDays = (date: Date) => {
     const year = date.getFullYear();
@@ -250,7 +275,8 @@ export function CalendarView({ events }: CalendarViewProps) {
                       onClick={() => handleDateSelect(day)}
                       disabled={isPast && !hasEvent}
                       className={`
-                        aspect-square rounded-lg flex flex-col items-center justify-start pt-1 text-sm transition-all relative
+                        rounded-lg flex flex-col items-center justify-start pt-1 text-sm transition-all relative overflow-hidden
+                        ${view === "week" ? "aspect-square" : "min-h-[80px]"}
                         ${isSelected 
                           ? "bg-olive-gold text-charcoal font-semibold" 
                           : isToday 
@@ -262,15 +288,22 @@ export function CalendarView({ events }: CalendarViewProps) {
                       `}
                     >
                       <span className={view === "week" ? "text-xs" : ""}>{day.getDate()}</span>
-                      {view === "week" && dayEvents.length > 0 && (
+                      {dayEvents.length > 0 && (
                         <div className="w-full px-1 mt-1 space-y-1">
-                          {dayEvents.slice(0, 2).map((evt) => (
-                            <div key={evt.id} className="text-xs truncate text-warm-sand bg-warm-sand/10 px-1 rounded">
-                              {evt.name}
-                            </div>
-                          ))}
+                          {dayEvents.slice(0, 2).map((evt) => {
+                            const TypeIcon = getEventTypeIcon(evt.type);
+                            const chipColor = isSelected ? "bg-charcoal/20 text-charcoal" : getChipColor(evt.status);
+                            return (
+                              <div key={evt.id} className={`flex items-center gap-1 rounded px-1 py-0.5 text-[10px] font-medium truncate ${chipColor}`} title={evt.name}>
+                                <TypeIcon className="w-3 h-3 shrink-0" />
+                                <span className="truncate">{evt.name}</span>
+                              </div>
+                            );
+                          })}
                           {dayEvents.length > 2 && (
-                            <div className="text-xs text-warm-sand">+{dayEvents.length - 2} more</div>
+                            <div className={`text-[10px] px-1 ${isSelected ? "text-charcoal/80" : "text-warm-sand"}`}>
+                              +{dayEvents.length - 2} more
+                            </div>
                           )}
                         </div>
                       )}
