@@ -27,7 +27,7 @@ export default async function InvoicesPage() {
         <CreateInvoiceButton events={events} quotes={quotes} orgId={orgId} />
       </div>
 
-      <InvoicesList invoices={invoices} />
+      <InvoicesList invoices={invoices} orgId={orgId} />
     </div>
   );
 }

@@ -5,7 +5,7 @@ import { FileText, DollarSign, Check, Clock, AlertCircle, Download, CreditCard, 
 import { getInvoiceForDownload, deleteInvoice } from "@/modules/invoices/actions/invoices";
 import { RowActionsMenu } from "@/ui/components/RowActionsMenu";
 import { ConfirmDialog } from "@/ui/components/ConfirmDialog";
-import { EditInvoiceModal } from "@/modules/invoices/components/EditInvoiceModal";
+import { InvoiceFormModal } from "@/modules/invoices/components/InvoiceFormModal";
 import { MiniLineChart } from "@/ui/components/MiniLineChart";
 import { Card, CardContent } from "@/ui/primitives";
 import Link from "next/link";
@@ -32,6 +32,7 @@ type Invoice = {
 
 interface InvoicesListProps {
   invoices: Invoice[];
+  orgId: string;
 }
 
 const statusConfig: Record<string, { bg: string; text: string; icon: React.ReactNode }> = {
@@ -43,7 +44,7 @@ const statusConfig: Record<string, { bg: string; text: string; icon: React.React
   cancelled: { bg: "bg-gray-500/20", text: "text-gray-400", icon: <FileText className="w-3 h-3" /> },
 };
 
-export function InvoicesList({ invoices }: InvoicesListProps) {
+export function InvoicesList({ invoices, orgId }: InvoicesListProps) {
   const [filter, setFilter] = useState<string>("all");
   const [downloading, setDownloading] = useState<string | null>(null);
   const [paying, setPaying] = useState<string | null>(null);
@@ -457,8 +458,9 @@ export function InvoicesList({ invoices }: InvoicesListProps) {
       </div>
 
       {editingInvoice && (
-        <EditInvoiceModal
+        <InvoiceFormModal
           invoice={editingInvoice}
+          orgId={orgId}
           onClose={() => setEditingInvoice(null)}
         />
       )}

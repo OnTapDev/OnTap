@@ -5,10 +5,15 @@ import { Card, CardContent } from "@/ui/primitives";
 import { MiniLineChart } from "@/ui/components/MiniLineChart";
 import {
   DollarSign, FileText, Plus, Download, CheckCircle, XCircle, Send, ArrowUpRight, Clock, AlertCircle,
-  Receipt, TrendingUp, CreditCard
+  Receipt, TrendingUp, CreditCard, Link as LinkIcon, CheckCheck
 } from "lucide-react";
 import Link from "next/link";
-import { getInvoiceForDownload } from "@/modules/invoices/actions/invoices";
+import { getInvoiceForDownload, deleteInvoice } from "@/modules/invoices/actions/invoices";
+import { deleteQuote } from "@/modules/quotes/actions/quotes";
+import { QuoteFormModal } from "@/modules/quotes/components/QuoteFormModal";
+import { InvoiceFormModal } from "@/modules/invoices/components/InvoiceFormModal";
+import { RowActionsMenu } from "@/ui/components/RowActionsMenu";
+import { ConfirmDialog } from "@/ui/components/ConfirmDialog";
 
 type Invoice = {
   id: string;
@@ -40,8 +45,30 @@ type Quote = {
   package: { name: string } | null;
 };
 
-type Event = { id: string; name: string };
-type Package = { id: string; name: string; price: number };
+type Event = {
+  id: string;
+  contact_id: string;
+  name: string;
+  date: string;
+  total_price: number;
+  contact: { id: string; name: string; email: string | null } | null;
+};
+
+type Package = {
+  id: string;
+  name: string;
+  base_price: number;
+  pricing_type: "per_guest" | "flat" | "hourly";
+};
+
+type AddOn = {
+  id: string;
+  name: string;
+  description: string | null;
+  price: number;
+  is_active: boolean;
+};
+
 type Contact = { id: string; name: string; email: string };
 
 interface BillingClientProps {
@@ -49,8 +76,10 @@ interface BillingClientProps {
   quotes: Quote[];
   events: Event[];
   packages: Package[];
+  addOns: AddOn[];
   contacts: Contact[];
   kpis: Record<string, { value: number; change: string; chartData: number[] }>;
+  orgId: string;
 }
 
 const TABS = [
@@ -65,12 +94,47 @@ const kpiConfig = [
   { slug: "overdue-count", label: "Overdue", icon: AlertCircle, href: "/billing/kpi/overdue-count", format: (v: number) => `${v} invoices` },
 ];
 
-export function BillingClient({ invoices, quotes, kpis }: BillingClientProps) {
+export function BillingClient({ invoices, quotes, events, packages, addOns, contacts, kpis, orgId }: BillingClientProps) {
   const [tab, setTab] = useState<"invoices" | "quotes">("invoices");
   const [invoiceFilter, setInvoiceFilter] = useState<string>("all");
   const [quoteFilter, setQuoteFilter] = useState<string>("all");
   const [downloading, setDownloading] = useState<string | null>(null);
   const [paying, setPaying] = useState<string | null>(null);
+  const [copied, setCopied] = useState<string | null>(null);
+  const [creatingQuote, setCreatingQuote] = useState(false);
+  const [creatingInvoice, setCreatingInvoice] = useState(false);
+  const [editingQuote, setEditingQuote] = useState<Quote | null>(null);
+  const [editingInvoice, setEditingInvoice] = useState<Invoice | null>(null);
+  const [deletingQuote, setDeletingQuote] = useState<Quote | null>(null);
+  const [deletingInvoice, setDeletingInvoice] = useState<Invoice | null>(null);
+  const [deleting, setDeleting] = useState(false);
+  const [actionError, setActionError] = useState("");
+
+  const handleDelete = async () => {
+    setDeleting(true);
+    setActionError("");
+    try {
+      if (deletingQuote) {
+        await deleteQuote(deletingQuote.id);
+        setDeletingQuote(null);
+      }
+      if (deletingInvoice) {
+        await deleteInvoice(deletingInvoice.id);
+        setDeletingInvoice(null);
+      }
+    } catch (err) {
+      setActionError(err instanceof Error ? err.message : "Failed to delete");
+    } finally {
+      setDeleting(false);
+    }
+  };
+
+  const copyQuoteLink = async (id: string) => {
+    const link = `${window.location.origin}/public/quote/${id}`;
+    await navigator.clipboard.writeText(link);
+    setCopied(id);
+    setTimeout(() => setCopied(null), 2000);
+  };
 
   const invoiceStatusCounts = {
     draft: invoices.filter(i => i.status === "draft").length,
@@ -183,16 +247,20 @@ export function BillingClient({ invoices, quotes, kpis }: BillingClientProps) {
       </div>
 
       <div className="flex flex-wrap gap-3">
-        {[
-          { name: "New Invoice", icon: Plus, href: "/invoices" },
-          { name: "New Quote", icon: FileText, href: "/quotes" },
-        ].map(action => (
-          <Link key={action.name} href={action.href}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-lg border border-warm-sand/20 hover:border-warm-sand/40 transition-colors bg-charcoal">
-            <div className="p-1.5 rounded-lg bg-olive-gold/20 text-olive-gold"><action.icon className="w-4 h-4" /></div>
-            <span className="text-sm text-warm-white font-medium">{action.name}</span>
-          </Link>
-        ))}
+        <button
+          onClick={() => { setActionError(""); setCreatingInvoice(true); }}
+          className="flex items-center gap-2 px-4 py-2.5 rounded-lg border border-warm-sand/20 hover:border-warm-sand/40 transition-colors bg-charcoal"
+        >
+          <div className="p-1.5 rounded-lg bg-olive-gold/20 text-olive-gold"><Plus className="w-4 h-4" /></div>
+          <span className="text-sm text-warm-white font-medium">New Invoice</span>
+        </button>
+        <button
+          onClick={() => { setActionError(""); setCreatingQuote(true); }}
+          className="flex items-center gap-2 px-4 py-2.5 rounded-lg border border-warm-sand/20 hover:border-warm-sand/40 transition-colors bg-charcoal"
+        >
+          <div className="p-1.5 rounded-lg bg-olive-gold/20 text-olive-gold"><FileText className="w-4 h-4" /></div>
+          <span className="text-sm text-warm-white font-medium">New Quote</span>
+        </button>
       </div>
 
       <div className="bg-charcoal border border-warm-sand/20 rounded-xl p-6">
@@ -261,8 +329,8 @@ export function BillingClient({ invoices, quotes, kpis }: BillingClientProps) {
             ))}
           </div>
           <Card className="bg-charcoal border-warm-sand/20">
-            <CardContent className="p-0">
-              <table className="w-full">
+            <CardContent className="p-0 overflow-x-auto">
+              <table className="w-full min-w-[760px]">
                 <thead>
                   <tr className="border-b border-warm-sand/20">
                     <th className="text-left p-4 text-sm font-medium text-warm-sand">Invoice</th>
@@ -316,6 +384,10 @@ export function BillingClient({ invoices, quotes, kpis }: BillingClientProps) {
                             className="p-1.5 text-warm-sand hover:text-warm-white" title="Download Invoice">
                             <Download className="w-4 h-4" />
                           </button>
+                          <RowActionsMenu
+                            onEdit={() => { setActionError(""); setEditingInvoice(invoice); }}
+                            onDelete={() => { setActionError(""); setDeletingInvoice(invoice); }}
+                          />
                         </div>
                       </td>
                     </tr>
@@ -338,8 +410,8 @@ export function BillingClient({ invoices, quotes, kpis }: BillingClientProps) {
             ))}
           </div>
           <Card className="bg-charcoal border-warm-sand/20">
-            <CardContent className="p-0">
-              <table className="w-full">
+            <CardContent className="p-0 overflow-x-auto">
+              <table className="w-full min-w-[760px]">
                 <thead>
                   <tr className="border-b border-warm-sand/20">
                     <th className="text-left p-4 text-sm font-medium text-warm-sand">Client</th>
@@ -348,11 +420,12 @@ export function BillingClient({ invoices, quotes, kpis }: BillingClientProps) {
                     <th className="text-left p-4 text-sm font-medium text-warm-sand">Total</th>
                     <th className="text-left p-4 text-sm font-medium text-warm-sand">Status</th>
                     <th className="text-left p-4 text-sm font-medium text-warm-sand">Created</th>
+                    <th className="w-24"></th>
                   </tr>
                 </thead>
                 <tbody>
                   {filteredQuotes.length === 0 ? (
-                    <tr><td colSpan={6} className="p-8 text-center text-warm-sand">No quotes found. Create a quote to get started.</td></tr>
+                    <tr><td colSpan={7} className="p-8 text-center text-warm-sand">No quotes found. Create a quote to get started.</td></tr>
                   ) : filteredQuotes.map(quote => (
                     <tr key={quote.id} className="border-b border-warm-sand/10 hover:bg-warm-sand/5">
                       <td className="p-4">
@@ -375,6 +448,25 @@ export function BillingClient({ invoices, quotes, kpis }: BillingClientProps) {
                         </span>
                       </td>
                       <td className="p-4 text-warm-sand text-sm">{formatDate(quote.created_at)}</td>
+                      <td className="p-4">
+                        <div className="flex items-center gap-1">
+                          <button
+                            onClick={() => copyQuoteLink(quote.id)}
+                            className="p-1.5 text-warm-sand hover:text-olive-gold"
+                            title="Copy shareable link"
+                          >
+                            {copied === quote.id ? (
+                              <CheckCheck className="w-4 h-4 text-olive-gold" />
+                            ) : (
+                              <LinkIcon className="w-4 h-4" />
+                            )}
+                          </button>
+                          <RowActionsMenu
+                            onEdit={() => { setActionError(""); setEditingQuote(quote); }}
+                            onDelete={() => { setActionError(""); setDeletingQuote(quote); }}
+                          />
+                        </div>
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -382,6 +474,62 @@ export function BillingClient({ invoices, quotes, kpis }: BillingClientProps) {
             </CardContent>
           </Card>
         </>
+      )}
+
+      {creatingInvoice && (
+        <InvoiceFormModal
+          events={events}
+          quotes={quotes}
+          orgId={orgId}
+          onClose={() => setCreatingInvoice(false)}
+        />
+      )}
+
+      {creatingQuote && (
+        <QuoteFormModal
+          packages={packages}
+          addOns={addOns}
+          contacts={contacts}
+          events={events}
+          orgId={orgId}
+          onClose={() => setCreatingQuote(false)}
+        />
+      )}
+
+      {editingInvoice && (
+        <InvoiceFormModal
+          invoice={editingInvoice}
+          orgId={orgId}
+          onClose={() => setEditingInvoice(null)}
+        />
+      )}
+
+      {editingQuote && (
+        <QuoteFormModal
+          quote={editingQuote}
+          packages={packages}
+          addOns={addOns}
+          contacts={contacts}
+          events={events}
+          orgId={orgId}
+          onClose={() => setEditingQuote(null)}
+        />
+      )}
+
+      {(deletingQuote || deletingInvoice) && (
+        <ConfirmDialog
+          title={deletingQuote ? "Delete Quote" : "Delete Invoice"}
+          message={`Are you sure you want to delete this ${deletingQuote ? "quote" : "invoice"}? This cannot be undone.`}
+          loading={deleting}
+          onConfirm={handleDelete}
+          onClose={() => { setDeletingQuote(null); setDeletingInvoice(null); }}
+        />
+      )}
+
+      {actionError && (
+        <div className="p-3 bg-red-500/20 border border-red-500/30 rounded-lg">
+          <p className="text-red-400 text-sm">{actionError}</p>
+        </div>
       )}
     </div>
   );

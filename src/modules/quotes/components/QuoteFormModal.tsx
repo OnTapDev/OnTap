@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { Button, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/ui/primitives";
-import { updateQuote } from "@/modules/quotes/actions/quotes";
+import { createQuote, updateQuote } from "@/modules/quotes/actions/quotes";
 
 type Contact = {
   id: string;
@@ -45,12 +45,13 @@ type Quote = {
   expires_at: string | null;
 };
 
-interface EditQuoteModalProps {
-  quote: Quote;
+interface QuoteFormModalProps {
+  quote?: Quote | null;
   packages: Package[];
   addOns: AddOn[];
   contacts: Contact[];
   events: Event[];
+  orgId: string;
   onClose: () => void;
 }
 
@@ -58,24 +59,25 @@ const TAX_RATE = 0.0875;
 
 const quoteStatuses = ["draft", "sent", "accepted", "rejected", "expired"];
 
-export function EditQuoteModal({ quote, packages, addOns, contacts, events, onClose }: EditQuoteModalProps) {
+export function QuoteFormModal({ quote, packages, addOns, contacts, events, orgId, onClose }: QuoteFormModalProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [form, setForm] = useState({
-    contact_id: quote.contact_id,
-    event_id: quote.event_id || "",
-    package_id: quote.package_id || "",
-    guest_count: String(quote.guest_count),
-    add_ons: Object.keys(quote.add_ons || {}),
-    status: quote.status,
-    expires_at: quote.expires_at ? quote.expires_at.slice(0, 10) : "",
+    contact_id: quote?.contact_id || "",
+    event_id: quote?.event_id || "",
+    package_id: quote?.package_id || "",
+    guest_count: quote ? String(quote.guest_count) : "75",
+    add_ons: Object.keys(quote?.add_ons || {}),
+    status: quote?.status || "draft",
+    expires_at: quote?.expires_at ? quote.expires_at.slice(0, 10) : "",
   });
 
+  const isEdit = !!quote;
   const contactEvents = events.filter(e => e.contact_id === form.contact_id);
   const selectedPackage = packages.find(p => p.id === form.package_id);
 
   const pricing = useMemo(() => {
-    if (!selectedPackage) return { subtotal: quote.subtotal, tax: quote.tax, total: quote.total };
+    if (!selectedPackage) return { subtotal: quote?.subtotal || 0, tax: quote?.tax || 0, total: quote?.total || 0 };
 
     const guests = parseInt(form.guest_count) || 0;
     let packagePrice = 0;
@@ -98,7 +100,7 @@ export function EditQuoteModal({ quote, packages, addOns, contacts, events, onCl
     const total = subtotal + tax;
 
     return { subtotal, tax, total };
-  }, [selectedPackage, form.guest_count, form.add_ons, addOns, quote.subtotal, quote.tax, quote.total]);
+  }, [selectedPackage, form.guest_count, form.add_ons, addOns, quote]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -112,7 +114,7 @@ export function EditQuoteModal({ quote, packages, addOns, contacts, events, onCl
         return acc;
       }, {} as Record<string, number>);
 
-      await updateQuote(quote.id, {
+      const payload = {
         contact_id: form.contact_id,
         event_id: form.event_id || undefined,
         package_id: form.package_id || undefined,
@@ -123,10 +125,16 @@ export function EditQuoteModal({ quote, packages, addOns, contacts, events, onCl
         total: pricing.total,
         status: form.status,
         expires_at: form.expires_at || undefined,
-      });
+      };
+
+      if (isEdit) {
+        await updateQuote(quote.id, payload);
+      } else {
+        await createQuote(orgId, payload);
+      }
       onClose();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to update quote");
+      setError(err instanceof Error ? err.message : isEdit ? "Failed to update quote" : "Failed to create quote");
     } finally {
       setLoading(false);
     }
@@ -145,7 +153,7 @@ export function EditQuoteModal({ quote, packages, addOns, contacts, events, onCl
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="absolute inset-0 bg-black/60" onClick={onClose} />
       <div className="relative bg-charcoal border border-warm-sand/20 rounded-xl p-6 w-full max-w-lg mx-4 max-h-[90vh] overflow-y-auto">
-        <h2 className="text-xl font-bold text-warm-white mb-6">Edit Quote</h2>
+        <h2 className="text-xl font-bold text-warm-white mb-6">{isEdit ? "Edit Quote" : "Create Quote"}</h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
@@ -292,7 +300,7 @@ export function EditQuoteModal({ quote, packages, addOns, contacts, events, onCl
               Cancel
             </Button>
             <Button type="submit" disabled={loading || !form.contact_id} className="flex-1">
-              {loading ? "Saving..." : "Save Changes"}
+              {loading ? "Saving..." : isEdit ? "Save Changes" : "Create Quote"}
             </Button>
           </div>
         </form>

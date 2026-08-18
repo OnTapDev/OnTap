@@ -4,7 +4,7 @@ import { useState } from "react";
 import { FileText, Check, X, Clock, Link as LinkIcon, CheckCheck } from "lucide-react";
 import { RowActionsMenu } from "@/ui/components/RowActionsMenu";
 import { ConfirmDialog } from "@/ui/components/ConfirmDialog";
-import { EditQuoteModal } from "@/modules/quotes/components/EditQuoteModal";
+import { QuoteFormModal } from "@/modules/quotes/components/QuoteFormModal";
 import { deleteQuote } from "@/modules/quotes/actions/quotes";
 
 type Contact = {
@@ -58,6 +58,7 @@ interface QuotesListProps {
   addOns: AddOn[];
   contacts: Contact[];
   events: Event[];
+  orgId: string;
 }
 
 const statusConfig: Record<string, { bg: string; text: string; icon: React.ReactNode }> = {
@@ -68,7 +69,7 @@ const statusConfig: Record<string, { bg: string; text: string; icon: React.React
   expired: { bg: "bg-gray-500/20", text: "text-gray-400", icon: <Clock className="w-3 h-3" /> },
 };
 
-export function QuotesList({ quotes, packages, addOns, contacts, events }: QuotesListProps) {
+export function QuotesList({ quotes, packages, addOns, contacts, events, orgId }: QuotesListProps) {
   const [filter, setFilter] = useState<string>("all");
   const [copied, setCopied] = useState<string | null>(null);
   const [editingQuote, setEditingQuote] = useState<Quote | null>(null);
@@ -234,12 +235,13 @@ export function QuotesList({ quotes, packages, addOns, contacts, events }: Quote
       </div>
 
       {editingQuote && (
-        <EditQuoteModal
+        <QuoteFormModal
           quote={editingQuote}
           packages={packages}
           addOns={addOns}
           contacts={contacts}
           events={events}
+          orgId={orgId}
           onClose={() => setEditingQuote(null)}
         />
       )}

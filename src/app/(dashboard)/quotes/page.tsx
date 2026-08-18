@@ -30,7 +30,7 @@ export default async function QuotesPage() {
         <CreateQuoteButton packages={packages} addOns={addOns} contacts={contacts} events={events} orgId={orgId} />
       </div>
 
-      <QuotesList quotes={quotes} packages={packages} addOns={addOns} contacts={contacts} events={events} />
+      <QuotesList quotes={quotes} packages={packages} addOns={addOns} contacts={contacts} events={events} orgId={orgId} />
     </div>
   );
 }

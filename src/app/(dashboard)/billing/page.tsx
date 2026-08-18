@@ -2,6 +2,7 @@ import { getInvoices } from "@/modules/invoices/actions/invoices";
 import { getQuotes, getPackages } from "@/modules/quotes/actions/quotes";
 import { getEvents } from "@/modules/events/actions/events";
 import { getContacts } from "@/modules/crm/actions/contacts";
+import { getAddOns } from "@/modules/settings/actions/settings";
 import { getBillingKPIs } from "@/modules/billing/actions/billing";
 import { BillingClient } from "@/modules/billing/components/BillingClient";
 import { getUserOrgId } from "@/lib/auth";
@@ -12,12 +13,13 @@ export default async function BillingPage() {
     return <div>Loading...</div>;
   }
 
-  const [invoices, quotes, packages, events, contacts, kpis] = await Promise.all([
+  const [invoices, quotes, packages, events, contacts, addOns, kpis] = await Promise.all([
     getInvoices(orgId),
     getQuotes(orgId),
     getPackages(orgId),
     getEvents(orgId),
     getContacts(orgId),
+    getAddOns(orgId),
     getBillingKPIs(orgId),
   ]);
 
@@ -33,7 +35,9 @@ export default async function BillingPage() {
         packages={packages}
         events={events}
         contacts={contacts}
+        addOns={addOns}
         kpis={kpis}
+        orgId={orgId}
       />
     </div>
   );
