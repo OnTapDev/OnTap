@@ -1025,7 +1025,7 @@ export function ProfileClient({
             </p>
             <p className="text-warm-sand text-sm mt-2">
               <ShieldCheck className="w-4 h-4 text-olive-gold inline mr-2 align-[-2px]" />
-              Items you check off appear as verified credentials on your public profile, so venues and corporate clients know you're covered before they schedule you.
+              Items you check off appear as verified credentials on your public profile, so venues and corporate clients know you&apos;re covered before they schedule you.
             </p>
           </div>
           <div className="grid gap-6 md:grid-cols-3">
