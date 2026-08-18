@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { Check, ChevronLeft, ChevronRight, CheckCircle } from "lucide-react";
-import { publicBookEvent } from "@/lib/public";
+import { submitPublicBooking } from "@/modules/booking/actions/booking";
 
 type Package = {
   id: string;
@@ -163,7 +163,7 @@ export function PublicBookingForm({ orgId, orgSlug, orgName, packages }: PublicB
     setError("");
 
     try {
-      const result = await publicBookEvent(orgSlug, {
+      const result = await submitPublicBooking(orgSlug, {
         name,
         email,
         phone: phone || undefined,
