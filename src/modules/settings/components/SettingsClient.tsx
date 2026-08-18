@@ -116,7 +116,7 @@ function BookingTabContent({ orgId, orgSlug, bookingEnabled, packages }: {
   const [slugError, setSlugError] = useState("");
   const [slugSaving, setSlugSaving] = useState(false);
   const [slugSuccess, setSlugSuccess] = useState(false);
-  const [bookingOn, setBookingOn] = useState(bookingEnabled);
+  const [bookingOn] = useState(bookingEnabled);
   const [packageVisibilities, setPackageVisibilities] = useState<Record<string, boolean>>(
     Object.fromEntries(packages.map(p => [p.id, p.show_on_booking ?? true]))
   );
