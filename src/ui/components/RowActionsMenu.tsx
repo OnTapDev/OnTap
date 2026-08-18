@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useLayoutEffect, useEffect } from "react";
 import { MoreHorizontal, Pencil, Trash2 } from "lucide-react";
 
 interface RowActionsMenuProps {
@@ -12,17 +12,29 @@ export function RowActionsMenu({ onEdit, onDelete }: RowActionsMenuProps) {
   const [open, setOpen] = useState(false);
   const [pos, setPos] = useState({ top: 0, left: 0 });
   const buttonRef = useRef<HTMLButtonElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
 
-  const toggle = () => {
+  const itemCount = (onEdit ? 1 : 0) + (onDelete ? 1 : 0);
+
+  const toggle = () => setOpen(o => !o);
+
+  useLayoutEffect(() => {
+    if (!open) return;
     const rect = buttonRef.current?.getBoundingClientRect();
-    if (rect) {
-      setPos({
-        top: rect.bottom + 4,
-        left: Math.max(8, Math.min(rect.right - 160, window.innerWidth - 168)),
-      });
+    const menu = menuRef.current;
+    if (!rect) return;
+
+    const menuHeight = menu?.offsetHeight || itemCount * 44 + 4;
+    const menuWidth = menu?.offsetWidth || 160;
+
+    let top = rect.bottom + 4;
+    if (top + menuHeight > window.innerHeight - 8) {
+      top = Math.max(8, rect.top - menuHeight - 4);
     }
-    setOpen(o => !o);
-  };
+    const left = Math.max(8, Math.min(rect.right - menuWidth, window.innerWidth - menuWidth - 8));
+
+    setPos({ top, left });
+  }, [open, itemCount]);
 
   useEffect(() => {
     if (!open) return;
@@ -43,6 +55,7 @@ export function RowActionsMenu({ onEdit, onDelete }: RowActionsMenuProps) {
       </button>
       {open && (
         <div
+          ref={menuRef}
           className="fixed z-50 w-40 bg-charcoal border border-warm-sand/20 rounded-lg shadow-lg shadow-black/40 overflow-hidden"
           style={{ top: pos.top, left: pos.left }}
           onClick={(e) => e.stopPropagation()}
