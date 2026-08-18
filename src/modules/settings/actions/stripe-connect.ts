@@ -29,6 +29,7 @@ export async function createStripeConnectLink(orgId: string) {
         business_profile: {
           name: org.name || undefined,
           url: PLATFORM_APP_URL,
+          mcc: "5813",
         },
         capabilities: {
           card_payments: { requested: true },
@@ -61,7 +62,9 @@ export async function createStripeConnectLink(orgId: string) {
     return { url: link.url, status: "onboarding" as const };
   } catch (error) {
     console.error("Error creating Stripe Connect link:", error);
-    throw new Error("Failed to create Stripe Connect onboarding link");
+    const message =
+      error instanceof Error ? error.message : "Failed to create Stripe Connect onboarding link";
+    throw new Error(message);
   }
 }
 

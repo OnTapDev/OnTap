@@ -451,8 +451,9 @@ function StripeConnectButton({ orgId }: { orgId?: string }) {
       } else if (result.status === "complete") {
         window.location.reload();
       }
-    } catch {
-      alert("Failed to create Stripe Connect link. Please try again.");
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Failed to create Stripe Connect link. Please try again.";
+      alert(message);
     } finally {
       setLoading(false);
     }
