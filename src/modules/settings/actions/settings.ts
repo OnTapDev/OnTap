@@ -3,6 +3,26 @@
 import { createClient } from "@/core/db/server";
 import { revalidatePath } from "next/cache";
 import { uploadLogo, deleteLogo } from "@/core/storage/upload";
+import { currentUser, clerkClient } from "@clerk/nextjs/server";
+
+export async function updateUserName(firstName: string, lastName: string) {
+  const user = await currentUser();
+  if (!user) {
+    return { success: false, error: "Not authenticated" };
+  }
+
+  try {
+    const client = await clerkClient();
+    await client.users.updateUser(user.id, {
+      firstName: firstName || undefined,
+      lastName: lastName || undefined,
+    });
+    return { success: true };
+  } catch (err: any) {
+    console.error("Error updating user name:", err);
+    return { success: false, error: err?.message || "Failed to update name" };
+  }
+}
 
 export async function getOrganizations(orgId: string) {
   const supabase = await createClient();

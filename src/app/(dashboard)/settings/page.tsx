@@ -11,7 +11,9 @@ export default async function SettingsPage() {
   const user = await currentUser();
   const email = user?.emailAddresses?.[0]?.emailAddress || null;
   const emailVerified = user?.emailAddresses?.[0]?.verification?.status === "verified";
-  
+  const firstName = user?.firstName || null;
+  const lastName = user?.lastName || null;
+
   const preferences = await getUserPreferences();
   const tickets = await getUserTickets();
   const orgId = await getUserOrgId();
@@ -19,13 +21,15 @@ export default async function SettingsPage() {
 
   let subscriptionStatus: { status: string; periodEnd?: string; subscriberCount?: number } | undefined;
   let orgSlug: string | undefined;
+  let orgName: string | null = null;
+  let orgLogoUrl: string | null = null;
   let bookingEnabled = false;
   let packages: Awaited<ReturnType<typeof getPackages>> = [];
   if (orgId) {
     const supabase = await createClient();
     const { data: org } = await supabase
       .from("organizations")
-      .select("stripe_subscription_status, stripe_subscription_period_end, slug, booking_enabled")
+      .select("stripe_subscription_status, stripe_subscription_period_end, slug, booking_enabled, name, logo_url")
       .eq("id", orgId)
       .single();
     if (org) {
@@ -34,6 +38,8 @@ export default async function SettingsPage() {
         periodEnd: org.stripe_subscription_period_end || undefined,
       };
       orgSlug = org.slug;
+      orgName = org.name;
+      orgLogoUrl = org.logo_url;
       bookingEnabled = org.booking_enabled ?? false;
     }
 
@@ -52,11 +58,15 @@ export default async function SettingsPage() {
   return (
     <SettingsClient
       userEmail={email}
+      userFirstName={firstName}
+      userLastName={lastName}
       emailVerified={emailVerified}
       preferences={preferences}
       tickets={tickets}
       orgId={orgId || undefined}
       orgSlug={orgSlug}
+      orgName={orgName}
+      orgLogoUrl={orgLogoUrl}
       bookingEnabled={bookingEnabled}
       packages={packages}
       stripeConnectStatus={stripeStatus}
