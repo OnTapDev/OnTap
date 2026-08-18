@@ -54,6 +54,9 @@ export async function createEvent(orgId: string, event: {
   venue_name?: string;
   venue_address?: string;
   guest_count?: number;
+  total_price?: number;
+  deposit_amount?: number;
+  balance_due?: number;
   notes?: string;
 }) {
   const supabase = await createClient();

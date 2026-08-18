@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Calendar, CalendarOff } from "lucide-react";
+import { Button } from "@/ui/primitives";
 import { updateBookingEnabled } from "@/modules/settings/actions/settings";
 
 export function BookingToggle({ orgId, enabled: initialEnabled }: { orgId: string; enabled: boolean }) {
@@ -22,10 +23,11 @@ export function BookingToggle({ orgId, enabled: initialEnabled }: { orgId: strin
   };
 
   return (
-    <button
+    <Button
       onClick={handleToggle}
       disabled={toggling}
-      className={`flex items-center gap-2 px-3 py-2 rounded-lg border text-sm transition-colors ${
+      variant="secondary"
+      className={`${
         enabled
           ? "border-olive-gold bg-olive-gold/20 text-olive-gold hover:bg-olive-gold/30"
           : "border-warm-sand/20 text-warm-sand hover:text-warm-white hover:border-warm-sand/40"
@@ -34,6 +36,6 @@ export function BookingToggle({ orgId, enabled: initialEnabled }: { orgId: strin
     >
       {enabled ? <Calendar className="w-4 h-4" /> : <CalendarOff className="w-4 h-4" />}
       <span className="hidden sm:inline">{toggling ? "..." : enabled ? "Bookings On" : "Bookings Off"}</span>
-    </button>
+    </Button>
   );
 }

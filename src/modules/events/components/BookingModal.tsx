@@ -219,6 +219,7 @@ export function BookingModal({ contacts, packages, orgId }: BookingModalProps) {
         venue_name: venueName || undefined,
         venue_address: venueAddress || undefined,
         guest_count: actualGuestCount,
+        total_price: pricing.total || undefined,
         notes: notes || undefined,
       });
 

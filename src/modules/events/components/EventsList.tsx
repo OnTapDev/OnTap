@@ -69,6 +69,12 @@ const statusColors: Record<string, { bg: string; text: string }> = {
   cancelled: { bg: "bg-red-500/20", text: "text-red-400" },
 };
 
+const getEventTotal = (event: Event, quotes: Quote[]) => {
+  if (event.total_price != null && event.total_price > 0) return event.total_price;
+  const linkedQuote = quotes.find(q => q.event_id === event.id);
+  return linkedQuote?.total || 0;
+};
+
 const eventTypeLabels: Record<string, string> = {
   wedding: "Wedding",
   corporate: "Corporate Event",
@@ -206,7 +212,7 @@ export function EventsList({ events, quotes, invoices, orgId }: EventsListProps)
 
               <div className="flex items-center justify-between mt-4 pt-3 border-t border-warm-sand/10">
                 <span className="text-warm-white font-medium">
-                  ${event.total_price?.toLocaleString() || "0"}
+                  ${getEventTotal(event, quotes).toLocaleString()}
                 </span>
                 <button
                   onClick={(e) => { e.stopPropagation(); setSelectedEvent(event); }}
@@ -285,7 +291,7 @@ export function EventsList({ events, quotes, invoices, orgId }: EventsListProps)
                 </div>
                 <div className="bg-warm-sand/5 rounded-lg p-3">
                   <p className="text-xs text-warm-sand mb-1">Total Price</p>
-                  <p className="text-warm-white text-sm font-medium">${selectedEvent.total_price?.toLocaleString() || "0"}</p>
+                  <p className="text-warm-white text-sm font-medium">${getEventTotal(selectedEvent, quotes).toLocaleString()}</p>
                 </div>
               </div>
 

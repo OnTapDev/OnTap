@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Copy, Check, ExternalLink } from "lucide-react";
+import { Button } from "@/ui/primitives";
 
 export function CopyBookingLink({ slug }: { slug: string }) {
   const [copied, setCopied] = useState(false);
@@ -25,14 +26,15 @@ export function CopyBookingLink({ slug }: { slug: string }) {
 
   return (
     <div className="flex items-center gap-1">
-      <button
+      <Button
         onClick={handleCopy}
-        className="flex items-center gap-2 px-3 py-2 rounded-lg border border-warm-sand/20 text-sm text-warm-sand hover:text-warm-white hover:border-warm-sand/40 transition-colors"
+        variant="secondary"
+        className="border-warm-sand/20 text-warm-sand hover:text-warm-white hover:border-warm-sand/40"
         title="Copy booking link"
       >
         {copied ? <Check className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
         <span className="hidden sm:inline">{copied ? "Copied!" : "Booking Link"}</span>
-      </button>
+      </Button>
       <a
         href={bookingUrl}
         target="_blank"

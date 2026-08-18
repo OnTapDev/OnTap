@@ -117,6 +117,8 @@ export async function publicBookEvent(slug: string, data: {
         total,
         status: "draft",
       });
+
+      await supabase.from("events").update({ total_price: total }).eq("id", event.id);
     }
   }
 

@@ -74,6 +74,10 @@ export async function createQuote(orgId: string, quote: {
     throw new Error(error.message);
   }
 
+  if (quote.event_id && quote.total != null) {
+    await supabase.from("events").update({ total_price: quote.total }).eq("id", quote.event_id);
+  }
+
   revalidatePath("/quotes");
   revalidatePath("/billing");
   return data;
@@ -103,6 +107,10 @@ export async function updateQuote(id: string, quote: {
   if (error) {
     console.error("Error updating quote:", error);
     throw new Error(error.message);
+  }
+
+  if (quote.event_id && quote.total != null) {
+    await supabase.from("events").update({ total_price: quote.total }).eq("id", quote.event_id);
   }
 
   revalidatePath("/quotes");
