@@ -209,3 +209,52 @@ export async function getGalleryItemsBySlugPublic(orgSlug: string) {
 
   return data || [];
 }
+
+export type PublicCredentials = {
+  insurance: { liquorLiability: boolean; generalLiability: boolean; commercialAuto: boolean };
+  permits: { liquorLicense: boolean; cateringPermit: boolean; businessLicense: boolean };
+};
+
+export async function getCredentialsBySlugPublic(orgSlug: string): Promise<PublicCredentials> {
+  const supabase = createAdminClient();
+
+  const { data: organization } = await supabase
+    .from("organizations")
+    .select("id")
+    .eq("slug", orgSlug)
+    .single();
+
+  if (!organization) {
+    return emptyCredentials();
+  }
+
+  const { data, error } = await supabase
+    .from("user_setup_progress")
+    .select("*")
+    .eq("user_id", organization.id)
+    .single();
+
+  if (error || !data) {
+    return emptyCredentials();
+  }
+
+  return {
+    insurance: {
+      liquorLiability: data.insurance_liquor || false,
+      generalLiability: data.insurance_general || false,
+      commercialAuto: data.insurance_auto || false,
+    },
+    permits: {
+      liquorLicense: data.permits_liquor || false,
+      cateringPermit: data.permits_catering || false,
+      businessLicense: data.permits_license || false,
+    },
+  };
+}
+
+function emptyCredentials(): PublicCredentials {
+  return {
+    insurance: { liquorLiability: false, generalLiability: false, commercialAuto: false },
+    permits: { liquorLicense: false, cateringPermit: false, businessLicense: false },
+  };
+}

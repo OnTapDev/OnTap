@@ -5,7 +5,7 @@ import { Button, Input, Card, CardHeader, CardTitle, CardContent, Textarea } fro
 import {
   Save, Upload, Globe, Instagram, Facebook, Twitter, MapPin, Clock, DollarSign, FileText, X, AlertTriangle,
   Shield, CheckCircle2, Circle, Plus, Package, Store, Gavel, Building2, ChevronDown,
-  Box, Wine, Utensils, Sparkles, Edit3, Trash2, Phone, Mail, Info
+  Box, Wine, Utensils, Sparkles, Edit3, Trash2, Phone, Mail, Info, ShieldCheck
 } from "lucide-react";
 import { updateOrganization, createPackage, updatePackage, deletePackage, createAddOn, updateAddOn, deleteAddOn } from "@/modules/settings/actions/settings";
 import { uploadLogo } from "@/core/storage/upload";
@@ -646,6 +646,19 @@ export function ProfileClient({
                     <div key={addOn.id} className="flex items-center justify-between p-2 bg-warm-sand/5 rounded"><span className="text-warm-white text-sm">{addOn.name}</span><span className="text-olive-gold font-medium">${addOn.price}</span></div>
                   ))}</div></div>
                 )}
+                {(setupProgress.insurance.generalLiability || setupProgress.insurance.liquorLiability || setupProgress.insurance.commercialAuto || setupProgress.permits.liquorLicense || setupProgress.permits.cateringPermit || setupProgress.permits.businessLicense) && (
+                  <div>
+                    <h4 className="text-warm-sand text-sm font-medium mb-2">Credentials</h4>
+                    <div className="flex flex-wrap gap-1.5">
+                      {setupProgress.insurance.generalLiability && <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-olive-gold/15 border border-olive-gold/30 text-olive-gold text-xs"><ShieldCheck className="w-3 h-3" /> General Liability</span>}
+                      {setupProgress.insurance.liquorLiability && <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-olive-gold/15 border border-olive-gold/30 text-olive-gold text-xs"><ShieldCheck className="w-3 h-3" /> Liquor Liability</span>}
+                      {setupProgress.insurance.commercialAuto && <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-olive-gold/15 border border-olive-gold/30 text-olive-gold text-xs"><ShieldCheck className="w-3 h-3" /> Commercial Auto</span>}
+                      {setupProgress.permits.liquorLicense && <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-olive-gold/15 border border-olive-gold/30 text-olive-gold text-xs"><ShieldCheck className="w-3 h-3" /> Liquor License</span>}
+                      {setupProgress.permits.cateringPermit && <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-olive-gold/15 border border-olive-gold/30 text-olive-gold text-xs"><ShieldCheck className="w-3 h-3" /> Catering Permit</span>}
+                      {setupProgress.permits.businessLicense && <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-olive-gold/15 border border-olive-gold/30 text-olive-gold text-xs"><ShieldCheck className="w-3 h-3" /> Business License</span>}
+                    </div>
+                  </div>
+                )}
                 {galleryItems.filter(g => g.is_public).length > 0 && (
                   <div><h4 className="text-warm-sand text-sm font-medium mb-2">Gallery</h4><div className="grid grid-cols-3 gap-1">{galleryItems.filter(g => g.is_public).slice(0, 6).map(item => (
                     <div key={item.id} className="aspect-square rounded overflow-hidden bg-warm-sand/10"><img src={item.url} alt={item.caption || ""} className="w-full h-full object-cover" /></div>
@@ -1009,6 +1022,10 @@ export function ProfileClient({
               <Info className="w-4 h-4 text-olive-gold inline mr-2 align-[-2px]" />
               The providers and links below are suggestions only — we do not have partnerships or affiliate relationships with any of them.
               If you already have your own insurance, permits, or licenses, simply check the item off and continue setting up your profile.
+            </p>
+            <p className="text-warm-sand text-sm mt-2">
+              <ShieldCheck className="w-4 h-4 text-olive-gold inline mr-2 align-[-2px]" />
+              Items you check off appear as verified credentials on your public profile, so venues and corporate clients know you're covered before they schedule you.
             </p>
           </div>
           <div className="grid gap-6 md:grid-cols-3">

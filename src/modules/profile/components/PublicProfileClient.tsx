@@ -4,7 +4,7 @@ import { useState, useMemo } from "react";
 import Image from "next/image";
 import { Card, CardContent, Button } from "@/ui/primitives";
 import { submitInquiry } from "@/modules/profile/actions/inquiry";
-import { MapPin, Phone, Mail, Globe, Calendar, Clock, Check, GlassWater, Beer, Wine, Coffee, Send, MessageCircle, ChevronLeft, ChevronRight } from "lucide-react";
+import { MapPin, Phone, Mail, Globe, Calendar, Clock, Check, GlassWater, Beer, Wine, Coffee, Send, MessageCircle, ChevronLeft, ChevronRight, ShieldCheck } from "lucide-react";
 
 type Organization = {
   id: string;
@@ -262,13 +262,35 @@ type GalleryItem = {
   caption: string | null;
 };
 
+type Credentials = {
+  insurance: { liquorLiability: boolean; generalLiability: boolean; commercialAuto: boolean };
+  permits: { liquorLicense: boolean; cateringPermit: boolean; businessLicense: boolean };
+};
+
 interface PublicProfileClientProps {
   organization: Organization;
   packages: Package[];
   galleryItems: GalleryItem[];
+  credentials: Credentials;
 }
 
-export function PublicProfileClient({ organization, packages, galleryItems }: PublicProfileClientProps) {
+export function PublicProfileClient({ organization, packages, galleryItems, credentials }: PublicProfileClientProps) {
+  const { insurance, permits } = credentials;
+
+  const insuranceBadges: string[] = [];
+  if (insurance.generalLiability) insuranceBadges.push("General Liability Insured");
+  if (insurance.liquorLiability) insuranceBadges.push("Liquor Liability Insured");
+  if (insurance.commercialAuto) insuranceBadges.push("Commercial Auto Insured");
+
+  const permitBadges: string[] = [];
+  if (permits.liquorLicense) permitBadges.push("Liquor License");
+  if (permits.cateringPermit) permitBadges.push("Catering Permit");
+  if (permits.businessLicense) permitBadges.push("Business License");
+
+  const credentialBadges = [...insuranceBadges, ...permitBadges];
+  const hasCredentials = credentialBadges.length > 0;
+  const fullyInsured = insurance.liquorLiability && insurance.generalLiability;
+
   const [showBooking, setShowBooking] = useState(false);
   const [selectedPackage, setSelectedPackage] = useState<string | null>(null);
   const [showPackages, setShowPackages] = useState(true);
@@ -357,6 +379,26 @@ export function PublicProfileClient({ organization, packages, galleryItems }: Pu
           <h1 className="text-3xl font-bold text-warm-white mb-2">{organization.name}</h1>
           {organization.description && (
             <p className="text-warm-sand max-w-xl mx-auto">{organization.description}</p>
+          )}
+
+          {hasCredentials && (
+            <div className="mt-5">
+              {fullyInsured && (
+                <div className="flex items-center justify-center gap-2 mb-3">
+                  <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-500/15 border border-green-500/40 text-green-400 text-sm font-semibold">
+                    <ShieldCheck className="w-4 h-4" /> Fully Insured & Licensed
+                  </span>
+                </div>
+              )}
+              <div className="flex flex-wrap justify-center gap-2">
+                {credentialBadges.map(badge => (
+                  <span key={badge} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-olive-gold/15 border border-olive-gold/30 text-olive-gold text-xs font-medium">
+                    <Check className="w-3.5 h-3.5" /> {badge}
+                  </span>
+                ))}
+              </div>
+              <p className="text-xs text-warm-sand/70 mt-3">Verified by the operator. Always confirm current coverage directly with them.</p>
+            </div>
           )}
         </div>
 

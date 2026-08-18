@@ -1,4 +1,4 @@
-import { getOrganizationBySlugPublic, getPackagesBySlugPublic, getGalleryItemsBySlugPublic } from "@/lib/public";
+import { getOrganizationBySlugPublic, getPackagesBySlugPublic, getGalleryItemsBySlugPublic, getCredentialsBySlugPublic } from "@/lib/public";
 import { PublicProfileClient } from "@/modules/profile/components/PublicProfileClient";
 
 interface ProfilePageProps {
@@ -8,10 +8,11 @@ interface ProfilePageProps {
 export default async function PublicProfilePage({ params }: ProfilePageProps) {
   const { slug } = await params;
   
-  const [organization, packages, galleryItems] = await Promise.all([
+  const [organization, packages, galleryItems, credentials] = await Promise.all([
     getOrganizationBySlugPublic(slug),
     getPackagesBySlugPublic(slug),
     getGalleryItemsBySlugPublic(slug),
+    getCredentialsBySlugPublic(slug),
   ]);
 
   if (!organization) {
@@ -31,6 +32,7 @@ export default async function PublicProfilePage({ params }: ProfilePageProps) {
         organization={organization} 
         packages={packages || []}
         galleryItems={galleryItems || []}
+        credentials={credentials}
       />
     </div>
   );
