@@ -34,9 +34,9 @@ export default async function DashboardLayout({
   return (
     <div className="min-h-screen bg-charcoal">
       <Sidebar organization={organization} />
-      <div className="ml-[72px] transition-all duration-300">
+      <div className="lg:ml-[72px] transition-all duration-300">
         <Header />
-        <main className="p-6">{children}</main>
+        <main className="p-4 sm:p-6">{children}</main>
       </div>
     </div>
   );

@@ -6,7 +6,7 @@ import {
   Users, DollarSign, Calendar, ArrowUpRight, Mail, ChevronLeft, ChevronRight,
   Clock, MapPin, UserPlus, FileText, Package, AlertTriangle, CheckCircle2,
   BarChart3, FileSignature, Receipt, Settings, HelpCircle, User, Target,
-  Wine
+  Wine, Heart, Building2, Cake, PartyPopper, Music, Store, Sparkles
 } from "lucide-react";
 import { MiniLineChart } from "@/ui/components/MiniLineChart";
 import Link from "next/link";
@@ -108,6 +108,21 @@ const toolLinks = [
   { name: "Support", href: "/support", icon: HelpCircle, desc: "Get help" },
 ];
 
+const EVENT_TYPE_ICONS: Record<string, React.ElementType> = {
+  wedding: Heart,
+  corporate: Building2,
+  birthday: Cake,
+  private_party: PartyPopper,
+  festival: Music,
+  popup: Store,
+  other: Sparkles,
+};
+
+function EventTypeIcon({ evtType, className }: { evtType: string; className?: string }) {
+  const Icon = EVENT_TYPE_ICONS[evtType] || Sparkles;
+  return <Icon className={className} />;
+}
+
 const quickActions = [
   { name: "New Contact", href: "/crm", icon: UserPlus, color: "bg-olive-gold/20 text-olive-gold" },
   { name: "New Event", href: "/events", icon: Calendar, color: "bg-olive-gold/20 text-olive-gold" },
@@ -172,6 +187,19 @@ export function DashboardClient({
       cancelled: "bg-red-500/20 border-red-500 text-red-400",
     };
     return colors[status] || "bg-warm-sand/20 border-warm-sand text-warm-sand";
+  };
+
+  const getChipColor = (status: string) => {
+    const colors: Record<string, string> = {
+      new_inquiry: "bg-warm-sand/10 text-warm-sand",
+      quoted: "bg-olive-gold/15 text-olive-gold",
+      tentative: "bg-yellow-500/10 text-yellow-400",
+      booked: "bg-olive-gold/15 text-olive-gold",
+      deposit_paid: "bg-green-500/10 text-green-400",
+      completed: "bg-gray-500/10 text-gray-400",
+      cancelled: "bg-red-500/10 text-red-400",
+    };
+    return colors[status] || "bg-warm-sand/10 text-warm-sand";
   };
 
   const formatTime = (time: string | null) => {
@@ -483,8 +511,8 @@ export function DashboardClient({
 
       {view === "calendar" && (
         <div className="space-y-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-1 bg-charcoal rounded-lg p-1 border border-warm-sand/20">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="flex items-center gap-1 bg-charcoal rounded-lg p-1 border border-warm-sand/20 w-fit">
               {(["month", "week", "list"] as const).map(v => (
                 <button key={v} onClick={() => setCalendarView(v)}
                   className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
@@ -494,14 +522,14 @@ export function DashboardClient({
                 </button>
               ))}
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 w-fit">
               <button onClick={() => {
                 const d = new Date(currentMonth);
                 if (calendarView === "week") d.setDate(d.getDate() - 7);
                 else d.setMonth(d.getMonth() - 1);
                 setCurrentMonth(d); setSelectedDate(new Date(d));
               }} className="p-2 text-warm-sand hover:text-warm-white hover:bg-warm-sand/10 rounded-lg"><ChevronLeft className="w-5 h-5" /></button>
-              <span className="text-warm-white font-medium min-w-[180px] text-center">
+              <span className="text-warm-white font-medium min-w-[150px] sm:min-w-[180px] text-center text-sm sm:text-base">
                 {calendarView === "week" ? weekLabel : currentMonth.toLocaleDateString("en-US", { month: "long", year: "numeric" })}
               </span>
               <button onClick={() => {
@@ -552,9 +580,9 @@ export function DashboardClient({
                       <div key={day} className="text-center text-xs text-warm-sand font-medium py-2">{day}</div>
                     ))}
                   </div>
-                  <div className="grid grid-cols-7 gap-1">
+                  <div className="grid grid-cols-7 gap-0.5 sm:gap-1">
                     {(calendarView === "week" ? weekDays : monthDays).map((day, index) => {
-                      if (!day) return <div key={`e-${index}`} className="aspect-square" />;
+                      if (!day) return <div key={`e-${index}`} className={calendarView === "week" ? "aspect-square" : "h-[56px] sm:h-[80px]"} />;
                       const isToday = day.toDateString() === today.toDateString();
                       const isSelected = selectedDate && day.toDateString() === selectedDate.toDateString();
                       const hasEvent = eventDates.some(e => e.toDateString() === day.toDateString());
@@ -562,22 +590,28 @@ export function DashboardClient({
                       const dayEvents = calendarEvents.filter(e => new Date(e.date).toDateString() === day.toDateString());
                       return (
                         <button key={day.toISOString()} onClick={() => { setSelectedDate(day); setCurrentMonth(new Date(day)); }}
-                          className={`aspect-square rounded-lg flex flex-col items-center justify-start pt-1 text-sm transition-all relative
+                          className={`rounded-lg flex flex-col items-center justify-start pt-1 text-sm transition-all relative overflow-hidden
+                            ${calendarView === "week" ? "aspect-square" : "h-[56px] sm:h-[80px]"}
                             ${isSelected ? "bg-olive-gold text-charcoal font-semibold"
                               : isToday ? "border border-olive-gold text-olive-gold"
                                 : isPast ? "text-warm-sand/30 cursor-not-allowed"
                                   : "text-warm-white hover:bg-warm-sand/10"}`}>
-                          <span>{day.getDate()}</span>
-                          {calendarView === "week" && dayEvents.length > 0 && (
-                            <div className="w-full px-1 mt-1 space-y-1">
+                          <span className="text-xs sm:text-sm">{day.getDate()}</span>
+                          {dayEvents.length > 0 && (
+                            <div className="w-full px-0.5 sm:px-1 mt-0.5 sm:mt-1 space-y-0.5 sm:space-y-1">
                               {dayEvents.slice(0, 2).map(evt => (
-                                <div key={evt.id} className="text-xs truncate text-warm-sand bg-warm-sand/10 px-1 rounded">{evt.name}</div>
+                                <div key={evt.id} className={`flex items-center justify-center sm:justify-start gap-1 rounded px-0.5 sm:px-1 py-0.5 text-[9px] sm:text-[10px] font-medium truncate ${isSelected ? "bg-charcoal/20 text-charcoal" : getChipColor(evt.status)}`}>
+                                  <EventTypeIcon evtType={evt.type} className="w-3 h-3 shrink-0" />
+                                  <span className="truncate hidden sm:inline">{evt.name}</span>
+                                </div>
                               ))}
-                              {dayEvents.length > 2 && <div className="text-xs text-warm-sand">+{dayEvents.length - 2} more</div>}
+                              {dayEvents.length > 2 && (
+                                <div className={`text-[9px] sm:text-[10px] text-center sm:text-left ${isSelected ? "text-charcoal/80" : "text-warm-sand"}`}>+{dayEvents.length - 2}</div>
+                              )}
                             </div>
                           )}
                           {calendarView === "month" && hasEvent && !isSelected && (
-                            <div className="absolute bottom-1 w-1 h-1 rounded-full bg-olive-gold" />
+                            <div className="absolute bottom-0.5 sm:bottom-1 w-1 h-1 rounded-full bg-olive-gold" />
                           )}
                         </button>
                       );

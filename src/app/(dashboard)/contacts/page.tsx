@@ -16,7 +16,7 @@ export default async function ContactsPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
           <h1 className="text-screen-title text-warm-white">Contacts</h1>
           <p className="text-warm-sand mt-1">Manage your leads and clients</p>

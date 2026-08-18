@@ -62,8 +62,8 @@ export function ContactsList({ contacts, stages }: ContactsListProps) {
       </div>
 
       {viewMode === "list" ? (
-        <div className="bg-charcoal border border-warm-sand/20 rounded-xl overflow-hidden">
-          <table className="w-full">
+        <div className="bg-charcoal border border-warm-sand/20 rounded-xl overflow-x-auto">
+          <table className="w-full min-w-[640px]">
             <thead>
               <tr className="border-b border-warm-sand/20">
                 <th className="text-left p-4 text-sm font-medium text-warm-sand">Name</th>
