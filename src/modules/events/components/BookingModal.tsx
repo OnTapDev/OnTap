@@ -98,9 +98,9 @@ function DatePicker({ value, onChange }: { value: string; onChange: (date: strin
         onClick={() => onChange(`${year}-${String(month + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`)}
         className={`text-sm py-1.5 rounded-lg transition-colors ${
           selected
-            ? "bg-olive-gold text-charcoal font-bold"
+            ? "bg-warm-gold text-charcoal font-bold"
             : isToday
-              ? "text-olive-gold font-semibold hover:bg-olive-gold/20"
+              ? "text-warm-gold font-semibold hover:bg-warm-gold/20"
               : past
                 ? "text-warm-sand/20 cursor-not-allowed"
                 : "text-warm-white hover:bg-warm-sand/10"
@@ -271,7 +271,7 @@ export function BookingModal({ contacts, packages, orgId }: BookingModalProps) {
                   <div key={s.num} className="flex items-center">
                     <div className="flex items-center gap-2">
                       <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold shrink-0 transition-colors ${
-                        step > s.num ? "bg-olive-gold text-charcoal" : step === s.num ? "bg-olive-gold text-charcoal" : "bg-warm-sand/20 text-warm-sand"
+                        step > s.num ? "bg-warm-gold text-charcoal" : step === s.num ? "bg-warm-gold text-charcoal" : "bg-warm-sand/20 text-warm-sand"
                       }`}>
                         {step > s.num ? <Check className="w-4 h-4" /> : s.num}
                       </div>
@@ -280,7 +280,7 @@ export function BookingModal({ contacts, packages, orgId }: BookingModalProps) {
                       </span>
                     </div>
                     {i < STEPS.length - 1 && (
-                      <div className={`w-10 sm:w-16 h-0.5 mx-1 sm:mx-2 ${step > s.num ? "bg-olive-gold" : "bg-warm-sand/20"}`} />
+                      <div className={`w-10 sm:w-16 h-0.5 mx-1 sm:mx-2 ${step > s.num ? "bg-warm-gold" : "bg-warm-sand/20"}`} />
                     )}
                   </div>
                 ))}
@@ -308,7 +308,7 @@ export function BookingModal({ contacts, packages, orgId }: BookingModalProps) {
                           </SelectContent>
                         </Select>
                       </div>
-                      <button type="button" onClick={() => setShowAddContact(true)} className="text-sm text-olive-gold hover:underline">
+                      <button type="button" onClick={() => setShowAddContact(true)} className="text-sm text-warm-gold hover:underline">
                         + Add new contact
                       </button>
                     </>
@@ -350,7 +350,7 @@ export function BookingModal({ contacts, packages, orgId }: BookingModalProps) {
                     <label className="label">Date *</label>
                     <DatePicker value={eventDate} onChange={setEventDate} />
                     {eventDate && (
-                      <p className="text-xs text-olive-gold mt-1">
+                      <p className="text-xs text-warm-gold mt-1">
                         {new Date(eventDate + "T00:00:00").toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric", year: "numeric" })}
                       </p>
                     )}
@@ -383,14 +383,14 @@ export function BookingModal({ contacts, packages, orgId }: BookingModalProps) {
                             type="button"
                             onClick={() => setPackageId(isSelected ? "" : pkg.id)}
                             className={`w-full text-left p-4 rounded-xl border transition-all ${
-                              isSelected ? "border-olive-gold bg-olive-gold/10" : "border-warm-sand/20 hover:border-warm-sand/40 bg-charcoal"
+                              isSelected ? "border-warm-gold bg-warm-gold/10" : "border-warm-sand/20 hover:border-warm-sand/40 bg-charcoal"
                             }`}
                           >
                             <div className="flex items-start justify-between">
                               <div className="flex-1 min-w-0">
                                 <div className="flex items-center gap-2">
                                   <h4 className="text-warm-white font-bold">{pkg.name}</h4>
-                                  {isSelected && <Check className="w-4 h-4 text-olive-gold shrink-0" />}
+                                  {isSelected && <Check className="w-4 h-4 text-warm-gold shrink-0" />}
                                 </div>
                                 {pkg.description && <p className="text-sm text-warm-sand mt-1 line-clamp-2">{pkg.description}</p>}
                                 <div className="flex flex-wrap gap-2 mt-2">
@@ -403,7 +403,7 @@ export function BookingModal({ contacts, packages, orgId }: BookingModalProps) {
                                 </div>
                               </div>
                               <div className="text-right ml-4 shrink-0">
-                                <p className={`text-lg font-bold ${isSelected ? "text-olive-gold" : "text-warm-white"}`}>${pkg.base_price}</p>
+                                <p className={`text-lg font-bold ${isSelected ? "text-warm-gold" : "text-warm-white"}`}>${pkg.base_price}</p>
                                 <p className="text-xs text-warm-sand">
                                   {pkg.pricing_type === "per_guest" ? "/guest" : pkg.pricing_type === "flat" ? "flat" : "/hr"}
                                 </p>
@@ -440,7 +440,7 @@ export function BookingModal({ contacts, packages, orgId }: BookingModalProps) {
                               type="button"
                               onClick={() => toggleAddOn(addOn.id)}
                               className={`p-3 rounded-lg border text-left transition-colors ${
-                                addOns.includes(addOn.id) ? "border-olive-gold bg-olive-gold/20" : "border-warm-sand/20 hover:border-warm-sand/40"
+                                addOns.includes(addOn.id) ? "border-warm-gold bg-warm-gold/20" : "border-warm-sand/20 hover:border-warm-sand/40"
                               }`}
                             >
                               <p className="text-sm text-warm-white">{addOn.name}</p>
@@ -526,7 +526,7 @@ export function BookingModal({ contacts, packages, orgId }: BookingModalProps) {
                             {addOns.map(id => {
                               const a = availableAddOns.find(x => x.id === id);
                               return a ? (
-                                <span key={id} className="text-xs bg-olive-gold/10 text-olive-gold px-2 py-0.5 rounded">{a.name}</span>
+                                <span key={id} className="text-xs bg-warm-gold/10 text-warm-gold px-2 py-0.5 rounded">{a.name}</span>
                               ) : null;
                             })}
                           </div>

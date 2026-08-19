@@ -144,7 +144,7 @@ export function InvoicesList({ invoices, orgId }: InvoicesListProps) {
   <style>
     body { font-family: Arial, sans-serif; padding: 40px; max-width: 800px; margin: 0 auto; color: #333; }
     .header { display: flex; justify-content: space-between; margin-bottom: 40px; }
-    .logo { font-size: 24px; font-weight: bold; color: #7D7254; }
+    .logo { font-size: 24px; font-weight: bold; color: #7D6854; }
     .invoice-title { font-size: 32px; color: #1A1A1A; }
     .invoice-number { color: #666; margin-top: 8px; }
     .details { display: flex; justify-content: space-between; margin-bottom: 40px; }
@@ -251,13 +251,13 @@ export function InvoicesList({ invoices, orgId }: InvoicesListProps) {
     <div>
       <div className="grid gap-4 md:grid-cols-3 mb-6">
         <Link href="/billing">
-          <Card className="bg-charcoal border-warm-sand/20 hover:border-olive-gold hover:scale-[1.02] hover:shadow-lg hover:shadow-olive-gold/10 transition-all duration-200 cursor-pointer h-full">
+          <Card className="bg-charcoal border-warm-sand/20 hover:border-warm-gold hover:scale-[1.02] hover:shadow-lg hover:shadow-warm-gold/10 transition-all duration-200 cursor-pointer h-full">
             <CardContent className="p-6">
               <div className="flex items-center justify-between mb-3">
-                <div className="rounded-lg bg-olive-gold/20 p-3">
-                  <FileText className="h-6 w-6 text-olive-gold" />
+                <div className="rounded-lg bg-warm-gold/20 p-3">
+                  <FileText className="h-6 w-6 text-warm-gold" />
                 </div>
-                <MiniLineChart data={[60, 75, 70, 85, 80, 90, 88, 95]} color="#7D7254" />
+                <MiniLineChart data={[60, 75, 70, 85, 80, 90, 88, 95]} color="#7D6854" />
               </div>
               <p className="text-meta text-warm-sand">Total Invoiced</p>
               <p className="text-2xl font-bold text-warm-white mt-1">
@@ -268,13 +268,13 @@ export function InvoicesList({ invoices, orgId }: InvoicesListProps) {
         </Link>
         
         <Link href="/billingpaid">
-          <Card className="bg-charcoal border-warm-sand/20 hover:border-olive-gold hover:scale-[1.02] hover:shadow-lg hover:shadow-olive-gold/10 transition-all duration-200 cursor-pointer h-full">
+          <Card className="bg-charcoal border-warm-sand/20 hover:border-warm-gold hover:scale-[1.02] hover:shadow-lg hover:shadow-warm-gold/10 transition-all duration-200 cursor-pointer h-full">
             <CardContent className="p-6">
               <div className="flex items-center justify-between mb-3">
-                <div className="rounded-lg bg-olive-gold/20 p-3">
-                  <Check className="h-6 w-6 text-olive-gold" />
+                <div className="rounded-lg bg-warm-gold/20 p-3">
+                  <Check className="h-6 w-6 text-warm-gold" />
                 </div>
-                <MiniLineChart data={[40, 55, 60, 50, 70, 65, 75, 80]} color="#7D7254" />
+                <MiniLineChart data={[40, 55, 60, 50, 70, 65, 75, 80]} color="#7D6854" />
               </div>
               <p className="text-meta text-warm-sand">Paid</p>
               <div className="flex items-end justify-between mt-1">
@@ -283,7 +283,7 @@ export function InvoicesList({ invoices, orgId }: InvoicesListProps) {
                 </p>
                 <div className="w-24 h-2 bg-warm-sand/10 rounded-full overflow-hidden">
                   <div 
-                    className="h-full bg-olive-gold rounded-full transition-all" 
+                    className="h-full bg-warm-gold rounded-full transition-all" 
                     style={{ width: `${invoices.length > 0 ? (totalPaid / (invoices.reduce((sum, i) => sum + i.amount, 0) || 1)) * 100 : 0}%` }} 
                   />
                 </div>
@@ -293,13 +293,13 @@ export function InvoicesList({ invoices, orgId }: InvoicesListProps) {
         </Link>
         
         <Link href="/billingoutstanding">
-          <Card className="bg-charcoal border-warm-sand/20 hover:border-olive-gold hover:scale-[1.02] hover:shadow-lg hover:shadow-olive-gold/10 transition-all duration-200 cursor-pointer h-full">
+          <Card className="bg-charcoal border-warm-sand/20 hover:border-warm-gold hover:scale-[1.02] hover:shadow-lg hover:shadow-warm-gold/10 transition-all duration-200 cursor-pointer h-full">
             <CardContent className="p-6">
               <div className="flex items-center justify-between mb-3">
-                <div className="rounded-lg bg-olive-gold/20 p-3">
-                  <Clock className="h-6 w-6 text-olive-gold" />
+                <div className="rounded-lg bg-warm-gold/20 p-3">
+                  <Clock className="h-6 w-6 text-warm-gold" />
                 </div>
-                <MiniLineChart data={[30, 45, 40, 55, 50, 65, 60, 70]} color="#7D7254" />
+                <MiniLineChart data={[30, 45, 40, 55, 50, 65, 60, 70]} color="#7D6854" />
               </div>
               <p className="text-meta text-warm-sand">Outstanding</p>
               <div className="flex items-end justify-between mt-1">
@@ -317,7 +317,7 @@ export function InvoicesList({ invoices, orgId }: InvoicesListProps) {
           onClick={() => setFilter("all")}
           className={`px-3 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
             filter === "all"
-              ? "bg-olive-gold text-charcoal"
+              ? "bg-warm-gold text-charcoal"
               : "text-warm-sand hover:text-warm-white bg-warm-sand/10"
           }`}
         >
@@ -329,7 +329,7 @@ export function InvoicesList({ invoices, orgId }: InvoicesListProps) {
             onClick={() => setFilter(status)}
             className={`px-3 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
               filter === status
-                ? "bg-olive-gold text-charcoal"
+                ? "bg-warm-gold text-charcoal"
                 : "text-warm-sand hover:text-warm-white bg-warm-sand/10"
             }`}
           >
@@ -411,11 +411,11 @@ export function InvoicesList({ invoices, orgId }: InvoicesListProps) {
                         <button
                           onClick={() => handlePayNow(invoice.id)}
                           disabled={paying === invoice.id}
-                          className="p-2 text-olive-gold hover:text-olive-gold/70 disabled:opacity-50"
+                          className="p-2 text-warm-gold hover:text-warm-gold/70 disabled:opacity-50"
                           title="Pay Now"
                         >
                           {paying === invoice.id ? (
-                            <span className="w-4 h-4 block border-2 border-olive-gold border-t-transparent rounded-full animate-spin" />
+                            <span className="w-4 h-4 block border-2 border-warm-gold border-t-transparent rounded-full animate-spin" />
                           ) : (
                             <CreditCard className="w-4 h-4" />
                           )}
@@ -435,11 +435,11 @@ export function InvoicesList({ invoices, orgId }: InvoicesListProps) {
                       </button>
                       <button
                         onClick={() => copyInvoiceLink(invoice.id)}
-                        className="p-2 text-warm-sand hover:text-olive-gold disabled:opacity-50"
+                        className="p-2 text-warm-sand hover:text-warm-gold disabled:opacity-50"
                         title="Copy shareable link"
                       >
                         {copied === invoice.id ? (
-                          <CheckCheck className="w-4 h-4 text-olive-gold" />
+                          <CheckCheck className="w-4 h-4 text-warm-gold" />
                         ) : (
                           <LinkIcon className="w-4 h-4" />
                         )}

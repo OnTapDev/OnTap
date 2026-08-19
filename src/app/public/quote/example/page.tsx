@@ -27,8 +27,8 @@ export default function ExampleQuotePage() {
   const addOns = q.add_ons as Record<string, number>;
 
   return (
-    <div className="min-h-screen bg-[#0D0D0D] flex items-center justify-center p-4">
-      <div className="w-full max-w-2xl bg-[#1A1A1A] border border-warm-sand/10 rounded-2xl overflow-hidden shadow-xl">
+    <div className="min-h-screen bg-charcoal flex items-center justify-center p-4">
+      <div className="w-full max-w-2xl bg-[#232323] border border-warm-sand/10 rounded-2xl overflow-hidden shadow-xl">
         <div className="p-6 sm:p-8 border-b border-warm-sand/10 flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold text-warm-white">Quote</h1>

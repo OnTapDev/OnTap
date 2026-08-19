@@ -21,7 +21,7 @@ export function Header() {
           <input
             type="text"
             placeholder="Search contacts, events..."
-            className="h-10 w-full rounded-lg border border-warm-sand/30 bg-charcoal pl-10 pr-4 text-base text-warm-white placeholder:text-warm-sand focus:border-olive-gold focus:outline-none focus:ring-1 focus:ring-olive-gold"
+            className="h-10 w-full rounded-lg border border-warm-sand/30 bg-charcoal pl-10 pr-4 text-base text-warm-white placeholder:text-warm-sand focus:border-warm-gold focus:outline-none focus:ring-1 focus:ring-warm-gold"
           />
         </div>
       </div>

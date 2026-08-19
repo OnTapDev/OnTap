@@ -118,7 +118,7 @@ export function DashboardKpiClient({ slug, kpis }: { slug: string; kpis: KPIData
           <h1 className="text-screen-title text-warm-white">KPI Not Found</h1>
           <p className="text-warm-sand mt-1">This KPI page does not exist.</p>
         </div>
-        <Link href="/dashboard" className="text-olive-gold hover:text-warm-white">
+        <Link href="/dashboard" className="text-warm-gold hover:text-warm-white">
           ← Back to Dashboard
         </Link>
       </div>
@@ -134,7 +134,7 @@ export function DashboardKpiClient({ slug, kpis }: { slug: string; kpis: KPIData
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-4">
-        <Link href="/dashboard" className="text-olive-gold hover:text-warm-white">
+        <Link href="/dashboard" className="text-warm-gold hover:text-warm-white">
           ← Back
         </Link>
       </div>
@@ -143,15 +143,15 @@ export function DashboardKpiClient({ slug, kpis }: { slug: string; kpis: KPIData
         <Card className="bg-charcoal border-warm-sand/20 lg:w-1/2">
           <CardContent className="p-6">
             <div className="flex items-center gap-4 mb-4">
-              <div className="rounded-lg bg-olive-gold/20 p-3">
-                <config.icon className="h-8 w-8 text-olive-gold" />
+              <div className="rounded-lg bg-warm-gold/20 p-3">
+                <config.icon className="h-8 w-8 text-warm-gold" />
               </div>
             </div>
             <p className="text-section-title text-warm-white mb-2">{config.title}</p>
             <div className="flex items-end gap-4">
               <p className="text-4xl font-bold text-warm-white">{value}</p>
               {change && (
-                <div className="flex items-center gap-1 text-sm text-olive-gold mb-1">
+                <div className="flex items-center gap-1 text-sm text-warm-gold mb-1">
                   <ArrowUpRight className="w-4 h-4" />
                   <span>{change}</span>
                 </div>
@@ -160,7 +160,7 @@ export function DashboardKpiClient({ slug, kpis }: { slug: string; kpis: KPIData
             <div className="mt-4 pt-4 border-t border-warm-sand/20">
               <Link 
                 href={config.dataHref}
-                className="flex items-center gap-2 text-sm text-olive-gold hover:text-warm-white transition-colors"
+                className="flex items-center gap-2 text-sm text-warm-gold hover:text-warm-white transition-colors"
               >
                 {config.dataLabel}
                 <ArrowRight className="w-4 h-4" />
@@ -171,7 +171,7 @@ export function DashboardKpiClient({ slug, kpis }: { slug: string; kpis: KPIData
         
         <Card className="bg-charcoal border-warm-sand/20 lg:w-1/2">
           <CardContent className="p-6">
-            <DetailedLineChart data={chartData} color="#7D7254" height={200} title="30-Day Trend" />
+            <DetailedLineChart data={chartData} color="#7D6854" height={200} title="30-Day Trend" />
           </CardContent>
         </Card>
       </div>
@@ -218,7 +218,7 @@ export function DashboardKpiClient({ slug, kpis }: { slug: string; kpis: KPIData
                       <td className="py-3 px-4">
                         <span className={`px-2 py-1 rounded-full text-xs ${
                           item.status === "Excellent" ? "bg-green-500/20 text-green-400" :
-                          item.status === "Good" ? "bg-olive-gold/20 text-olive-gold" :
+                          item.status === "Good" ? "bg-warm-gold/20 text-warm-gold" :
                           "bg-yellow-500/20 text-yellow-400"
                         }`}>
                           {item.status}
@@ -252,7 +252,7 @@ export function DashboardKpiClient({ slug, kpis }: { slug: string; kpis: KPIData
             <ul className="space-y-3">
               {config.tips.map((tip, index) => (
                 <li key={index} className="flex items-start gap-3 text-warm-sand">
-                  <span className="text-olive-gold">•</span>
+                  <span className="text-warm-gold">•</span>
                   {tip}
                 </li>
               ))}

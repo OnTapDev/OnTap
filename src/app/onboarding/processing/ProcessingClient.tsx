@@ -53,8 +53,8 @@ export function ProcessingClient({ orgId }: Props) {
     <div className="flex flex-col items-center justify-center min-h-[60vh] gap-6 text-center">
       {confirmed ? (
         <>
-          <div className="w-20 h-20 rounded-full bg-olive-gold/20 flex items-center justify-center animate-bounce">
-            <CheckCircle className="w-10 h-10 text-olive-gold" />
+          <div className="w-20 h-20 rounded-full bg-warm-gold/20 flex items-center justify-center animate-bounce">
+            <CheckCircle className="w-10 h-10 text-warm-gold" />
           </div>
           <div>
             <h2 className="text-2xl font-bold text-warm-white mb-2">
@@ -68,7 +68,7 @@ export function ProcessingClient({ orgId }: Props) {
       ) : (
         <>
           <div className="relative">
-            <div className="w-20 h-20 rounded-full border-4 border-warm-sand/10 border-t-olive-gold animate-spin" />
+            <div className="w-20 h-20 rounded-full border-4 border-warm-sand/10 border-t-warm-gold animate-spin" />
           </div>
           <div>
             <h2 className="text-2xl font-bold text-warm-white mb-2">

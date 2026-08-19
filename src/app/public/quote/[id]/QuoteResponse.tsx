@@ -59,7 +59,7 @@ export function QuoteResponse({ quoteId, status, hasEvent }: Props) {
           <button
             onClick={() => handleRespond("accept")}
             disabled={loading !== null}
-            className="flex-1 flex items-center justify-center gap-2 py-3 bg-olive-gold text-charcoal font-semibold rounded-xl hover:bg-olive-gold/90 disabled:opacity-50 transition-colors"
+            className="flex-1 flex items-center justify-center gap-2 py-3 bg-warm-gold text-charcoal font-semibold rounded-xl hover:bg-warm-gold/90 disabled:opacity-50 transition-colors"
           >
             {loading === "accept" ? <Loader2 className="w-5 h-5 animate-spin" /> : <Check className="w-5 h-5" />}
             Accept

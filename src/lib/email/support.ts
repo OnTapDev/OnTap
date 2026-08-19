@@ -61,7 +61,7 @@ export async function sendSupportTicketEmails(
             <p>${message}</p>
           </div>
           
-          <a href="#" style="display: inline-block; background: #7D7254; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none;">
+          <a href="#" style="display: inline-block; background: #7D6854; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none;">
             View in Dashboard
           </a>
         </div>

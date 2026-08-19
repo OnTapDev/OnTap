@@ -251,14 +251,14 @@ export function BillingClient({ invoices, quotes, events, packages, addOns, cont
           onClick={() => { setActionError(""); setCreatingInvoice(true); }}
           className="flex items-center gap-2 px-4 py-2.5 rounded-lg border border-warm-sand/20 hover:border-warm-sand/40 transition-colors bg-charcoal"
         >
-          <div className="p-1.5 rounded-lg bg-olive-gold/20 text-olive-gold"><Plus className="w-4 h-4" /></div>
+          <div className="p-1.5 rounded-lg bg-warm-gold/20 text-warm-gold"><Plus className="w-4 h-4" /></div>
           <span className="text-sm text-warm-white font-medium">New Invoice</span>
         </button>
         <button
           onClick={() => { setActionError(""); setCreatingQuote(true); }}
           className="flex items-center gap-2 px-4 py-2.5 rounded-lg border border-warm-sand/20 hover:border-warm-sand/40 transition-colors bg-charcoal"
         >
-          <div className="p-1.5 rounded-lg bg-olive-gold/20 text-olive-gold"><FileText className="w-4 h-4" /></div>
+          <div className="p-1.5 rounded-lg bg-warm-gold/20 text-warm-gold"><FileText className="w-4 h-4" /></div>
           <span className="text-sm text-warm-white font-medium">New Quote</span>
         </button>
       </div>
@@ -271,7 +271,7 @@ export function BillingClient({ invoices, quotes, events, packages, addOns, cont
             return (
               <div key={status} className="text-center">
                 <div className="relative h-2 bg-warm-sand/10 rounded-full mb-2 overflow-hidden">
-                  <div className="h-full bg-olive-gold rounded-full transition-all duration-500"
+                  <div className="h-full bg-warm-gold rounded-full transition-all duration-500"
                     style={{ width: `${(invoiceStatusCounts[status] / maxVal) * 100}%` }} />
                 </div>
                 <p className="text-lg font-bold text-warm-white">{invoiceStatusCounts[status]}</p>
@@ -289,17 +289,17 @@ export function BillingClient({ invoices, quotes, events, packages, addOns, cont
           const displayValue = data.value > 0 || k.slug === "overdue-count" ? k.format(data.value) : `$${0}`;
           return (
             <Link key={k.slug} href={k.href}>
-              <Card className="bg-charcoal border-warm-sand/20 hover:border-olive-gold hover:scale-[1.02] transition-all duration-200 cursor-pointer h-full">
+              <Card className="bg-charcoal border-warm-sand/20 hover:border-warm-gold hover:scale-[1.02] transition-all duration-200 cursor-pointer h-full">
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between mb-3">
-                    <div className="rounded-lg bg-olive-gold/20 p-3"><k.icon className="h-6 w-6 text-olive-gold" /></div>
-                    <MiniLineChart data={data.chartData.length > 0 ? data.chartData : [0]} color="#7D7254" />
+                    <div className="rounded-lg bg-warm-gold/20 p-3"><k.icon className="h-6 w-6 text-warm-gold" /></div>
+                    <MiniLineChart data={data.chartData.length > 0 ? data.chartData : [0]} color="#7D6854" />
                   </div>
                   <p className="text-meta text-warm-sand">{k.label}</p>
                   <div className="flex items-end justify-between mt-1">
                     <p className="text-2xl font-bold text-warm-white">{displayValue}</p>
                     {data.change && data.value > 0 && (
-                      <div className="flex items-center gap-1 text-sm text-olive-gold"><ArrowUpRight className="w-4 h-4" /><span>{data.change}</span></div>
+                      <div className="flex items-center gap-1 text-sm text-warm-gold"><ArrowUpRight className="w-4 h-4" /><span>{data.change}</span></div>
                     )}
                   </div>
                 </CardContent>
@@ -312,7 +312,7 @@ export function BillingClient({ invoices, quotes, events, packages, addOns, cont
       <div className="flex items-center gap-1 bg-charcoal rounded-lg p-1 w-fit border border-warm-sand/20">
         {TABS.map(t => (
           <button key={t.id} onClick={() => setTab(t.id)}
-            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${tab === t.id ? "bg-olive-gold text-charcoal" : "text-warm-sand hover:text-warm-white"}`}>
+            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${tab === t.id ? "bg-warm-gold text-charcoal" : "text-warm-sand hover:text-warm-white"}`}>
             {t.label}
           </button>
         ))}
@@ -323,7 +323,7 @@ export function BillingClient({ invoices, quotes, events, packages, addOns, cont
           <div className="flex gap-2 overflow-x-auto pb-2">
             {["all", "draft", "sent", "paid", "partial", "overdue"].map((status) => (
               <button key={status} onClick={() => setInvoiceFilter(status)}
-                className={`px-3 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${invoiceFilter === status ? "bg-olive-gold text-charcoal" : "text-warm-sand hover:text-warm-white bg-warm-sand/10"}`}>
+                className={`px-3 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${invoiceFilter === status ? "bg-warm-gold text-charcoal" : "text-warm-sand hover:text-warm-white bg-warm-sand/10"}`}>
                 {status === "all" ? `All (${invoices.length})` : `${status.charAt(0).toUpperCase() + status.slice(1)} (${invoiceStatusCounts[status as keyof typeof invoiceStatusCounts]})`}
               </button>
             ))}
@@ -357,7 +357,7 @@ export function BillingClient({ invoices, quotes, events, packages, addOns, cont
                       <td className="p-4 text-warm-white">{formatCurrency(invoice.amount)}</td>
                       <td className="p-4 text-warm-white">{formatCurrency(invoice.balance_due)}</td>
                       <td className="p-4">
-                        <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium bg-olive-gold/20 text-olive-gold">
+                        <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium bg-warm-gold/20 text-warm-gold">
                           {invoice.status === "paid" ? <CheckCircle className="w-3 h-3" /> :
                            invoice.status === "cancelled" ? <XCircle className="w-3 h-3" /> :
                            invoice.status === "overdue" ? <AlertCircle className="w-3 h-3" /> :
@@ -372,9 +372,9 @@ export function BillingClient({ invoices, quotes, events, packages, addOns, cont
                         <div className="flex items-center gap-1">
                           {invoice.status !== "paid" && invoice.status !== "cancelled" && (
                             <button onClick={() => handlePayNow(invoice.id)} disabled={paying === invoice.id}
-                              className="p-1.5 text-olive-gold hover:text-olive-gold/70 disabled:opacity-50" title="Pay Now">
+                              className="p-1.5 text-warm-gold hover:text-warm-gold/70 disabled:opacity-50" title="Pay Now">
                               {paying === invoice.id ? (
-                                <span className="w-4 h-4 block border-2 border-olive-gold border-t-transparent rounded-full animate-spin" />
+                                <span className="w-4 h-4 block border-2 border-warm-gold border-t-transparent rounded-full animate-spin" />
                               ) : (
                                 <CreditCard className="w-4 h-4" />
                               )}
@@ -404,7 +404,7 @@ export function BillingClient({ invoices, quotes, events, packages, addOns, cont
           <div className="flex gap-2 overflow-x-auto pb-2">
             {["all", "draft", "sent", "accepted", "rejected", "expired"].map((status) => (
               <button key={status} onClick={() => setQuoteFilter(status)}
-                className={`px-3 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${quoteFilter === status ? "bg-olive-gold text-charcoal" : "text-warm-sand hover:text-warm-white bg-warm-sand/10"}`}>
+                className={`px-3 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${quoteFilter === status ? "bg-warm-gold text-charcoal" : "text-warm-sand hover:text-warm-white bg-warm-sand/10"}`}>
                 {status === "all" ? `All (${quotes.length})` : `${status.charAt(0).toUpperCase() + status.slice(1)} (${quoteStatusCounts[status as keyof typeof quoteStatusCounts]})`}
               </button>
             ))}
@@ -438,7 +438,7 @@ export function BillingClient({ invoices, quotes, events, packages, addOns, cont
                       <td className="p-4 text-warm-white">{quote.guest_count}</td>
                       <td className="p-4 text-warm-white font-medium">{formatCurrency(quote.total)}</td>
                       <td className="p-4">
-                        <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium bg-olive-gold/20 text-olive-gold">
+                        <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium bg-warm-gold/20 text-warm-gold">
                           {quote.status === "accepted" ? <CheckCircle className="w-3 h-3" /> :
                            quote.status === "rejected" ? <XCircle className="w-3 h-3" /> :
                            quote.status === "sent" ? <Send className="w-3 h-3" /> :
@@ -452,11 +452,11 @@ export function BillingClient({ invoices, quotes, events, packages, addOns, cont
                         <div className="flex items-center gap-1">
                           <button
                             onClick={() => copyQuoteLink(quote.id)}
-                            className="p-1.5 text-warm-sand hover:text-olive-gold"
+                            className="p-1.5 text-warm-sand hover:text-warm-gold"
                             title="Copy shareable link"
                           >
                             {copied === quote.id ? (
-                              <CheckCheck className="w-4 h-4 text-olive-gold" />
+                              <CheckCheck className="w-4 h-4 text-warm-gold" />
                             ) : (
                               <LinkIcon className="w-4 h-4" />
                             )}

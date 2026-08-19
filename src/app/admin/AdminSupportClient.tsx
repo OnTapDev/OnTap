@@ -50,12 +50,12 @@ export function AdminSupportPage({ tickets }: Props) {
   };
 
   return (
-    <div className="min-h-screen bg-[#0D0D0D]">
+    <div className="min-h-screen bg-charcoal">
       <div className="max-w-5xl mx-auto px-4 py-8">
         <div className="flex items-center justify-between mb-8">
           <div>
             <div className="flex items-center gap-3 mb-2">
-              <Shield className="w-8 h-8 text-olive-gold" />
+              <Shield className="w-8 h-8 text-warm-gold" />
               <h1 className="text-3xl font-bold text-warm-white">Admin Panel</h1>
             </div>
             <p className="text-warm-sand">Support tickets from all operators</p>
@@ -75,7 +75,7 @@ export function AdminSupportPage({ tickets }: Props) {
               onClick={() => setFilter(key)}
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                 filter === key
-                  ? "bg-olive-gold text-charcoal"
+                  ? "bg-warm-gold text-charcoal"
                   : "bg-warm-sand/10 text-warm-sand hover:bg-warm-sand/20"
               }`}
             >
@@ -109,7 +109,7 @@ export function AdminSupportPage({ tickets }: Props) {
                         <span className={`text-xs font-medium ${PRIORITY_COLORS[ticket.priority] || ""}`}>
                           {ticket.priority}
                         </span>
-                        <span className="text-xs px-2 py-0.5 rounded-full bg-olive-gold/10 text-olive-gold font-medium">
+                        <span className="text-xs px-2 py-0.5 rounded-full bg-warm-gold/10 text-warm-gold font-medium">
                           {ticket.type}
                         </span>
                       </div>

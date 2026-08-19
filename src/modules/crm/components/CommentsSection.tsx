@@ -127,7 +127,7 @@ export function CommentsSection({ entityType, entityId }: Props) {
             onClick={() => setActivityType(t.value)}
             className={`flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-medium transition-colors ${
               activityType === t.value
-                ? "bg-olive-gold/20 text-olive-gold border border-olive-gold/30"
+                ? "bg-warm-gold/20 text-warm-gold border border-warm-gold/30"
                 : "text-warm-sand/70 hover:text-warm-white bg-warm-sand/5 hover:bg-warm-sand/10 border border-transparent"
             }`}
           >
@@ -144,7 +144,7 @@ export function CommentsSection({ entityType, entityId }: Props) {
           onChange={(e) => setNewContent(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder={`Log a ${selectedType?.label.toLowerCase()}... (Enter to save, Shift+Enter for new line)`}
-          className="flex-1 bg-warm-sand/5 border border-warm-sand/20 rounded-lg px-3 py-2 text-sm text-warm-white placeholder-warm-sand/50 focus:outline-none focus:border-olive-gold resize-none"
+          className="flex-1 bg-warm-sand/5 border border-warm-sand/20 rounded-lg px-3 py-2 text-sm text-warm-white placeholder-warm-sand/50 focus:outline-none focus:border-warm-gold resize-none"
           rows={2}
         />
         <Button
@@ -183,7 +183,7 @@ export function CommentsSection({ entityType, entityId }: Props) {
                         {TYPE_LABELS[comment.activity_type] || "Note"}
                       </span>
                       <span className="text-[10px] text-warm-sand/30">·</span>
-                      <span className="text-xs font-medium text-olive-gold">{comment.author_name}</span>
+                      <span className="text-xs font-medium text-warm-gold">{comment.author_name}</span>
                       <span className="text-[10px] text-warm-sand/40 flex items-center gap-1">
                         <Clock className="w-3 h-3" />
                         {new Date(comment.created_at).toLocaleDateString(undefined, {

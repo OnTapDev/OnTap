@@ -49,8 +49,8 @@ export default async function PublicInvoicePage({
   const canPay = invoice.status !== "paid" && invoice.status !== "cancelled" && !!invoice.organization?.stripe_account_id;
 
   return (
-    <div className="min-h-screen bg-[#0D0D0D] flex items-center justify-center p-4">
-      <div className="w-full max-w-2xl bg-[#1A1A1A] border border-warm-sand/10 rounded-2xl overflow-hidden">
+    <div className="min-h-screen bg-charcoal flex items-center justify-center p-4">
+      <div className="w-full max-w-2xl bg-[#232323] border border-warm-sand/10 rounded-2xl overflow-hidden">
         {paid === "success" && (
           <div className="p-4 bg-green-500/10 border-b border-green-500/20 text-center">
             <p className="text-sm text-green-400 font-medium">Payment successful! Thank you.</p>

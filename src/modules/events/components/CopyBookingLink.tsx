@@ -39,7 +39,7 @@ export function CopyBookingLink({ slug }: { slug: string }) {
         href={bookingUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="p-2 rounded-lg text-warm-sand hover:text-olive-gold transition-colors"
+        className="p-2 rounded-lg text-warm-sand hover:text-warm-gold transition-colors"
         title="Preview booking page"
       >
         <ExternalLink className="w-4 h-4" />

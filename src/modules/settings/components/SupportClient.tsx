@@ -102,7 +102,7 @@ export function SupportClient({ requests }: SupportClientProps) {
                       onClick={() => setForm({ ...form, type: opt.value as any })}
                       className={`p-3 rounded-lg border transition-colors ${
                         form.type === opt.value
-                          ? "border-olive-gold bg-olive-gold/20 text-warm-white"
+                          ? "border-warm-gold bg-warm-gold/20 text-warm-white"
                           : "border-warm-sand/20 text-warm-sand hover:border-warm-sand/40"
                       }`}
                     >

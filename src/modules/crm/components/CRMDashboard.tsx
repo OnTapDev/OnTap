@@ -513,8 +513,8 @@ export function CRMDashboard({
         <Card className="bg-charcoal border-warm-sand/20">
           <CardContent className="p-4">
             <div className="flex items-center justify-between mb-2">
-              <div className="rounded-lg bg-olive-gold/20 p-2" aria-hidden="true"><Users className="h-5 w-5 text-olive-gold" /></div>
-              <MiniLineChart data={leadsByDay} color="#7D7254" />
+              <div className="rounded-lg bg-warm-gold/20 p-2" aria-hidden="true"><Users className="h-5 w-5 text-warm-gold" /></div>
+              <MiniLineChart data={leadsByDay} color="#7D6854" />
             </div>
             <p className="text-meta text-warm-sand">Total Leads</p>
             <p className="text-xl font-bold text-warm-white">{stats.total}</p>
@@ -523,8 +523,8 @@ export function CRMDashboard({
         <Card className="bg-charcoal border-warm-sand/20">
           <CardContent className="p-4">
             <div className="flex items-center justify-between mb-2">
-              <div className="rounded-lg bg-olive-gold/20 p-2" aria-hidden="true"><Calendar className="h-5 w-5 text-olive-gold" /></div>
-              <MiniLineChart data={eventsByMonth} color="#7D7254" />
+              <div className="rounded-lg bg-warm-gold/20 p-2" aria-hidden="true"><Calendar className="h-5 w-5 text-warm-gold" /></div>
+              <MiniLineChart data={eventsByMonth} color="#7D6854" />
             </div>
             <p className="text-meta text-warm-sand">Upcoming Events</p>
             <p className="text-xl font-bold text-warm-white">{stats.upcoming}</p>
@@ -533,8 +533,8 @@ export function CRMDashboard({
         <Card className="bg-charcoal border-warm-sand/20">
           <CardContent className="p-4">
             <div className="flex items-center justify-between mb-2">
-              <div className="rounded-lg bg-olive-gold/20 p-2" aria-hidden="true"><FileText className="h-5 w-5 text-olive-gold" /></div>
-              <MiniLineChart data={pendingByMonth} color="#7D7254" />
+              <div className="rounded-lg bg-warm-gold/20 p-2" aria-hidden="true"><FileText className="h-5 w-5 text-warm-gold" /></div>
+              <MiniLineChart data={pendingByMonth} color="#7D6854" />
             </div>
             <p className="text-meta text-warm-sand">Pending Quotes</p>
             <p className="text-xl font-bold text-warm-white">{formatCurrency(stats.pendingQuoteValue)}</p>
@@ -543,8 +543,8 @@ export function CRMDashboard({
         <Card className="bg-charcoal border-warm-sand/20">
           <CardContent className="p-4">
             <div className="flex items-center justify-between mb-2">
-              <div className="rounded-lg bg-olive-gold/20 p-2" aria-hidden="true"><Mail className="h-5 w-5 text-olive-gold" /></div>
-              <MiniLineChart data={messagesByDay} color="#7D7254" />
+              <div className="rounded-lg bg-warm-gold/20 p-2" aria-hidden="true"><Mail className="h-5 w-5 text-warm-gold" /></div>
+              <MiniLineChart data={messagesByDay} color="#7D6854" />
             </div>
             <p className="text-meta text-warm-sand">Messages This Week</p>
             <p className="text-xl font-bold text-warm-white">{stats.thisWeek}</p>
@@ -553,8 +553,8 @@ export function CRMDashboard({
         <Card className="bg-charcoal border-warm-sand/20">
           <CardContent className="p-4">
             <div className="flex items-center justify-between mb-2">
-              <div className="rounded-lg bg-olive-gold/20 p-2" aria-hidden="true"><DollarSign className="h-5 w-5 text-olive-gold" /></div>
-              <MiniLineChart data={revenueByMonth} color="#7D7254" />
+              <div className="rounded-lg bg-warm-gold/20 p-2" aria-hidden="true"><DollarSign className="h-5 w-5 text-warm-gold" /></div>
+              <MiniLineChart data={revenueByMonth} color="#7D6854" />
             </div>
             <p className="text-meta text-warm-sand">Revenue</p>
             <p className="text-xl font-bold text-warm-white">{formatCurrency(stats.revenue)}</p>
@@ -571,7 +571,7 @@ export function CRMDashboard({
             onClick={() => setView(tab)}
             className={`px-4 py-2.5 text-sm font-medium border-b-2 transition-colors capitalize ${
               view === tab
-                ? "border-olive-gold text-olive-gold"
+                ? "border-warm-gold text-warm-gold"
                 : "border-transparent text-warm-sand hover:text-warm-white"
             }`}
           >
@@ -594,9 +594,9 @@ export function CRMDashboard({
                     {recentActivity.map((a) => (
                       <div key={a.id} className="flex items-start gap-3 py-2.5 border-b border-warm-sand/10 last:border-0">
                         <div className="mt-0.5 shrink-0" aria-hidden="true">
-                          {a.type === "contact" && <User className="w-4 h-4 text-olive-gold" />}
-                          {a.type === "message" && <Mail className="w-4 h-4 text-olive-gold" />}
-                          {a.type === "event" && <Calendar className="w-4 h-4 text-olive-gold" />}
+                          {a.type === "contact" && <User className="w-4 h-4 text-warm-gold" />}
+                          {a.type === "message" && <Mail className="w-4 h-4 text-warm-gold" />}
+                          {a.type === "event" && <Calendar className="w-4 h-4 text-warm-gold" />}
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className="text-sm text-warm-white truncate">{a.text}</p>
@@ -616,7 +616,7 @@ export function CRMDashboard({
             <Card className="bg-charcoal border-warm-sand/20">
               <CardHeader className="flex flex-row items-center justify-between">
                 <CardTitle className="text-warm-white">Upcoming Events</CardTitle>
-                <Link href="/events" className="text-xs text-olive-gold hover:underline flex items-center gap-1" aria-label="View all events">
+                <Link href="/events" className="text-xs text-warm-gold hover:underline flex items-center gap-1" aria-label="View all events">
                   View all <ChevronRight className="w-3 h-3" aria-hidden="true" />
                 </Link>
               </CardHeader>
@@ -626,7 +626,7 @@ export function CRMDashboard({
                     {upcomingEvents.map((e) => (
                       <div key={e.id} className="flex items-start gap-3">
                         <div className="flex flex-col items-center min-w-[40px]">
-                          <span className="text-xs font-bold text-olive-gold">
+                          <span className="text-xs font-bold text-warm-gold">
                             {new Date(e.date).toLocaleDateString("en-US", { month: "short" })}
                           </span>
                           <span className="text-lg font-bold text-warm-white leading-none">
@@ -645,7 +645,7 @@ export function CRMDashboard({
                             <Badge variant={EVENT_STATUS_BADGE[e.status] || "secondary"} className="text-[10px] px-1.5 py-0">
                               {e.status.replace(/_/g, " ")}
                             </Badge>
-                            {e.total_price > 0 && <span className="text-xs text-olive-gold font-medium">{formatCurrency(e.total_price)}</span>}
+                            {e.total_price > 0 && <span className="text-xs text-warm-gold font-medium">{formatCurrency(e.total_price)}</span>}
                           </div>
                         </div>
                       </div>
@@ -688,11 +688,11 @@ export function CRMDashboard({
                       <span className="text-sm font-bold text-warm-white">{d.count}</span>
                     </div>
                     <div className="w-full h-2 bg-charcoal rounded-full overflow-hidden" role="progressbar" aria-valuenow={d.pct} aria-valuemin={0} aria-valuemax={100} aria-label={`${d.source}: ${d.pct}% of leads`}>
-                      <div className="h-full bg-olive-gold rounded-full transition-all" style={{ width: `${d.barWidth}%` }} />
+                      <div className="h-full bg-warm-gold rounded-full transition-all" style={{ width: `${d.barWidth}%` }} />
                     </div>
                     <div className="flex items-center justify-between mt-1.5">
                       <span className="text-[10px] text-warm-sand">{d.pct}% of total</span>
-                      <span className="text-[10px] text-olive-gold">{d.booked} booked</span>
+                      <span className="text-[10px] text-warm-gold">{d.booked} booked</span>
                     </div>
                   </div>
                 ))}
@@ -712,7 +712,7 @@ export function CRMDashboard({
                 <select
                   value={sourceFilter}
                   onChange={(e) => setSourceFilter(e.target.value)}
-                  className="px-3 py-2 bg-charcoal border border-warm-sand/30 rounded-lg text-warm-white text-sm cursor-pointer hover:border-olive-gold transition-colors focus:outline-none focus:ring-1 focus:ring-olive-gold"
+                  className="px-3 py-2 bg-charcoal border border-warm-sand/30 rounded-lg text-warm-white text-sm cursor-pointer hover:border-warm-gold transition-colors focus:outline-none focus:ring-1 focus:ring-warm-gold"
                   aria-label="Filter by source"
                 >
                   <option value="">All Sources</option>
@@ -727,7 +727,7 @@ export function CRMDashboard({
                     placeholder="Search..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-10 pr-4 py-2 bg-charcoal border border-warm-sand/30 rounded-lg text-warm-white text-sm w-56 placeholder:text-warm-sand focus:border-olive-gold focus:outline-none focus:ring-1 focus:ring-olive-gold"
+                    className="pl-10 pr-4 py-2 bg-charcoal border border-warm-sand/30 rounded-lg text-warm-white text-sm w-56 placeholder:text-warm-sand focus:border-warm-gold focus:outline-none focus:ring-1 focus:ring-warm-gold"
                     aria-label="Search contacts"
                   />
                 </div>
@@ -781,7 +781,7 @@ export function CRMDashboard({
                           </td>
                           <td className="p-3 text-sm text-warm-sand capitalize">{SOURCE_LABELS[contact.source || ""] || contact.source || "-"}</td>
                           <td className="p-3">
-                            <span className={`text-sm ${cMsgs.length > 0 ? "text-olive-gold font-medium" : "text-warm-sand"}`}>{cMsgs.length}</span>
+                            <span className={`text-sm ${cMsgs.length > 0 ? "text-warm-gold font-medium" : "text-warm-sand"}`}>{cMsgs.length}</span>
                           </td>
                           <td className="p-3 relative">
                             <div className="flex gap-1">
@@ -869,21 +869,21 @@ export function CRMDashboard({
           <div className="grid gap-3 grid-cols-3 mb-4">
             <Card className="bg-charcoal border-warm-sand/20">
               <CardContent className="p-3">
-                <div className="rounded-lg bg-olive-gold/20 p-1.5 w-fit mb-1" aria-hidden="true"><DollarSign className="h-4 w-4 text-olive-gold" /></div>
+                <div className="rounded-lg bg-warm-gold/20 p-1.5 w-fit mb-1" aria-hidden="true"><DollarSign className="h-4 w-4 text-warm-gold" /></div>
                 <p className="text-xs text-warm-sand">Pipeline Value</p>
                 <p className="text-base font-bold text-warm-white">{formatCurrency(pipelineKpis?.["pipeline-value"]?.value || 0)}</p>
               </CardContent>
             </Card>
             <Card className="bg-charcoal border-warm-sand/20">
               <CardContent className="p-3">
-                <div className="rounded-lg bg-olive-gold/20 p-1.5 w-fit mb-1" aria-hidden="true"><ArrowUpRight className="h-4 w-4 text-olive-gold" /></div>
+                <div className="rounded-lg bg-warm-gold/20 p-1.5 w-fit mb-1" aria-hidden="true"><ArrowUpRight className="h-4 w-4 text-warm-gold" /></div>
                 <p className="text-xs text-warm-sand">Conversion Rate</p>
                 <p className="text-base font-bold text-warm-white">{pipelineKpis?.["conversion-rate"]?.value || 0}%</p>
               </CardContent>
             </Card>
             <Card className="bg-charcoal border-warm-sand/20">
               <CardContent className="p-3">
-                <div className="rounded-lg bg-olive-gold/20 p-1.5 w-fit mb-1" aria-hidden="true"><Clock className="h-4 w-4 text-olive-gold" /></div>
+                <div className="rounded-lg bg-warm-gold/20 p-1.5 w-fit mb-1" aria-hidden="true"><Clock className="h-4 w-4 text-warm-gold" /></div>
                 <p className="text-xs text-warm-sand">Sales Velocity</p>
                 <p className="text-base font-bold text-warm-white">{pipelineKpis?.["sales-velocity"]?.value || 0} days</p>
               </CardContent>
@@ -914,12 +914,12 @@ export function CRMDashboard({
                               {contact.company && <p className="text-xs text-warm-sand mt-0.5">{contact.company}</p>}
                             </div>
                             <div className="flex items-center gap-1">
-                              {isUpdating && <Loader2 className="w-3 h-3 text-olive-gold animate-spin" />}
+                              {isUpdating && <Loader2 className="w-3 h-3 text-warm-gold animate-spin" />}
                               <select
                                 value={contact.stage_id || ""}
                                 onChange={(e) => handleStageChange(contact.id, e.target.value)}
                                 disabled={isUpdating}
-                                className="text-xs bg-charcoal border border-warm-sand/30 rounded px-1 py-0.5 text-warm-white cursor-pointer hover:border-olive-gold disabled:opacity-50"
+                                className="text-xs bg-charcoal border border-warm-sand/30 rounded px-1 py-0.5 text-warm-white cursor-pointer hover:border-warm-gold disabled:opacity-50"
                                 onClick={(e) => e.stopPropagation()}
                                 aria-label={`Change stage for ${contact.name}`}
                               >
@@ -936,7 +936,7 @@ export function CRMDashboard({
                             </div>
                           )}
                           {primaryEvent && primaryEvent.total_price > 0 && (
-                            <p className="text-xs text-olive-gold font-medium mt-1">{formatCurrency(primaryEvent.total_price)}</p>
+                            <p className="text-xs text-warm-gold font-medium mt-1">{formatCurrency(primaryEvent.total_price)}</p>
                           )}
                           {contact.email && <p className="text-xs text-warm-sand mt-2 truncate">{contact.email}</p>}
                         </div>
@@ -963,7 +963,7 @@ export function CRMDashboard({
                   <button
                     key={contact.id}
                     onClick={() => { setMsgContactId(contact.id); setMsgType("email"); setMsgSubject(""); setMsgBody(""); setMsgError(""); setMsgSuccess(false); }}
-                    className={`w-full text-left p-3 border-b border-warm-sand/10 hover:bg-warm-sand/5 transition-colors ${msgContactId === contact.id ? "bg-olive-gold/10" : ""}`}
+                    className={`w-full text-left p-3 border-b border-warm-sand/10 hover:bg-warm-sand/5 transition-colors ${msgContactId === contact.id ? "bg-warm-gold/10" : ""}`}
                     aria-label={`Conversation with ${contact.name}`}
                     aria-current={msgContactId === contact.id ? "true" : undefined}
                   >
@@ -995,14 +995,14 @@ export function CRMDashboard({
                   <div className="flex gap-1">
                     <button
                       onClick={() => setMsgType("email")}
-                      className={`px-3 py-1.5 text-xs rounded-lg transition-colors ${msgType === "email" ? "bg-olive-gold text-charcoal font-medium" : "text-warm-sand hover:text-warm-white"}`}
+                      className={`px-3 py-1.5 text-xs rounded-lg transition-colors ${msgType === "email" ? "bg-warm-gold text-charcoal font-medium" : "text-warm-sand hover:text-warm-white"}`}
                       aria-pressed={msgType === "email"}
                     >
                       <Mail className="w-3 h-3 inline mr-1" aria-hidden="true" />Email
                     </button>
                     <button
                       onClick={() => setMsgType("sms")}
-                      className={`px-3 py-1.5 text-xs rounded-lg transition-colors ${msgType === "sms" ? "bg-olive-gold text-charcoal font-medium" : "text-warm-sand hover:text-warm-white"}`}
+                      className={`px-3 py-1.5 text-xs rounded-lg transition-colors ${msgType === "sms" ? "bg-warm-gold text-charcoal font-medium" : "text-warm-sand hover:text-warm-white"}`}
                       aria-pressed={msgType === "sms"}
                     >
                       <MessageSquare className="w-3 h-3 inline mr-1" aria-hidden="true" />SMS
@@ -1013,7 +1013,7 @@ export function CRMDashboard({
                 <div className="flex-1 overflow-y-auto p-3 space-y-3 max-h-[350px]">
                   {selectedMsgs.length > 0 ? (
                     [...selectedMsgs].reverse().map((m) => (
-                      <div key={m.id} className={`p-3 rounded-lg max-w-[80%] ${m.type === "email" ? "bg-olive-gold/10 border border-olive-gold/20 ml-auto" : "bg-warm-sand/10 border border-warm-sand/20"}`}>
+                      <div key={m.id} className={`p-3 rounded-lg max-w-[80%] ${m.type === "email" ? "bg-warm-gold/10 border border-warm-gold/20 ml-auto" : "bg-warm-sand/10 border border-warm-sand/20"}`}>
                         <div className="flex items-center justify-between mb-1">
                           <span className="text-[10px] font-medium text-warm-sand uppercase">{m.type === "email" ? "Email" : "SMS"}{m.subject ? ` - ${m.subject}` : ""}</span>
                           <span className="text-[10px] text-warm-sand">{formatShortDate(m.created_at)}</span>
@@ -1242,13 +1242,13 @@ export function CRMDashboard({
                       {selectedContact.email && (
                         <div className="flex items-center gap-2 text-sm">
                           <Mail className="w-4 h-4 text-warm-sand shrink-0" aria-hidden="true" />
-                          <a href={`mailto:${selectedContact.email}`} className="text-warm-white hover:text-olive-gold transition-colors">{selectedContact.email}</a>
+                          <a href={`mailto:${selectedContact.email}`} className="text-warm-white hover:text-warm-gold transition-colors">{selectedContact.email}</a>
                         </div>
                       )}
                       {selectedContact.phone && (
                         <div className="flex items-center gap-2 text-sm">
                           <Phone className="w-4 h-4 text-warm-sand shrink-0" aria-hidden="true" />
-                          <a href={`tel:${selectedContact.phone}`} className="text-warm-white hover:text-olive-gold transition-colors">{selectedContact.phone}</a>
+                          <a href={`tel:${selectedContact.phone}`} className="text-warm-white hover:text-warm-gold transition-colors">{selectedContact.phone}</a>
                         </div>
                       )}
                       {selectedContact.role && (
@@ -1298,7 +1298,7 @@ export function CRMDashboard({
                           </div>
                           <div className="text-right">
                             <Badge variant={EVENT_STATUS_BADGE[e.status] || "secondary"} className="text-[10px]">{e.status.replace(/_/g, " ")}</Badge>
-                            {e.total_price > 0 && <p className="text-xs text-olive-gold font-medium mt-1">{formatCurrency(e.total_price)}</p>}
+                            {e.total_price > 0 && <p className="text-xs text-warm-gold font-medium mt-1">{formatCurrency(e.total_price)}</p>}
                           </div>
                         </div>
                       ))}
@@ -1330,7 +1330,7 @@ export function CRMDashboard({
                           </div>
                           <div className="text-right shrink-0 ml-2">
                             <Badge variant={QUOTE_STATUS_BADGE[q.status] || "secondary"} className="text-[10px]">{q.status}</Badge>
-                            <p className="text-xs text-olive-gold font-medium mt-1">{formatCurrency(q.total)}</p>
+                            <p className="text-xs text-warm-gold font-medium mt-1">{formatCurrency(q.total)}</p>
                           </div>
                         </div>
                       ))}
@@ -1361,7 +1361,7 @@ export function CRMDashboard({
                           </div>
                           <div className="text-right shrink-0 ml-2">
                             <Badge variant={INVOICE_STATUS_BADGE[inv.status] || "secondary"} className="text-[10px]">{inv.status}</Badge>
-                            <p className="text-xs text-olive-gold font-medium mt-1">{formatCurrency(inv.amount)}</p>
+                            <p className="text-xs text-warm-gold font-medium mt-1">{formatCurrency(inv.amount)}</p>
                           </div>
                         </div>
                       ))}

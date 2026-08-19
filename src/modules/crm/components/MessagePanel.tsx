@@ -76,7 +76,7 @@ export function MessagePanel({ contact, onClose, orgId }: MessagePanelProps) {
             onClick={() => setType("email")}
             className={`flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
               type === "email"
-                ? "bg-olive-gold text-charcoal"
+                ? "bg-warm-gold text-charcoal"
                 : "text-warm-sand hover:text-warm-white bg-warm-sand/10"
             }`}
           >
@@ -87,7 +87,7 @@ export function MessagePanel({ contact, onClose, orgId }: MessagePanelProps) {
             onClick={() => setType("sms")}
             className={`flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
               type === "sms"
-                ? "bg-olive-gold text-charcoal"
+                ? "bg-warm-gold text-charcoal"
                 : "text-warm-sand hover:text-warm-white bg-warm-sand/10"
             }`}
           >

@@ -63,7 +63,7 @@ const statusColors: Record<string, { bg: string; text: string }> = {
   new_inquiry: { bg: "bg-warm-sand/20", text: "text-warm-sand" },
   quoted: { bg: "bg-blue-500/20", text: "text-blue-400" },
   tentative: { bg: "bg-yellow-500/20", text: "text-yellow-400" },
-  booked: { bg: "bg-olive-gold/20", text: "text-olive-gold" },
+  booked: { bg: "bg-warm-gold/20", text: "text-warm-gold" },
   deposit_paid: { bg: "bg-green-500/20", text: "text-green-400" },
   completed: { bg: "bg-gray-500/20", text: "text-gray-400" },
   cancelled: { bg: "bg-red-500/20", text: "text-red-400" },
@@ -130,7 +130,7 @@ export function EventsList({ events, quotes, invoices, orgId }: EventsListProps)
           onClick={() => setFilter("all")}
           className={`px-3 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
             filter === "all"
-              ? "bg-olive-gold text-charcoal"
+              ? "bg-warm-gold text-charcoal"
               : "text-warm-sand hover:text-warm-white bg-warm-sand/10"
           }`}
         >
@@ -142,7 +142,7 @@ export function EventsList({ events, quotes, invoices, orgId }: EventsListProps)
             onClick={() => setFilter(status)}
             className={`px-3 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
               filter === status
-                ? "bg-olive-gold text-charcoal"
+                ? "bg-warm-gold text-charcoal"
                 : "text-warm-sand hover:text-warm-white bg-warm-sand/10"
             }`}
           >
@@ -344,7 +344,7 @@ export function EventsList({ events, quotes, invoices, orgId }: EventsListProps)
                           <span className="text-warm-white">Quote #{q.id.slice(0, 8)}</span>
                           <span className="flex items-center gap-2">
                             <span className="text-warm-sand text-xs">{q.status}</span>
-                            <span className="text-olive-gold font-medium">${q.total.toLocaleString()}</span>
+                            <span className="text-warm-gold font-medium">${q.total.toLocaleString()}</span>
                           </span>
                         </div>
                       ))}
@@ -353,7 +353,7 @@ export function EventsList({ events, quotes, invoices, orgId }: EventsListProps)
                           <span className="text-warm-white">Invoice #{inv.id.slice(0, 8)}</span>
                           <span className="flex items-center gap-2">
                             <span className="text-warm-sand text-xs">{inv.status}</span>
-                            <span className="text-olive-gold font-medium">${inv.amount.toLocaleString()}</span>
+                            <span className="text-warm-gold font-medium">${inv.amount.toLocaleString()}</span>
                           </span>
                         </div>
                       ))}
@@ -396,7 +396,7 @@ export function EventsList({ events, quotes, invoices, orgId }: EventsListProps)
                               ) : (
                                 <MessageSquare className="w-3.5 h-3.5 text-warm-sand" />
                               )}
-                              <span className="text-xs text-olive-gold font-medium uppercase">
+                              <span className="text-xs text-warm-gold font-medium uppercase">
                                 {msg.type}
                               </span>
                             </div>
@@ -419,7 +419,7 @@ export function EventsList({ events, quotes, invoices, orgId }: EventsListProps)
 
                 <button
                   onClick={() => setShowMessagePanel(true)}
-                  className="mt-2 w-full flex items-center justify-center gap-2 py-2 bg-olive-gold/20 hover:bg-olive-gold/30 text-olive-gold rounded-lg text-sm font-medium transition-colors"
+                  className="mt-2 w-full flex items-center justify-center gap-2 py-2 bg-warm-gold/20 hover:bg-warm-gold/30 text-warm-gold rounded-lg text-sm font-medium transition-colors"
                 >
                   <Send className="w-4 h-4" />
                   Send Message

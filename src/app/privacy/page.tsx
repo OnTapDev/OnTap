@@ -70,7 +70,7 @@ export default function PrivacyPage() {
           <h2 className="text-2xl font-semibold text-warm-white mt-8 mb-4">9. Contact Us</h2>
           <p className="text-warm-sand mb-4">
             For questions about this privacy policy, contact us at: <br />
-            <span className="text-olive-gold">ontap.inquiries@gmail.com</span>
+            <span className="text-warm-gold">ontap.inquiries@gmail.com</span>
           </p>
 
           <h2 className="text-2xl font-semibold text-warm-white mt-8 mb-4">10. Business Information</h2>

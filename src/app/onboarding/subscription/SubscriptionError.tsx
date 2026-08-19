@@ -13,7 +13,7 @@ export function SubscriptionError({ message }: { message: string }) {
         <div className="flex gap-4 justify-center">
           <Link
             href="/onboarding/subscription"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-olive-gold text-charcoal font-semibold hover:bg-olive-gold/90 transition-colors"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-warm-gold text-charcoal font-semibold hover:bg-warm-gold/90 transition-colors"
           >
             Try again
           </Link>

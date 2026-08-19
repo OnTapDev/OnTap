@@ -43,7 +43,7 @@ export function PayButton({ invoiceId, balanceDue, canPay }: Props) {
         <button
           onClick={handlePay}
           disabled={loading}
-          className="w-full max-w-xs flex items-center justify-center gap-2 py-3 bg-olive-gold text-charcoal font-semibold rounded-xl hover:bg-olive-gold/90 disabled:opacity-50 transition-colors"
+          className="w-full max-w-xs flex items-center justify-center gap-2 py-3 bg-warm-gold text-charcoal font-semibold rounded-xl hover:bg-warm-gold/90 disabled:opacity-50 transition-colors"
         >
           {loading ? (
             <Loader2 className="w-5 h-5 animate-spin" />

@@ -56,11 +56,11 @@ export async function POST(request: Request) {
     if (userError) throw userError;
 
     const stages = [
-      { name: "New Inquiry", order: 0, color: "#7D7254" },
+      { name: "New Inquiry", order: 0, color: "#7D6854" },
       { name: "Quoted", order: 1, color: "#B2A88A" },
       { name: "Tentative", order: 2, color: "#F3E7D3" },
       { name: "Booked", order: 3, color: "#7D6854" },
-      { name: "Completed", order: 4, color: "#7D7254" },
+      { name: "Completed", order: 4, color: "#7D6854" },
     ];
     for (const stage of stages) {
       await supabase.from("pipeline_stages").insert({ org_id: orgId, ...stage });

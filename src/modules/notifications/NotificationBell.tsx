@@ -137,7 +137,7 @@ export function NotificationBell() {
             {unread > 0 && (
               <button
                 onClick={handleMarkAll}
-                className="flex items-center gap-1 text-xs text-olive-gold hover:text-olive-gold/80 transition-colors"
+                className="flex items-center gap-1 text-xs text-warm-gold hover:text-warm-gold/80 transition-colors"
               >
                 <CheckCheck className="w-3.5 h-3.5" />
                 Mark all read
@@ -165,7 +165,7 @@ export function NotificationBell() {
                   }`}
                 >
                   <div className="flex items-start gap-3">
-                    <div className={`mt-0.5 ${n.is_read ? "text-warm-sand/40" : "text-olive-gold"}`}>
+                    <div className={`mt-0.5 ${n.is_read ? "text-warm-sand/40" : "text-warm-gold"}`}>
                       {TYPE_ICONS[n.type] || <Info className="w-4 h-4" />}
                     </div>
                     <div className="flex-1 min-w-0">
@@ -185,7 +185,7 @@ export function NotificationBell() {
                       </p>
                     </div>
                     {!n.is_read && (
-                      <div className="w-2 h-2 rounded-full bg-olive-gold flex-shrink-0 mt-1.5" />
+                      <div className="w-2 h-2 rounded-full bg-warm-gold flex-shrink-0 mt-1.5" />
                     )}
                   </div>
                 </div>

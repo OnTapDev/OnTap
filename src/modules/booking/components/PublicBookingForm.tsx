@@ -81,9 +81,9 @@ function DatePicker({ value, onChange }: { value: string; onChange: (date: strin
         onClick={() => onChange(`${year}-${String(month + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`)}
         className={`text-sm py-1.5 rounded-lg transition-colors ${
           selected
-            ? "bg-olive-gold text-charcoal font-bold"
+            ? "bg-warm-gold text-charcoal font-bold"
             : isToday
-              ? "text-olive-gold font-semibold hover:bg-olive-gold/20"
+              ? "text-warm-gold font-semibold hover:bg-warm-gold/20"
               : past
                 ? "text-warm-sand/20 cursor-not-allowed"
                 : "text-warm-white hover:bg-warm-sand/10"
@@ -218,8 +218,8 @@ export function PublicBookingForm({ orgId, orgSlug, orgName, packages }: PublicB
     const hasDeposit = !!packageId && !!pricing && pricing.total > 0;
     return (
       <div className="max-w-lg mx-auto text-center py-16 px-6">
-        <div className="w-16 h-16 rounded-full bg-olive-gold/20 flex items-center justify-center mx-auto mb-6">
-          <CheckCircle className="w-8 h-8 text-olive-gold" />
+        <div className="w-16 h-16 rounded-full bg-warm-gold/20 flex items-center justify-center mx-auto mb-6">
+          <CheckCircle className="w-8 h-8 text-warm-gold" />
         </div>
         <h2 className="text-2xl font-bold text-warm-white mb-2">Booking Received!</h2>
         <p className="text-warm-white/70 mb-6">
@@ -237,13 +237,13 @@ export function PublicBookingForm({ orgId, orgSlug, orgName, packages }: PublicB
             </div>
             <div className="flex items-center justify-between text-sm text-warm-white/60 mb-4">
               <span>Deposit due (25%)</span>
-              <span className="text-olive-gold font-bold">${Math.round(pricing!.total * 0.25).toLocaleString()}</span>
+              <span className="text-warm-gold font-bold">${Math.round(pricing!.total * 0.25).toLocaleString()}</span>
             </div>
             {depositError && <p className="text-sm text-red-400 mb-3">{depositError}</p>}
             <button
               onClick={handlePayDeposit}
               disabled={depositLoading}
-              className="w-full h-12 bg-olive-gold text-charcoal font-bold rounded-xl hover:brightness-110 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full h-12 bg-warm-gold text-charcoal font-bold rounded-xl hover:brightness-110 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {depositLoading ? "Redirecting to payment..." : `Pay Deposit — $${Math.round(pricing!.total * 0.25).toLocaleString()}`}
             </button>
@@ -251,7 +251,7 @@ export function PublicBookingForm({ orgId, orgSlug, orgName, packages }: PublicB
           </div>
         )}
         <p className="text-sm text-warm-white/50">
-          Reference ID: <span className="text-olive-gold font-mono">{submittedEventId.slice(0, 8)}</span>
+          Reference ID: <span className="text-warm-gold font-mono">{submittedEventId.slice(0, 8)}</span>
         </p>
         <Link
           href="/"
@@ -274,7 +274,7 @@ export function PublicBookingForm({ orgId, orgSlug, orgName, packages }: PublicB
       {/* Contact Info */}
       <div className="bg-warm-sand/5 rounded-xl p-6 border border-warm-sand/10 space-y-4">
         <h2 className="text-lg font-semibold text-warm-white flex items-center gap-2">
-          <span className="w-7 h-7 rounded-full bg-olive-gold text-charcoal text-sm font-bold flex items-center justify-center shrink-0">1</span>
+          <span className="w-7 h-7 rounded-full bg-warm-gold text-charcoal text-sm font-bold flex items-center justify-center shrink-0">1</span>
           Your Contact Info
         </h2>
         <div className="grid sm:grid-cols-2 gap-4">
@@ -286,7 +286,7 @@ export function PublicBookingForm({ orgId, orgSlug, orgName, packages }: PublicB
               onChange={(e) => setName(e.target.value)}
               placeholder="Jane Smith"
               required
-              className="w-full h-12 rounded-lg border border-warm-sand/20 bg-warm-sand/5 px-4 text-base text-warm-white placeholder:text-warm-white/30 focus:border-olive-gold focus:outline-none focus:ring-1 focus:ring-olive-gold transition-colors"
+              className="w-full h-12 rounded-lg border border-warm-sand/20 bg-warm-sand/5 px-4 text-base text-warm-white placeholder:text-warm-white/30 focus:border-warm-gold focus:outline-none focus:ring-1 focus:ring-warm-gold transition-colors"
             />
           </div>
           <div>
@@ -297,7 +297,7 @@ export function PublicBookingForm({ orgId, orgSlug, orgName, packages }: PublicB
               onChange={(e) => setEmail(e.target.value)}
               placeholder="jane@example.com"
               required
-              className="w-full h-12 rounded-lg border border-warm-sand/20 bg-warm-sand/5 px-4 text-base text-warm-white placeholder:text-warm-white/30 focus:border-olive-gold focus:outline-none focus:ring-1 focus:ring-olive-gold transition-colors"
+              className="w-full h-12 rounded-lg border border-warm-sand/20 bg-warm-sand/5 px-4 text-base text-warm-white placeholder:text-warm-white/30 focus:border-warm-gold focus:outline-none focus:ring-1 focus:ring-warm-gold transition-colors"
             />
           </div>
           <div className="sm:col-span-2">
@@ -307,7 +307,7 @@ export function PublicBookingForm({ orgId, orgSlug, orgName, packages }: PublicB
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
               placeholder="(555) 123-4567"
-              className="w-full h-12 rounded-lg border border-warm-sand/20 bg-warm-sand/5 px-4 text-base text-warm-white placeholder:text-warm-white/30 focus:border-olive-gold focus:outline-none focus:ring-1 focus:ring-olive-gold transition-colors"
+              className="w-full h-12 rounded-lg border border-warm-sand/20 bg-warm-sand/5 px-4 text-base text-warm-white placeholder:text-warm-white/30 focus:border-warm-gold focus:outline-none focus:ring-1 focus:ring-warm-gold transition-colors"
             />
           </div>
         </div>
@@ -316,7 +316,7 @@ export function PublicBookingForm({ orgId, orgSlug, orgName, packages }: PublicB
       {/* Event Details */}
       <div className="bg-warm-sand/5 rounded-xl p-6 border border-warm-sand/10 space-y-4">
         <h2 className="text-lg font-semibold text-warm-white flex items-center gap-2">
-          <span className="w-7 h-7 rounded-full bg-olive-gold text-charcoal text-sm font-bold flex items-center justify-center shrink-0">2</span>
+          <span className="w-7 h-7 rounded-full bg-warm-gold text-charcoal text-sm font-bold flex items-center justify-center shrink-0">2</span>
           Event Details
         </h2>
         <div>
@@ -327,7 +327,7 @@ export function PublicBookingForm({ orgId, orgSlug, orgName, packages }: PublicB
             onChange={(e) => setEventName(e.target.value)}
             placeholder="Our Wedding Reception"
             required
-            className="w-full h-12 rounded-lg border border-warm-sand/20 bg-warm-sand/5 px-4 text-base text-warm-white placeholder:text-warm-white/30 focus:border-olive-gold focus:outline-none focus:ring-1 focus:ring-olive-gold transition-colors"
+            className="w-full h-12 rounded-lg border border-warm-sand/20 bg-warm-sand/5 px-4 text-base text-warm-white placeholder:text-warm-white/30 focus:border-warm-gold focus:outline-none focus:ring-1 focus:ring-warm-gold transition-colors"
           />
         </div>
         <div className="grid sm:grid-cols-2 gap-4">
@@ -336,7 +336,7 @@ export function PublicBookingForm({ orgId, orgSlug, orgName, packages }: PublicB
             <select
               value={eventType}
               onChange={(e) => setEventType(e.target.value)}
-              className="w-full h-12 rounded-lg border border-warm-sand/20 bg-warm-sand/5 px-4 text-base text-warm-white focus:border-olive-gold focus:outline-none focus:ring-1 focus:ring-olive-gold transition-colors"
+              className="w-full h-12 rounded-lg border border-warm-sand/20 bg-warm-sand/5 px-4 text-base text-warm-white focus:border-warm-gold focus:outline-none focus:ring-1 focus:ring-warm-gold transition-colors"
             >
               {eventTypes.map(t => (
                 <option key={t.value} value={t.value} className="bg-charcoal">{t.label}</option>
@@ -351,7 +351,7 @@ export function PublicBookingForm({ orgId, orgSlug, orgName, packages }: PublicB
               onChange={(e) => setGuestCount(e.target.value)}
               placeholder="100"
               min="1"
-              className="w-full h-12 rounded-lg border border-warm-sand/20 bg-warm-sand/5 px-4 text-base text-warm-white placeholder:text-warm-white/30 focus:border-olive-gold focus:outline-none focus:ring-1 focus:ring-olive-gold transition-colors"
+              className="w-full h-12 rounded-lg border border-warm-sand/20 bg-warm-sand/5 px-4 text-base text-warm-white placeholder:text-warm-white/30 focus:border-warm-gold focus:outline-none focus:ring-1 focus:ring-warm-gold transition-colors"
             />
           </div>
         </div>
@@ -359,7 +359,7 @@ export function PublicBookingForm({ orgId, orgSlug, orgName, packages }: PublicB
           <label className="block text-sm font-medium text-warm-white/80 mb-1.5">Preferred Date *</label>
           <DatePicker value={eventDate} onChange={setEventDate} />
           {eventDate && (
-            <p className="text-xs text-olive-gold mt-1">
+            <p className="text-xs text-warm-gold mt-1">
               {new Date(eventDate + "T00:00:00").toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" })}
             </p>
           )}
@@ -371,7 +371,7 @@ export function PublicBookingForm({ orgId, orgSlug, orgName, packages }: PublicB
               type="time"
               value={startTime}
               onChange={(e) => setStartTime(e.target.value)}
-              className="w-full h-12 rounded-lg border border-warm-sand/20 bg-warm-sand/5 px-4 text-base text-warm-white focus:border-olive-gold focus:outline-none focus:ring-1 focus:ring-olive-gold transition-colors"
+              className="w-full h-12 rounded-lg border border-warm-sand/20 bg-warm-sand/5 px-4 text-base text-warm-white focus:border-warm-gold focus:outline-none focus:ring-1 focus:ring-warm-gold transition-colors"
             />
           </div>
           <div>
@@ -380,7 +380,7 @@ export function PublicBookingForm({ orgId, orgSlug, orgName, packages }: PublicB
               type="time"
               value={endTime}
               onChange={(e) => setEndTime(e.target.value)}
-              className="w-full h-12 rounded-lg border border-warm-sand/20 bg-warm-sand/5 px-4 text-base text-warm-white focus:border-olive-gold focus:outline-none focus:ring-1 focus:ring-olive-gold transition-colors"
+              className="w-full h-12 rounded-lg border border-warm-sand/20 bg-warm-sand/5 px-4 text-base text-warm-white focus:border-warm-gold focus:outline-none focus:ring-1 focus:ring-warm-gold transition-colors"
             />
           </div>
         </div>
@@ -391,7 +391,7 @@ export function PublicBookingForm({ orgId, orgSlug, orgName, packages }: PublicB
             value={venueName}
             onChange={(e) => setVenueName(e.target.value)}
             placeholder="Where is the event?"
-            className="w-full h-12 rounded-lg border border-warm-sand/20 bg-warm-sand/5 px-4 text-base text-warm-white placeholder:text-warm-white/30 focus:border-olive-gold focus:outline-none focus:ring-1 focus:ring-olive-gold transition-colors"
+            className="w-full h-12 rounded-lg border border-warm-sand/20 bg-warm-sand/5 px-4 text-base text-warm-white placeholder:text-warm-white/30 focus:border-warm-gold focus:outline-none focus:ring-1 focus:ring-warm-gold transition-colors"
           />
         </div>
         <div>
@@ -401,7 +401,7 @@ export function PublicBookingForm({ orgId, orgSlug, orgName, packages }: PublicB
             onChange={(e) => setNotes(e.target.value)}
             placeholder="Any special requests..."
             rows={3}
-            className="w-full rounded-lg border border-warm-sand/20 bg-warm-sand/5 px-4 py-3 text-base text-warm-white placeholder:text-warm-white/30 focus:border-olive-gold focus:outline-none focus:ring-1 focus:ring-olive-gold transition-colors resize-none"
+            className="w-full rounded-lg border border-warm-sand/20 bg-warm-sand/5 px-4 py-3 text-base text-warm-white placeholder:text-warm-white/30 focus:border-warm-gold focus:outline-none focus:ring-1 focus:ring-warm-gold transition-colors resize-none"
           />
         </div>
       </div>
@@ -410,7 +410,7 @@ export function PublicBookingForm({ orgId, orgSlug, orgName, packages }: PublicB
       {packages.length > 0 && (
         <div className="bg-warm-sand/5 rounded-xl p-6 border border-warm-sand/10 space-y-4">
           <h2 className="text-lg font-semibold text-warm-white flex items-center gap-2">
-            <span className="w-7 h-7 rounded-full bg-olive-gold text-charcoal text-sm font-bold flex items-center justify-center shrink-0">3</span>
+            <span className="w-7 h-7 rounded-full bg-warm-gold text-charcoal text-sm font-bold flex items-center justify-center shrink-0">3</span>
             Choose a Package
           </h2>
           <p className="text-sm text-warm-white/50">Select a package or skip — we can discuss options later.</p>
@@ -423,14 +423,14 @@ export function PublicBookingForm({ orgId, orgSlug, orgName, packages }: PublicB
                   type="button"
                   onClick={() => setPackageId(isSelected ? "" : pkg.id)}
                   className={`w-full text-left p-4 rounded-xl border transition-all ${
-                    isSelected ? "border-olive-gold bg-olive-gold/10" : "border-warm-sand/10 hover:border-warm-sand/30 bg-warm-sand/[0.02]"
+                    isSelected ? "border-warm-gold bg-warm-gold/10" : "border-warm-sand/10 hover:border-warm-sand/30 bg-warm-sand/[0.02]"
                   }`}
                 >
                   <div className="flex items-start justify-between">
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
                         <h3 className="text-warm-white font-bold">{pkg.name}</h3>
-                        {isSelected && <Check className="w-4 h-4 text-olive-gold shrink-0" />}
+                        {isSelected && <Check className="w-4 h-4 text-warm-gold shrink-0" />}
                       </div>
                       {pkg.description && <p className="text-sm text-warm-white/60 mt-1 line-clamp-2">{pkg.description}</p>}
                       <div className="flex flex-wrap gap-2 mt-2">
@@ -443,7 +443,7 @@ export function PublicBookingForm({ orgId, orgSlug, orgName, packages }: PublicB
                       </div>
                     </div>
                     <div className="text-right ml-4 shrink-0">
-                      <p className={`text-lg font-bold ${isSelected ? "text-olive-gold" : "text-warm-white"}`}>${pkg.base_price}</p>
+                      <p className={`text-lg font-bold ${isSelected ? "text-warm-gold" : "text-warm-white"}`}>${pkg.base_price}</p>
                       <p className="text-xs text-warm-white/50">
                         {pkg.pricing_type === "per_guest" ? "/guest" : pkg.pricing_type === "flat" ? "flat" : "/hr"}
                       </p>
@@ -466,7 +466,7 @@ export function PublicBookingForm({ orgId, orgSlug, orgName, packages }: PublicB
               </div>
               <div className="flex justify-between text-warm-white font-bold pt-2 border-t border-warm-sand/10">
                 <span>Estimated total</span>
-                <span className="text-olive-gold">${pricing.total.toLocaleString()}</span>
+                <span className="text-warm-gold">${pricing.total.toLocaleString()}</span>
               </div>
             </div>
           )}
@@ -482,7 +482,7 @@ export function PublicBookingForm({ orgId, orgSlug, orgName, packages }: PublicB
       <button
         type="submit"
         disabled={loading || !canSubmit}
-        className="w-full h-14 bg-olive-gold text-charcoal font-bold rounded-xl text-lg hover:brightness-110 transition-all disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.99]"
+        className="w-full h-14 bg-warm-gold text-charcoal font-bold rounded-xl text-lg hover:brightness-110 transition-all disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.99]"
       >
         {loading ? "Submitting..." : "Send Booking Request"}
       </button>

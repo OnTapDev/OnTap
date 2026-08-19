@@ -9,7 +9,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         <div className="text-center p-8">
           <h1 className="text-warm-white text-2xl font-bold mb-4">Configuration Required</h1>
           <p className="text-warm-sand">
-            Please add your Clerk keys to <code className="text-olive-gold">.env.local</code>
+            Please add your Clerk keys to <code className="text-warm-gold">.env.local</code>
           </p>
         </div>
       </div>
@@ -21,7 +21,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       appearance={{
         baseTheme: undefined,
         variables: {
-          colorPrimary: "#7D7254",
+          colorPrimary: "#7D6854",
           colorBackground: "#1A1A1A",
           colorInputBackground: "#1A1A1A",
           colorInputText: "#F3E7D3",
@@ -32,7 +32,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         },
         elements: {
           formButtonPrimary:
-            "bg-olive-gold text-charcoal hover:bg-olive-gold/90 font-bold",
+            "bg-warm-gold text-charcoal hover:bg-warm-gold/90 font-bold",
           card: "bg-charcoal border border-warm-sand/20",
           headerTitle: "text-warm-white",
           headerSubtitle: "text-warm-sand",
@@ -42,8 +42,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           dividerText: "text-warm-sand",
           formFieldLabel: "text-warm-sand",
           formFieldInput:
-            "border-warm-sand/30 bg-charcoal text-warm-white focus:border-olive-gold focus:ring-olive-gold",
-          footerActionLink: "text-olive-gold hover:text-olive-gold/80",
+            "border-warm-sand/30 bg-charcoal text-warm-white focus:border-warm-gold focus:ring-warm-gold",
+          footerActionLink: "text-warm-gold hover:text-warm-gold/80",
           organizationSwitcherTrigger:
             "bg-charcoal border border-warm-sand/30 text-warm-white hover:bg-warm-sand/10",
           organizationPreviewText: "text-warm-white",

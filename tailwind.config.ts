@@ -14,7 +14,6 @@ const config: Config = {
         charcoal: "#1A1A1A",
         "warm-white": "#F3E7D3",
         "warm-gold": "#7D6854",
-        "olive-gold": "#7D7254",
         "warm-sand": "#B2A88A",
         "warm-white-text": "#F3E7D3",
       },

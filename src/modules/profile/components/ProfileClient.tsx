@@ -499,7 +499,7 @@ export function ProfileClient({
   const renderTab = (id: string, label: string) => (
     <button key={id} onClick={() => setActiveTab(id)}
       className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
-        activeTab === id ? "bg-olive-gold text-charcoal" : "text-warm-sand hover:text-warm-white hover:bg-warm-sand/10"
+        activeTab === id ? "bg-warm-gold text-charcoal" : "text-warm-sand hover:text-warm-white hover:bg-warm-sand/10"
       }`}>
       {label}
     </button>
@@ -521,7 +521,7 @@ export function ProfileClient({
                 <div className="flex items-start justify-between mb-3">
                   <div>
                     <h4 className="text-warm-white font-medium">{addOn.name}</h4>
-                    <p className="text-olive-gold font-bold text-lg">${addOn.price}</p>
+                    <p className="text-warm-gold font-bold text-lg">${addOn.price}</p>
                   </div>
                   <div className="flex gap-1">
                     <button onClick={() => startEditAddOn(addOn)} className="p-1.5 text-warm-sand hover:text-warm-white">Edit</button>
@@ -547,7 +547,7 @@ export function ProfileClient({
               <div><label className="label">Price *</label><Input value={addOnForm.price} onChange={e => setAddOnForm({ ...addOnForm, price: e.target.value })} placeholder="150" type="number" /></div>
               <div className="md:col-span-2"><label className="label">Description</label><Textarea value={addOnForm.description} onChange={e => setAddOnForm({ ...addOnForm, description: e.target.value })} placeholder="What's included..." rows={2} /></div>
               <div className="md:col-span-2 flex items-center gap-2">
-                <input type="checkbox" checked={addOnForm.is_active} onChange={e => setAddOnForm({ ...addOnForm, is_active: e.target.checked })} className="w-4 h-4 accent-olive-gold" />
+                <input type="checkbox" checked={addOnForm.is_active} onChange={e => setAddOnForm({ ...addOnForm, is_active: e.target.checked })} className="w-4 h-4 accent-warm-gold" />
                 <span className="text-warm-sand text-sm">Active (available on quotes/bookings)</span>
               </div>
             </div>
@@ -588,7 +588,7 @@ export function ProfileClient({
                     <h3 className="text-warm-white font-bold text-lg">{form.name || "Your Business Name"}</h3>
                     {form.city && <p className="text-warm-sand text-sm">{form.city}{form.state && `, ${form.state}`}</p>}
                     {form.is_marketplace_listed && (
-                      <span className="inline-flex items-center gap-1 text-xs text-olive-gold mt-1">
+                      <span className="inline-flex items-center gap-1 text-xs text-warm-gold mt-1">
                         <Store className="w-3 h-3" /> Marketplace listed
                       </span>
                     )}
@@ -601,35 +601,35 @@ export function ProfileClient({
                     <div className="space-y-1">
                       {form.phone && (
                         <p className="text-warm-white text-sm flex items-center gap-2">
-                          <Phone className="w-4 h-4 text-olive-gold" /> {form.phone}
+                          <Phone className="w-4 h-4 text-warm-gold" /> {form.phone}
                         </p>
                       )}
                       {form.email && (
                         <p className="text-warm-white text-sm flex items-center gap-2">
-                          <Mail className="w-4 h-4 text-olive-gold" /> {form.email}
+                          <Mail className="w-4 h-4 text-warm-gold" /> {form.email}
                         </p>
                       )}
                     </div>
                   </div>
                 )}
                 {form.zones_of_operation && <div><h4 className="text-warm-sand text-sm font-medium mb-1">Service Area</h4><p className="text-warm-white text-sm">{form.zones_of_operation}</p></div>}
-                {form.website && <div><h4 className="text-warm-sand text-sm font-medium mb-1">Website</h4><p className="text-olive-gold text-sm flex items-center gap-2"><Globe className="w-4 h-4" /> {form.website}</p></div>}
+                {form.website && <div><h4 className="text-warm-sand text-sm font-medium mb-1">Website</h4><p className="text-warm-gold text-sm flex items-center gap-2"><Globe className="w-4 h-4" /> {form.website}</p></div>}
                 {(form.instagram || form.facebook || form.twitter) && (
                   <div>
                     <h4 className="text-warm-sand text-sm font-medium mb-1">Social</h4>
                     <div className="flex gap-2 flex-wrap">
                       {form.instagram && (
-                        <a href={`https://instagram.com/${form.instagram.replace('@', '')}`} target="_blank" rel="noopener noreferrer" className="text-olive-gold hover:text-warm-white transition-colors flex items-center gap-1">
+                        <a href={`https://instagram.com/${form.instagram.replace('@', '')}`} target="_blank" rel="noopener noreferrer" className="text-warm-gold hover:text-warm-white transition-colors flex items-center gap-1">
                           <Instagram className="w-4 h-4" /> {form.instagram}
                         </a>
                       )}
                       {form.facebook && (
-                        <a href={form.facebook.startsWith('http') ? form.facebook : `https://facebook.com/${form.facebook}`} target="_blank" rel="noopener noreferrer" className="text-olive-gold hover:text-warm-white transition-colors flex items-center gap-1">
+                        <a href={form.facebook.startsWith('http') ? form.facebook : `https://facebook.com/${form.facebook}`} target="_blank" rel="noopener noreferrer" className="text-warm-gold hover:text-warm-white transition-colors flex items-center gap-1">
                           <Facebook className="w-4 h-4" /> {form.facebook}
                         </a>
                       )}
                       {form.twitter && (
-                        <a href={form.twitter.startsWith('http') ? form.twitter : `https://x.com/${form.twitter.replace('@', '')}`} target="_blank" rel="noopener noreferrer" className="text-olive-gold hover:text-warm-white transition-colors flex items-center gap-1">
+                        <a href={form.twitter.startsWith('http') ? form.twitter : `https://x.com/${form.twitter.replace('@', '')}`} target="_blank" rel="noopener noreferrer" className="text-warm-gold hover:text-warm-white transition-colors flex items-center gap-1">
                           <Twitter className="w-4 h-4" /> {form.twitter}
                         </a>
                       )}
@@ -638,24 +638,24 @@ export function ProfileClient({
                 )}
                 {packages.length > 0 && (
                   <div><h4 className="text-warm-sand text-sm font-medium mb-2">Packages</h4><div className="space-y-2">{packages.slice(0, 3).map(pkg => (
-                    <div key={pkg.id} className="flex items-center justify-between p-2 bg-warm-sand/5 rounded"><span className="text-warm-white text-sm">{pkg.name}</span><span className="text-olive-gold font-medium">${pkg.base_price}</span></div>
+                    <div key={pkg.id} className="flex items-center justify-between p-2 bg-warm-sand/5 rounded"><span className="text-warm-white text-sm">{pkg.name}</span><span className="text-warm-gold font-medium">${pkg.base_price}</span></div>
                   ))}</div></div>
                 )}
                 {addOns.length > 0 && (
                   <div><h4 className="text-warm-sand text-sm font-medium mb-2">Add-Ons</h4><div className="space-y-2">{addOns.filter(a => a.is_active).slice(0, 3).map(addOn => (
-                    <div key={addOn.id} className="flex items-center justify-between p-2 bg-warm-sand/5 rounded"><span className="text-warm-white text-sm">{addOn.name}</span><span className="text-olive-gold font-medium">${addOn.price}</span></div>
+                    <div key={addOn.id} className="flex items-center justify-between p-2 bg-warm-sand/5 rounded"><span className="text-warm-white text-sm">{addOn.name}</span><span className="text-warm-gold font-medium">${addOn.price}</span></div>
                   ))}</div></div>
                 )}
                 {(setupProgress.insurance.generalLiability || setupProgress.insurance.liquorLiability || setupProgress.insurance.commercialAuto || setupProgress.permits.liquorLicense || setupProgress.permits.cateringPermit || setupProgress.permits.businessLicense) && (
                   <div>
                     <h4 className="text-warm-sand text-sm font-medium mb-2">Credentials</h4>
                     <div className="flex flex-wrap gap-1.5">
-                      {setupProgress.insurance.generalLiability && <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-olive-gold/15 border border-olive-gold/30 text-olive-gold text-xs"><ShieldCheck className="w-3 h-3" /> General Liability</span>}
-                      {setupProgress.insurance.liquorLiability && <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-olive-gold/15 border border-olive-gold/30 text-olive-gold text-xs"><ShieldCheck className="w-3 h-3" /> Liquor Liability</span>}
-                      {setupProgress.insurance.commercialAuto && <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-olive-gold/15 border border-olive-gold/30 text-olive-gold text-xs"><ShieldCheck className="w-3 h-3" /> Commercial Auto</span>}
-                      {setupProgress.permits.liquorLicense && <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-olive-gold/15 border border-olive-gold/30 text-olive-gold text-xs"><ShieldCheck className="w-3 h-3" /> Liquor License</span>}
-                      {setupProgress.permits.cateringPermit && <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-olive-gold/15 border border-olive-gold/30 text-olive-gold text-xs"><ShieldCheck className="w-3 h-3" /> Catering Permit</span>}
-                      {setupProgress.permits.businessLicense && <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-olive-gold/15 border border-olive-gold/30 text-olive-gold text-xs"><ShieldCheck className="w-3 h-3" /> Business License</span>}
+                      {setupProgress.insurance.generalLiability && <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-warm-gold/15 border border-warm-gold/30 text-warm-gold text-xs"><ShieldCheck className="w-3 h-3" /> General Liability</span>}
+                      {setupProgress.insurance.liquorLiability && <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-warm-gold/15 border border-warm-gold/30 text-warm-gold text-xs"><ShieldCheck className="w-3 h-3" /> Liquor Liability</span>}
+                      {setupProgress.insurance.commercialAuto && <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-warm-gold/15 border border-warm-gold/30 text-warm-gold text-xs"><ShieldCheck className="w-3 h-3" /> Commercial Auto</span>}
+                      {setupProgress.permits.liquorLicense && <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-warm-gold/15 border border-warm-gold/30 text-warm-gold text-xs"><ShieldCheck className="w-3 h-3" /> Liquor License</span>}
+                      {setupProgress.permits.cateringPermit && <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-warm-gold/15 border border-warm-gold/30 text-warm-gold text-xs"><ShieldCheck className="w-3 h-3" /> Catering Permit</span>}
+                      {setupProgress.permits.businessLicense && <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-warm-gold/15 border border-warm-gold/30 text-warm-gold text-xs"><ShieldCheck className="w-3 h-3" /> Business License</span>}
                     </div>
                   </div>
                 )}
@@ -677,10 +677,10 @@ export function ProfileClient({
                 <div className="mb-4">
                   <div className="flex justify-between text-sm mb-2">
                     <span className="text-warm-sand">Business readiness</span>
-                    <span className="text-olive-gold font-medium">{setupPct}%</span>
+                    <span className="text-warm-gold font-medium">{setupPct}%</span>
                   </div>
                   <div className="h-2 bg-warm-sand/10 rounded-full overflow-hidden">
-                    <div className="h-full bg-olive-gold transition-all duration-300" style={{ width: `${setupPct}%` }} />
+                    <div className="h-full bg-warm-gold transition-all duration-300" style={{ width: `${setupPct}%` }} />
                   </div>
                 </div>
                 <div className="grid gap-3 md:grid-cols-3 text-sm">
@@ -739,19 +739,19 @@ export function ProfileClient({
               <CardContent>
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div className="p-3 bg-warm-sand/5 rounded-lg text-center">
-                    <p className="text-olive-gold text-lg font-bold">{packages.length}</p>
+                    <p className="text-warm-gold text-lg font-bold">{packages.length}</p>
                     <p className="text-warm-sand">Packages</p>
                   </div>
                   <div className="p-3 bg-warm-sand/5 rounded-lg text-center">
-                    <p className="text-olive-gold text-lg font-bold">{galleryItems.length}</p>
+                    <p className="text-warm-gold text-lg font-bold">{galleryItems.length}</p>
                     <p className="text-warm-sand">Photos</p>
                   </div>
                   <div className="p-3 bg-warm-sand/5 rounded-lg text-center">
-                    <p className="text-olive-gold text-lg font-bold">{inventoryItems.length}</p>
+                    <p className="text-warm-gold text-lg font-bold">{inventoryItems.length}</p>
                     <p className="text-warm-sand">Inventory Items</p>
                   </div>
                   <div className="p-3 bg-warm-sand/5 rounded-lg text-center">
-                    <p className="text-olive-gold text-lg font-bold">{documents.length}</p>
+                    <p className="text-warm-gold text-lg font-bold">{documents.length}</p>
                     <p className="text-warm-sand">Documents</p>
                   </div>
                 </div>
@@ -785,7 +785,7 @@ export function ProfileClient({
                             className="absolute top-0 right-0 bg-red-500/80 text-white p-1 rounded-bl text-xs hover:bg-red-500">✕</button>
                         </div>
                       ) : (
-                        <label className="w-20 h-20 rounded-lg border-2 border-dashed border-warm-sand/30 flex flex-col items-center justify-center cursor-pointer hover:border-olive-gold transition-colors">
+                        <label className="w-20 h-20 rounded-lg border-2 border-dashed border-warm-sand/30 flex flex-col items-center justify-center cursor-pointer hover:border-warm-gold transition-colors">
                           <Upload className="w-6 h-6 text-warm-sand" /><span className="text-xs text-warm-sand mt-1">Upload</span>
                           <input type="file" accept="image/*" className="hidden" onChange={e => {
                             const file = e.target.files?.[0];
@@ -848,7 +848,7 @@ export function ProfileClient({
                 <div className="flex items-start gap-3">
                   <input type="checkbox" checked={form.is_marketplace_listed}
                     onChange={e => setForm({ ...form, is_marketplace_listed: e.target.checked })}
-                    className="w-5 h-5 mt-0.5 accent-olive-gold rounded" />
+                    className="w-5 h-5 mt-0.5 accent-warm-gold rounded" />
                   <div>
                     <p className="text-warm-white font-medium">List in Marketplace</p>
                     <p className="text-warm-sand text-sm">Make your business visible to potential clients browsing mobile bar services. Requires complete profile with packages, gallery, and insurance.</p>
@@ -962,7 +962,7 @@ export function ProfileClient({
                       <div className="flex items-start justify-between mb-3">
                         <div>
                           <h4 className="text-warm-white font-medium">{pkg.name}</h4>
-                          <p className="text-olive-gold font-bold text-lg">${pkg.base_price}<span className="text-warm-sand text-sm font-normal">{pkg.pricing_type === "hourly" ? "/hr" : pkg.pricing_type === "per_guest" ? "/guest" : ""}</span></p>
+                          <p className="text-warm-gold font-bold text-lg">${pkg.base_price}<span className="text-warm-sand text-sm font-normal">{pkg.pricing_type === "hourly" ? "/hr" : pkg.pricing_type === "per_guest" ? "/guest" : ""}</span></p>
                         </div>
                         <div className="flex gap-1">
                           <button onClick={() => startEditPackage(pkg)} className="p-1.5 text-warm-sand hover:text-warm-white">Edit</button>
@@ -998,7 +998,7 @@ export function ProfileClient({
                     <div><label className="label">Max Guests</label><Input value={pkgForm.max_guests} onChange={e => setPkgForm({ ...pkgForm, max_guests: e.target.value })} placeholder="100" type="number" /></div>
                     <div className="md:col-span-2"><label className="label">Description</label><Textarea value={pkgForm.description} onChange={e => setPkgForm({ ...pkgForm, description: e.target.value })} placeholder="What's included..." rows={2} /></div>
                     <div className="md:col-span-2 flex items-center gap-2">
-                      <input type="checkbox" checked={pkgForm.includes_glassware} onChange={e => setPkgForm({ ...pkgForm, includes_glassware: e.target.checked })} className="w-4 h-4 accent-olive-gold" />
+                      <input type="checkbox" checked={pkgForm.includes_glassware} onChange={e => setPkgForm({ ...pkgForm, includes_glassware: e.target.checked })} className="w-4 h-4 accent-warm-gold" />
                       <span className="text-warm-sand text-sm">Includes glassware</span>
                     </div>
                   </div>
@@ -1019,12 +1019,12 @@ export function ProfileClient({
         <div className="space-y-6">
           <div className="bg-warm-sand/5 border border-warm-sand/20 rounded-xl p-4">
             <p className="text-warm-sand text-sm">
-              <Info className="w-4 h-4 text-olive-gold inline mr-2 align-[-2px]" />
+              <Info className="w-4 h-4 text-warm-gold inline mr-2 align-[-2px]" />
               The providers and links below are suggestions only — we do not have partnerships or affiliate relationships with any of them.
               If you already have your own insurance, permits, or licenses, simply check the item off and continue setting up your profile.
             </p>
             <p className="text-warm-sand text-sm mt-2">
-              <ShieldCheck className="w-4 h-4 text-olive-gold inline mr-2 align-[-2px]" />
+              <ShieldCheck className="w-4 h-4 text-warm-gold inline mr-2 align-[-2px]" />
               Items you check off appear as verified credentials on your public profile, so venues and corporate clients know you&apos;re covered before they schedule you.
             </p>
           </div>
@@ -1032,7 +1032,7 @@ export function ProfileClient({
             <Card>
               <CardHeader>
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-olive-gold/20 flex items-center justify-center"><Shield className="w-5 h-5 text-olive-gold" /></div>
+                  <div className="w-10 h-10 rounded-lg bg-warm-gold/20 flex items-center justify-center"><Shield className="w-5 h-5 text-warm-gold" /></div>
                   <div><CardTitle>Insurance</CardTitle></div>
                 </div>
               </CardHeader>
@@ -1062,7 +1062,7 @@ export function ProfileClient({
                         <div className="flex flex-wrap gap-1.5 ml-7 mt-2">
                           {item.providers.map(p => (
                             <a key={p.name} href={p.url} target="_blank" rel="noopener noreferrer"
-                              className="text-xs px-2 py-1 bg-olive-gold/20 text-olive-gold rounded-full hover:bg-olive-gold/30 transition-colors">{p.name}</a>
+                              className="text-xs px-2 py-1 bg-warm-gold/20 text-warm-gold rounded-full hover:bg-warm-gold/30 transition-colors">{p.name}</a>
                           ))}
                         </div>
                       </div>
@@ -1075,7 +1075,7 @@ export function ProfileClient({
             <Card>
               <CardHeader>
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-olive-gold/20 flex items-center justify-center"><Building2 className="w-5 h-5 text-olive-gold" /></div>
+                  <div className="w-10 h-10 rounded-lg bg-warm-gold/20 flex items-center justify-center"><Building2 className="w-5 h-5 text-warm-gold" /></div>
                   <div><CardTitle>Company Formation</CardTitle></div>
                 </div>
               </CardHeader>
@@ -1106,7 +1106,7 @@ export function ProfileClient({
                           <div className="flex flex-wrap gap-1.5 ml-7 mt-2">
                             {item.providers.map(p => (
                               <a key={p.name} href={p.url} target="_blank" rel="noopener noreferrer"
-                                className="text-xs px-2 py-1 bg-olive-gold/20 text-olive-gold rounded-full hover:bg-olive-gold/30 transition-colors">{p.name}</a>
+                                className="text-xs px-2 py-1 bg-warm-gold/20 text-warm-gold rounded-full hover:bg-warm-gold/30 transition-colors">{p.name}</a>
                             ))}
                           </div>
                         )}
@@ -1120,7 +1120,7 @@ export function ProfileClient({
             <Card>
               <CardHeader>
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-olive-gold/20 flex items-center justify-center"><FileText className="w-5 h-5 text-olive-gold" /></div>
+                  <div className="w-10 h-10 rounded-lg bg-warm-gold/20 flex items-center justify-center"><FileText className="w-5 h-5 text-warm-gold" /></div>
                   <div><CardTitle>Permits & Licenses</CardTitle></div>
                 </div>
               </CardHeader>
@@ -1148,7 +1148,7 @@ export function ProfileClient({
                         <p className="text-warm-sand text-xs ml-7">{item.desc}</p>
                         {item.link && (
                           <a href={item.link} target="_blank" rel="noopener noreferrer"
-                            className="text-xs ml-7 mt-1 inline-block text-olive-gold hover:underline">{item.linkText}</a>
+                            className="text-xs ml-7 mt-1 inline-block text-warm-gold hover:underline">{item.linkText}</a>
                         )}
                       </div>
                     );
@@ -1158,12 +1158,12 @@ export function ProfileClient({
             </Card>
           </div>
 
-          <div className="bg-olive-gold/10 border border-olive-gold/20 rounded-xl p-6">
+          <div className="bg-warm-gold/10 border border-warm-gold/20 rounded-xl p-6">
             <h3 className="text-warm-white font-semibold mb-3">Pro Tips</h3>
             <ul className="space-y-2 text-warm-sand text-sm">
-              <li className="flex items-start gap-2"><CheckCircle2 className="w-4 h-4 text-olive-gold mt-0.5 flex-shrink-0" />Start with LLC + general liability and liquor liability insurance before taking any paid events</li>
-              <li className="flex items-start gap-2"><CheckCircle2 className="w-4 h-4 text-olive-gold mt-0.5 flex-shrink-0" />Keep business and personal finances separate — open a business bank account</li>
-              <li className="flex items-start gap-2"><CheckCircle2 className="w-4 h-4 text-olive-gold mt-0.5 flex-shrink-0" />Consider hiring an accountant familiar with service businesses for tax planning</li>
+              <li className="flex items-start gap-2"><CheckCircle2 className="w-4 h-4 text-warm-gold mt-0.5 flex-shrink-0" />Start with LLC + general liability and liquor liability insurance before taking any paid events</li>
+              <li className="flex items-start gap-2"><CheckCircle2 className="w-4 h-4 text-warm-gold mt-0.5 flex-shrink-0" />Keep business and personal finances separate — open a business bank account</li>
+              <li className="flex items-start gap-2"><CheckCircle2 className="w-4 h-4 text-warm-gold mt-0.5 flex-shrink-0" />Consider hiring an accountant familiar with service businesses for tax planning</li>
             </ul>
           </div>
         </div>
@@ -1224,7 +1224,7 @@ export function ProfileClient({
                   return (
                     <div key={category.value} className="mb-6">
                       <div className="flex items-center gap-2 mb-3">
-                        <CatIcon className="w-4 h-4 text-olive-gold" />
+                        <CatIcon className="w-4 h-4 text-warm-gold" />
                         <h4 className="text-warm-white font-medium text-sm">{category.label}</h4>
                         <span className="text-xs text-warm-sand">({items.length})</span>
                       </div>
@@ -1234,7 +1234,7 @@ export function ProfileClient({
                             <div className="flex items-start justify-between">
                               <div>
                                 <h5 className="text-warm-white font-medium text-sm">{item.name}</h5>
-                                <p className="text-lg font-bold text-olive-gold">
+                                <p className="text-lg font-bold text-warm-gold">
                                   {item.quantity} <span className="text-xs text-warm-sand font-normal">{item.unit}</span>
                                 </p>
                               </div>
@@ -1273,7 +1273,7 @@ export function ProfileClient({
             <p className="text-warm-sand text-sm mb-2">Showcase your events, drinks, menus, and more.</p>
             <div className="bg-warm-sand/5 border border-warm-sand/20 rounded-xl p-4 mb-4">
               <p className="text-warm-sand text-xs leading-relaxed">
-                <Info className="w-3.5 h-3.5 text-olive-gold inline mr-1.5 align-[-2px]" />
+                <Info className="w-3.5 h-3.5 text-warm-gold inline mr-1.5 align-[-2px]" />
                 OnTap is a service that helps you store and organize your photos and files — we are not responsible for
                 keeping records your business is legally required to hold. You are responsible for maintaining your own
                 copies and records as required by law. We recommend downloading important files and keeping them backed up
@@ -1284,10 +1284,10 @@ export function ProfileClient({
               <div className="flex gap-2 flex-wrap mb-4">
                 {mediaTypes.map(type => (
                   <button key={type.value} onClick={() => setMediaFilter(type.value)}
-                    className={`px-3 py-1.5 rounded-lg text-sm transition-colors ${mediaFilter === type.value ? "bg-olive-gold text-charcoal" : "text-warm-sand bg-warm-sand/10 hover:text-warm-white"}`}>{type.label}</button>
+                    className={`px-3 py-1.5 rounded-lg text-sm transition-colors ${mediaFilter === type.value ? "bg-warm-gold text-charcoal" : "text-warm-sand bg-warm-sand/10 hover:text-warm-white"}`}>{type.label}</button>
                 ))}
               </div>
-              <label className="flex items-center justify-center w-full h-32 border-2 border-dashed border-warm-sand/30 rounded-lg cursor-pointer hover:border-olive-gold transition-colors">
+              <label className="flex items-center justify-center w-full h-32 border-2 border-dashed border-warm-sand/30 rounded-lg cursor-pointer hover:border-warm-gold transition-colors">
                 <div className="flex flex-col items-center"><Upload className="w-6 h-6 text-warm-sand" /><span className="text-sm text-warm-sand mt-1">Upload Photos</span></div>
                 <input type="file" accept="image/*" multiple className="hidden" onChange={async e => {
                   const files = Array.from(e.target.files || []);
@@ -1311,7 +1311,7 @@ export function ProfileClient({
               <>
                 <div className="flex items-center justify-between mb-4">
                   <p className="text-warm-sand text-sm">Drag to reorder • {galleryItems.filter(i => i.is_public).length} public</p>
-                  <button onClick={() => setEditMode(!editMode)} className="text-sm text-olive-gold hover:text-warm-white">{editMode ? "Done" : "Edit Order"}</button>
+                  <button onClick={() => setEditMode(!editMode)} className="text-sm text-warm-gold hover:text-warm-white">{editMode ? "Done" : "Edit Order"}</button>
                 </div>
                 <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                   {galleryItems.filter(item => mediaFilter === "all" || item.type === mediaFilter).map((item, index) => (
@@ -1332,20 +1332,20 @@ export function ProfileClient({
                           await reorderGalleryItems(organization.id, newOrder);
                         }
                       }}>
-                      <div className="aspect-square rounded-lg overflow-hidden bg-warm-sand/10 border-2 border-transparent hover:border-olive-gold transition-colors">
+                      <div className="aspect-square rounded-lg overflow-hidden bg-warm-sand/10 border-2 border-transparent hover:border-warm-gold transition-colors">
                         <img src={item.url} alt={item.caption || ""} className="w-full h-full object-cover" />
-                        {item.is_featured && <div className="absolute top-2 left-2 px-2 py-1 bg-olive-gold text-charcoal text-xs rounded font-medium">★ Featured</div>}
+                        {item.is_featured && <div className="absolute top-2 left-2 px-2 py-1 bg-warm-gold text-charcoal text-xs rounded font-medium">★ Featured</div>}
                         {editMode && <div className="absolute inset-0 bg-charcoal/60 flex items-center justify-center"><span className="text-warm-white font-medium">#{index + 1}</span></div>}
                       </div>
                       <div className="absolute top-2 left-2 flex gap-1 flex-wrap">
                         <span className="px-2 py-1 bg-charcoal/80 text-warm-white text-xs rounded">{mediaTypes.find(t => t.value === item.type)?.label}</span>
-                        <span className={`px-2 py-1 bg-charcoal/80 text-xs rounded ${item.is_public ? "text-olive-gold" : "text-warm-sand"}`}>{item.is_public ? "Public" : "Private"}</span>
+                        <span className={`px-2 py-1 bg-charcoal/80 text-xs rounded ${item.is_public ? "text-warm-gold" : "text-warm-sand"}`}>{item.is_public ? "Public" : "Private"}</span>
                       </div>
                       <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                         <a href={`${item.url}${item.url.includes("?") ? "&" : "?"}download=${encodeURIComponent(item.caption || "photo")}`}
                           className="p-1 bg-charcoal/80 text-warm-white rounded text-xs" title="Download"><Download className="w-3 h-3" /></a>
                         <button onClick={async () => { try { await updateGalleryItem(item.id, { is_featured: !item.is_featured }); } catch (err) { console.error(err); } }}
-                          className={`p-1 rounded text-xs ${item.is_featured ? "bg-olive-gold text-charcoal" : "bg-charcoal/80 text-warm-white"}`}>★</button>
+                          className={`p-1 rounded text-xs ${item.is_featured ? "bg-warm-gold text-charcoal" : "bg-charcoal/80 text-warm-white"}`}>★</button>
                         <button onClick={async () => { try { await updateGalleryItem(item.id, { is_public: !item.is_public }); } catch (err) { console.error(err); } }}
                           className="p-1 bg-charcoal/80 text-warm-white rounded text-xs">{item.is_public ? "🔒" : "👁"}</button>
                         <button onClick={async () => { if (confirm("Delete this photo?")) { try { await deleteGalleryItem(item.id); } catch (err) { console.error(err); } } }}
@@ -1369,7 +1369,7 @@ export function ProfileClient({
             <p className="text-warm-sand text-sm mb-2">Upload important documents like insurance, licenses, and permits.</p>
             <div className="bg-warm-sand/5 border border-warm-sand/20 rounded-xl p-4 mb-4">
               <p className="text-warm-sand text-xs leading-relaxed">
-                <Info className="w-3.5 h-3.5 text-olive-gold inline mr-1.5 align-[-2px]" />
+                <Info className="w-3.5 h-3.5 text-warm-gold inline mr-1.5 align-[-2px]" />
                 OnTap is a service that helps you store and organize your files — we are not responsible for keeping records
                 your business is legally required to hold, and we cannot replace official records, licenses, or permits issued
                 by government agencies. You are responsible for maintaining your own copies and records as required by law.
@@ -1386,12 +1386,12 @@ export function ProfileClient({
                   <div><label className="label">Type *</label>
                     <div className="flex gap-2 flex-wrap">{docTypes.map(type => (
                       <button key={type.value} type="button" onClick={() => setDocForm({ ...docForm, type: type.value })}
-                        className={`px-3 py-1.5 rounded-lg text-sm transition-colors ${docForm.type === type.value ? "bg-olive-gold text-charcoal" : "text-warm-sand bg-warm-sand/10 hover:text-warm-white"}`}>{type.label}</button>
+                        className={`px-3 py-1.5 rounded-lg text-sm transition-colors ${docForm.type === type.value ? "bg-warm-gold text-charcoal" : "text-warm-sand bg-warm-sand/10 hover:text-warm-white"}`}>{type.label}</button>
                     ))}</div>
                   </div>
                   <div><label className="label">File *</label>
                     <input type="file" accept=".pdf,.jpg,.jpeg,.png"
-                      className="block w-full text-sm text-warm-sand file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-olive-gold file:text-charcoal hover:file:bg-olive-gold/90"
+                      className="block w-full text-sm text-warm-sand file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-warm-gold file:text-charcoal hover:file:bg-warm-gold/90"
                       onChange={e => { const file = e.target.files?.[0]; if (file) { const r = new FileReader(); r.onload = ev => setDocForm({ ...docForm, file_data: ev.target?.result as string, file_name: file.name }); r.readAsDataURL(file); } }} />
                   </div>
                   <div><label className="label">Expiration <span className="text-warm-sand/60">(optional)</span></label><Input value={docForm.expires_at} onChange={e => setDocForm({ ...docForm, expires_at: e.target.value })} type="date" /></div>
@@ -1409,7 +1409,7 @@ export function ProfileClient({
                 documents.map(doc => (
                   <div key={doc.id} className="flex items-center justify-between p-4 bg-warm-sand/5 rounded-lg border border-warm-sand/20">
                     <div className="flex items-center gap-3">
-                      <div className="h-10 w-10 rounded-lg bg-olive-gold/20 flex items-center justify-center"><FileText className="w-5 h-5 text-olive-gold" /></div>
+                      <div className="h-10 w-10 rounded-lg bg-warm-gold/20 flex items-center justify-center"><FileText className="w-5 h-5 text-warm-gold" /></div>
                       <div><p className="text-warm-white font-medium">{doc.name}</p>
                         <div className="flex items-center gap-2 text-sm">
                           <span className="text-warm-sand capitalize">{doc.type}</span>

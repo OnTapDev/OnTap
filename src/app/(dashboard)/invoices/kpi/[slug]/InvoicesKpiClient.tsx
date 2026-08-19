@@ -60,10 +60,10 @@ export function InvoicesKpiClient({ slug, kpis }: { slug: string; kpis: InvoiceK
 
   return (
     <div className="space-y-6">
-      <Link href="/invoices" className="text-olive-gold">← Back</Link>
+      <Link href="/invoices" className="text-warm-gold">← Back</Link>
       <div className="flex flex-col lg:flex-row gap-6">
-        <Card className="bg-charcoal border-warm-sand/20 lg:w-1/2"><CardContent className="p-6"><div className="rounded-lg bg-olive-gold/20 p-3 mb-4"><config.icon className="h-8 w-8 text-olive-gold" /></div><p className="text-4xl font-bold text-warm-white">{value}</p>{change && <div className="flex items-center gap-1 text-olive-gold"><ArrowUpRight className="w-4 h-4" /><span>{change}</span></div>}<Link href={config.dataHref} className="text-olive-gold mt-4 block">{config.dataLabel}</Link></CardContent></Card>
-        <Card className="bg-charcoal border-warm-sand/20 lg:w-1/2"><CardContent className="p-6"><DetailedLineChart data={chartData} color="#7D7254" height={200} title="Trend" /></CardContent></Card>
+        <Card className="bg-charcoal border-warm-sand/20 lg:w-1/2"><CardContent className="p-6"><div className="rounded-lg bg-warm-gold/20 p-3 mb-4"><config.icon className="h-8 w-8 text-warm-gold" /></div><p className="text-4xl font-bold text-warm-white">{value}</p>{change && <div className="flex items-center gap-1 text-warm-gold"><ArrowUpRight className="w-4 h-4" /><span>{change}</span></div>}<Link href={config.dataHref} className="text-warm-gold mt-4 block">{config.dataLabel}</Link></CardContent></Card>
+        <Card className="bg-charcoal border-warm-sand/20 lg:w-1/2"><CardContent className="p-6"><DetailedLineChart data={chartData} color="#7D6854" height={200} title="Trend" /></CardContent></Card>
       </div>
       <Card className="bg-charcoal border-warm-sand/20"><CardHeader><CardTitle>{config.description}</CardTitle></CardHeader></Card>
     </div>

@@ -124,10 +124,10 @@ function EventTypeIcon({ evtType, className }: { evtType: string; className?: st
 }
 
 const quickActions = [
-  { name: "New Contact", href: "/crm", icon: UserPlus, color: "bg-olive-gold/20 text-olive-gold" },
-  { name: "New Event", href: "/events", icon: Calendar, color: "bg-olive-gold/20 text-olive-gold" },
-  { name: "New Quote", href: "/quotes", icon: FileText, color: "bg-olive-gold/20 text-olive-gold" },
-  { name: "View Calendar", href: "/calendar", icon: BarChart3, color: "bg-olive-gold/20 text-olive-gold" },
+  { name: "New Contact", href: "/crm", icon: UserPlus, color: "bg-warm-gold/20 text-warm-gold" },
+  { name: "New Event", href: "/events", icon: Calendar, color: "bg-warm-gold/20 text-warm-gold" },
+  { name: "New Quote", href: "/quotes", icon: FileText, color: "bg-warm-gold/20 text-warm-gold" },
+  { name: "View Calendar", href: "/calendar", icon: BarChart3, color: "bg-warm-gold/20 text-warm-gold" },
 ];
 
 const VIEWS = [
@@ -179,9 +179,9 @@ export function DashboardClient({
   const getStatusColor = (status: string) => {
     const colors: Record<string, string> = {
       new_inquiry: "bg-warm-sand/20 border-warm-sand text-warm-sand",
-      quoted: "bg-olive-gold/20 border-olive-gold text-olive-gold",
+      quoted: "bg-warm-gold/20 border-warm-gold text-warm-gold",
       tentative: "bg-yellow-500/20 border-yellow-500 text-yellow-400",
-      booked: "bg-olive-gold/20 border-olive-gold text-olive-gold",
+      booked: "bg-warm-gold/20 border-warm-gold text-warm-gold",
       deposit_paid: "bg-green-500/20 border-green-500 text-green-400",
       completed: "bg-gray-500/20 border-gray-500 text-gray-400",
       cancelled: "bg-red-500/20 border-red-500 text-red-400",
@@ -192,9 +192,9 @@ export function DashboardClient({
   const getChipColor = (status: string) => {
     const colors: Record<string, string> = {
       new_inquiry: "bg-warm-sand/10 text-warm-sand",
-      quoted: "bg-olive-gold/15 text-olive-gold",
+      quoted: "bg-warm-gold/15 text-warm-gold",
       tentative: "bg-yellow-500/10 text-yellow-400",
-      booked: "bg-olive-gold/15 text-olive-gold",
+      booked: "bg-warm-gold/15 text-warm-gold",
       deposit_paid: "bg-green-500/10 text-green-400",
       completed: "bg-gray-500/10 text-gray-400",
       cancelled: "bg-red-500/10 text-red-400",
@@ -278,15 +278,15 @@ export function DashboardClient({
       </div>
 
       {profileComplete < 100 && (
-        <div className="bg-olive-gold/10 border border-olive-gold/30 rounded-xl p-4 flex items-center justify-between">
+        <div className="bg-warm-gold/10 border border-warm-gold/30 rounded-xl p-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <AlertTriangle className="w-5 h-5 text-olive-gold" />
+            <AlertTriangle className="w-5 h-5 text-warm-gold" />
             <div>
               <p className="text-warm-white text-sm font-medium">Complete your business profile</p>
               <p className="text-warm-sand text-xs">{profileComplete}% complete — add details to get listed in the marketplace</p>
             </div>
           </div>
-          <Link href="/profile" className="text-xs px-3 py-1.5 bg-olive-gold text-charcoal rounded-lg hover:bg-olive-gold/90 transition-colors font-medium">
+          <Link href="/profile" className="text-xs px-3 py-1.5 bg-warm-gold text-charcoal rounded-lg hover:bg-warm-gold/90 transition-colors font-medium">
             Complete Profile
           </Link>
         </div>
@@ -308,7 +308,7 @@ export function DashboardClient({
         {VIEWS.map(v => (
           <button key={v.id} onClick={() => setView(v.id as typeof view)}
             className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-              view === v.id ? "bg-olive-gold text-charcoal" : "text-warm-sand hover:text-warm-white"
+              view === v.id ? "bg-warm-gold text-charcoal" : "text-warm-sand hover:text-warm-white"
             }`}>{v.label}</button>
         ))}
       </div>
@@ -318,18 +318,18 @@ export function DashboardClient({
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             {stats.map(stat => (
               <Link key={stat.name} href={stat.href}>
-                <Card className="bg-charcoal border-warm-sand/20 hover:border-olive-gold hover:scale-[1.02] hover:shadow-lg hover:shadow-olive-gold/10 transition-all duration-200 cursor-pointer h-full">
+                <Card className="bg-charcoal border-warm-sand/20 hover:border-warm-gold hover:scale-[1.02] hover:shadow-lg hover:shadow-warm-gold/10 transition-all duration-200 cursor-pointer h-full">
                   <CardContent className="p-6">
                     <div className="flex items-start justify-between mb-4">
-                      <div className="rounded-lg bg-olive-gold/20 p-3">
-                        <stat.icon className="h-6 w-6 text-olive-gold" />
+                      <div className="rounded-lg bg-warm-gold/20 p-3">
+                        <stat.icon className="h-6 w-6 text-warm-gold" />
                       </div>
-                      <MiniLineChart data={stat.chartData} color="#7D7254" />
+                      <MiniLineChart data={stat.chartData} color="#7D6854" />
                     </div>
                     <p className="text-meta text-warm-sand">{stat.name}</p>
                     <div className="flex items-end justify-between mt-2">
                       <p className="text-3xl font-bold text-warm-white">{stat.value}</p>
-                      <div className="flex items-center gap-1 text-sm text-olive-gold">
+                      <div className="flex items-center gap-1 text-sm text-warm-gold">
                         <ArrowUpRight className="w-4 h-4" /><span>{stat.change}</span>
                       </div>
                     </div>
@@ -344,15 +344,15 @@ export function DashboardClient({
             <Card className="bg-charcoal border-warm-sand/20">
               <CardHeader className="flex flex-row items-center justify-between">
                 <CardTitle className="text-warm-white">Upcoming Events</CardTitle>
-                <Link href="/events" className="text-sm text-olive-gold hover:text-warm-white">View all</Link>
+                <Link href="/events" className="text-sm text-warm-gold hover:text-warm-white">View all</Link>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   {upcomingEvents.length > 0 ? upcomingEvents.map(event => (
                     <div key={event.id} className="flex items-center justify-between py-3 border-b border-warm-sand/10 last:border-0">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-lg bg-olive-gold/20 flex items-center justify-center">
-                          <Calendar className="w-5 h-5 text-olive-gold" />
+                        <div className="w-10 h-10 rounded-lg bg-warm-gold/20 flex items-center justify-center">
+                          <Calendar className="w-5 h-5 text-warm-gold" />
                         </div>
                         <div>
                           <p className="text-warm-white font-medium">{event.name}</p>
@@ -366,7 +366,7 @@ export function DashboardClient({
                             ? "bg-yellow-500/20 text-yellow-400"
                             : event.status === "cancelled"
                               ? "bg-red-500/20 text-red-400"
-                              : "bg-olive-gold/20 text-olive-gold"
+                              : "bg-warm-gold/20 text-warm-gold"
                       }`}>
                         {event.status?.replace(/_/g, " ")}
                       </span>
@@ -375,7 +375,7 @@ export function DashboardClient({
                     <div className="text-center py-8">
                       <Calendar className="w-10 h-10 text-warm-sand/30 mx-auto mb-3" />
                       <p className="text-warm-sand">No upcoming events</p>
-                      <Link href="/events" className="text-sm text-olive-gold hover:text-warm-white mt-2 inline-block">Create your first event</Link>
+                      <Link href="/events" className="text-sm text-warm-gold hover:text-warm-white mt-2 inline-block">Create your first event</Link>
                     </div>
                   )}
                 </div>
@@ -398,7 +398,7 @@ export function DashboardClient({
                   ].map(item => (
                     <div key={item.label} className="flex items-center justify-between py-2">
                       <div className="flex items-center gap-3">
-                        <div className="p-1.5 rounded-lg bg-olive-gold/20 text-olive-gold">
+                        <div className="p-1.5 rounded-lg bg-warm-gold/20 text-warm-gold">
                           <item.icon className="w-4 h-4" />
                         </div>
                         <span className="text-warm-sand text-sm">{item.label}</span>
@@ -415,7 +415,7 @@ export function DashboardClient({
             <Card className="bg-charcoal border-warm-sand/20">
               <CardHeader className="flex flex-row items-center justify-between">
                 <CardTitle className="text-warm-white">Inventory Alerts</CardTitle>
-                <Link href="/profile" className="text-sm text-olive-gold hover:text-warm-white">Manage</Link>
+                <Link href="/profile" className="text-sm text-warm-gold hover:text-warm-white">Manage</Link>
               </CardHeader>
               <CardContent>
                 {lowStockItems.length > 0 ? (
@@ -454,7 +454,7 @@ export function DashboardClient({
                   {toolLinks.map(tool => (
                     <Link key={tool.name} href={tool.href}
                       className="flex flex-col items-center gap-1.5 p-3 rounded-lg bg-warm-sand/5 hover:bg-warm-sand/10 border border-warm-sand/10 hover:border-warm-sand/30 transition-all">
-                      <tool.icon className="w-5 h-5 text-olive-gold" />
+                      <tool.icon className="w-5 h-5 text-warm-gold" />
                       <span className="text-xs text-warm-white font-medium">{tool.name}</span>
                     </Link>
                   ))}
@@ -465,19 +465,19 @@ export function DashboardClient({
 
           <div className="grid gap-4 md:grid-cols-4">
             <div className="p-4 bg-warm-sand/5 rounded-lg border border-warm-sand/10 text-center">
-              <p className="text-2xl font-bold text-olive-gold">{additionalData.totalContacts}</p>
+              <p className="text-2xl font-bold text-warm-gold">{additionalData.totalContacts}</p>
               <p className="text-xs text-warm-sand">Total Contacts</p>
             </div>
             <div className="p-4 bg-warm-sand/5 rounded-lg border border-warm-sand/10 text-center">
-              <p className="text-2xl font-bold text-olive-gold">{additionalData.signedContracts}</p>
+              <p className="text-2xl font-bold text-warm-gold">{additionalData.signedContracts}</p>
               <p className="text-xs text-warm-sand">Signed Contracts</p>
             </div>
             <div className="p-4 bg-warm-sand/5 rounded-lg border border-warm-sand/10 text-center">
-              <p className="text-2xl font-bold text-olive-gold">{inventoryItems.length}</p>
+              <p className="text-2xl font-bold text-warm-gold">{inventoryItems.length}</p>
               <p className="text-xs text-warm-sand">Inventory Items</p>
             </div>
             <div className="p-4 bg-warm-sand/5 rounded-lg border border-warm-sand/10 text-center">
-              <p className="text-2xl font-bold text-olive-gold">{additionalData.staffCount}</p>
+              <p className="text-2xl font-bold text-warm-gold">{additionalData.staffCount}</p>
               <p className="text-xs text-warm-sand">Staff Assignments</p>
             </div>
           </div>
@@ -491,15 +491,15 @@ export function DashboardClient({
             <div className="space-y-4">
               {recentContacts.length > 0 ? recentContacts.slice(0, 10).map(contact => (
                 <div key={contact.id} className="flex items-start gap-4 py-4 border-b border-warm-sand/10 last:border-0">
-                  <div className="w-10 h-10 rounded-full bg-olive-gold/20 flex items-center justify-center flex-shrink-0">
-                    <Mail className="w-5 h-5 text-olive-gold" />
+                  <div className="w-10 h-10 rounded-full bg-warm-gold/20 flex items-center justify-center flex-shrink-0">
+                    <Mail className="w-5 h-5 text-warm-gold" />
                   </div>
                   <div className="flex-1">
                     <p className="text-warm-white font-medium">{contact.name}</p>
                     <p className="text-sm text-warm-sand">{contact.email}</p>
                     <p className="text-xs text-warm-sand/60 mt-1">{new Date(contact.created_at).toLocaleDateString()}</p>
                   </div>
-                  <span className="rounded-full bg-olive-gold/20 px-3 py-1 text-xs font-medium text-olive-gold">New Lead</span>
+                  <span className="rounded-full bg-warm-gold/20 px-3 py-1 text-xs font-medium text-warm-gold">New Lead</span>
                 </div>
               )) : (
                 <p className="text-warm-sand text-center py-8">No recent activity yet</p>
@@ -516,7 +516,7 @@ export function DashboardClient({
               {(["month", "week", "list"] as const).map(v => (
                 <button key={v} onClick={() => setCalendarView(v)}
                   className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                    calendarView === v ? "bg-olive-gold text-charcoal" : "text-warm-sand hover:text-warm-white"
+                    calendarView === v ? "bg-warm-gold text-charcoal" : "text-warm-sand hover:text-warm-white"
                   }`}>
                   {v.charAt(0).toUpperCase() + v.slice(1)}
                 </button>
@@ -550,8 +550,8 @@ export function DashboardClient({
                   ) : calendarEvents.map(event => (
                     <div key={event.id} className="flex items-center justify-between p-4 hover:bg-warm-sand/5">
                       <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-lg bg-olive-gold/20 flex items-center justify-center">
-                          <Calendar className="w-6 h-6 text-olive-gold" />
+                        <div className="w-12 h-12 rounded-lg bg-warm-gold/20 flex items-center justify-center">
+                          <Calendar className="w-6 h-6 text-warm-gold" />
                         </div>
                         <div>
                           <p className="text-warm-white font-medium">{event.name}</p>
@@ -592,8 +592,8 @@ export function DashboardClient({
                         <button key={day.toISOString()} onClick={() => { setSelectedDate(day); setCurrentMonth(new Date(day)); }}
                           className={`rounded-lg flex flex-col items-center justify-start pt-1 text-sm transition-all relative overflow-hidden
                             ${calendarView === "week" ? "aspect-square" : "h-[56px] sm:h-[80px]"}
-                            ${isSelected ? "bg-olive-gold text-charcoal font-semibold"
-                              : isToday ? "border border-olive-gold text-olive-gold"
+                            ${isSelected ? "bg-warm-gold text-charcoal font-semibold"
+                              : isToday ? "border border-warm-gold text-warm-gold"
                                 : isPast ? "text-warm-sand/30 cursor-not-allowed"
                                   : "text-warm-white hover:bg-warm-sand/10"}`}>
                           <span className="text-xs sm:text-sm">{day.getDate()}</span>
@@ -611,15 +611,15 @@ export function DashboardClient({
                             </div>
                           )}
                           {calendarView === "month" && hasEvent && !isSelected && (
-                            <div className="absolute bottom-0.5 sm:bottom-1 w-1 h-1 rounded-full bg-olive-gold" />
+                            <div className="absolute bottom-0.5 sm:bottom-1 w-1 h-1 rounded-full bg-warm-gold" />
                           )}
                         </button>
                       );
                     })}
                   </div>
                   <div className="flex items-center gap-4 mt-4 pt-4 border-t border-warm-sand/10">
-                    <div className="flex items-center gap-2 text-xs text-warm-sand"><div className="w-2 h-2 rounded-full bg-olive-gold" /><span>Has Event</span></div>
-                    <div className="flex items-center gap-2 text-xs text-warm-sand"><div className="w-2 h-2 rounded-full border border-olive-gold" /><span>Today</span></div>
+                    <div className="flex items-center gap-2 text-xs text-warm-sand"><div className="w-2 h-2 rounded-full bg-warm-gold" /><span>Has Event</span></div>
+                    <div className="flex items-center gap-2 text-xs text-warm-sand"><div className="w-2 h-2 rounded-full border border-warm-gold" /><span>Today</span></div>
                   </div>
                 </div>
               </div>
@@ -636,7 +636,7 @@ export function DashboardClient({
                     ) : (
                       <div className="space-y-3">
                         {selectedDateEvents.map(event => (
-                          <div key={event.id} className="p-3 rounded-lg bg-warm-sand/5 border-l-4 border-olive-gold">
+                          <div key={event.id} className="p-3 rounded-lg bg-warm-sand/5 border-l-4 border-warm-gold">
                             <div className="flex items-start justify-between mb-2">
                               <div>
                                 <p className="text-warm-white font-medium text-sm">{event.name}</p>

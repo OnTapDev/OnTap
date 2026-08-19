@@ -49,19 +49,19 @@
   }
 
   :focus-visible {
-    outline: 2px solid #7D7254;
+    outline: 2px solid #7D6854;
     outline-offset: 2px;
   }
 
   ::selection {
-    background-color: #7D7254;
+    background-color: #7D6854;
     color: #1A1A1A;
   }
 }
 
 @layer components {
   .btn-primary {
-    @apply bg-olive-gold text-charcoal font-bold text-base px-6 py-3 rounded-lg 
+    @apply bg-warm-gold text-charcoal font-bold text-base px-6 py-3 rounded-lg 
            transition-all duration-200 hover:brightness-110 active:scale-[0.98]
            disabled:opacity-50 disabled:cursor-not-allowed;
     letter-spacing: -0.01em;
@@ -70,8 +70,8 @@
 
   .btn-secondary {
     @apply bg-charcoal text-warm-white font-normal text-base px-6 py-3 rounded-lg 
-           border border-olive-gold transition-all duration-200 
-           hover:bg-olive-gold/10 active:scale-[0.98]
+           border border-warm-gold transition-all duration-200 
+           hover:bg-warm-gold/10 active:scale-[0.98]
            disabled:opacity-50 disabled:cursor-not-allowed;
     min-height: 48px;
   }
@@ -83,7 +83,7 @@
   .input-field {
     @apply w-full bg-charcoal border border-warm-sand/30 rounded-lg px-4 py-3 
            text-warm-white text-base placeholder:text-warm-sand
-           focus:border-olive-gold focus:ring-1 focus:ring-olive-gold
+           focus:border-warm-gold focus:ring-1 focus:ring-warm-gold
            transition-colors duration-200;
     min-height: 48px;
   }
@@ -107,7 +107,7 @@
   }
 
   .text-accent {
-    @apply text-olive-gold font-bold;
+    @apply text-warm-gold font-bold;
   }
 
   .text-supporting {

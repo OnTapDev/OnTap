@@ -139,7 +139,7 @@ export default function SupportPage() {
                         onClick={() => setForm({ ...form, type: opt.value })}
                         className={`p-3 rounded-lg border transition-colors ${
                           form.type === opt.value
-                            ? "border-olive-gold bg-olive-gold/20 text-warm-white"
+                            ? "border-warm-gold bg-warm-gold/20 text-warm-white"
                             : "border-warm-sand/20 text-warm-sand hover:border-warm-sand/40"
                         }`}
                       >
@@ -205,7 +205,7 @@ export default function SupportPage() {
             </CardHeader>
             <CardContent className="space-y-3">
               <a href="mailto:OnTapInquiries@gmail.com" className="flex items-center gap-3 p-3 bg-warm-sand/10 rounded-lg text-warm-sand hover:text-warm-white hover:bg-warm-sand/20 transition-colors">
-                <Mail className="w-4 h-4 text-olive-gold" />
+                <Mail className="w-4 h-4 text-warm-gold" />
                 <span>Email us at OnTapInquiries@gmail.com</span>
               </a>
               <p className="text-xs text-warm-sand/60">
@@ -222,14 +222,14 @@ export default function SupportPage() {
         <Card className="bg-charcoal border-warm-sand/20">
           <CardHeader>
             <CardTitle className="text-warm-white flex items-center gap-2">
-              <Shield className="w-5 h-5 text-olive-gold" />
+              <Shield className="w-5 h-5 text-warm-gold" />
               Admin
             </CardTitle>
           </CardHeader>
           <CardContent>
             <button
               onClick={() => setShowAllTickets(!showAllTickets)}
-              className="w-full flex items-center justify-between px-4 py-3 bg-olive-gold/10 hover:bg-olive-gold/20 rounded-lg text-sm text-olive-gold font-medium transition-colors"
+              className="w-full flex items-center justify-between px-4 py-3 bg-warm-gold/10 hover:bg-warm-gold/20 rounded-lg text-sm text-warm-gold font-medium transition-colors"
             >
               <span>All Support Requests ({allTickets.length})</span>
               <span>{showAllTickets ? "▲" : "▼"}</span>
@@ -242,7 +242,7 @@ export default function SupportPage() {
                     className="p-3 rounded-lg bg-warm-sand/5 border border-warm-sand/10"
                   >
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="text-xs px-2 py-0.5 rounded-full bg-olive-gold/10 text-olive-gold font-medium">
+                      <span className="text-xs px-2 py-0.5 rounded-full bg-warm-gold/10 text-warm-gold font-medium">
                         {ticket.type}
                       </span>
                       <span className={`text-xs px-2 py-0.5 rounded-full ${statusColors[ticket.status] || ""}`}>
@@ -300,7 +300,7 @@ function TicketsList({ tickets, loading }: { tickets: any[]; loading?: boolean }
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="text-xs px-2 py-0.5 rounded-full bg-olive-gold/10 text-olive-gold font-medium">
+                    <span className="text-xs px-2 py-0.5 rounded-full bg-warm-gold/10 text-warm-gold font-medium">
                       {typeLabels[ticket.type] || ticket.type}
                     </span>
                     <span className={`text-xs font-medium ${priorityColors[ticket.priority] || ""}`}>

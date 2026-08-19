@@ -43,7 +43,7 @@ export function ContactsList({ contacts, stages }: ContactsListProps) {
           onClick={() => setViewMode("list")}
           className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
             viewMode === "list"
-              ? "bg-olive-gold text-charcoal"
+              ? "bg-warm-gold text-charcoal"
               : "text-warm-sand hover:text-warm-white"
           }`}
         >
@@ -53,7 +53,7 @@ export function ContactsList({ contacts, stages }: ContactsListProps) {
           onClick={() => setViewMode("pipeline")}
           className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
             viewMode === "pipeline"
-              ? "bg-olive-gold text-charcoal"
+              ? "bg-warm-gold text-charcoal"
               : "text-warm-sand hover:text-warm-white"
           }`}
         >

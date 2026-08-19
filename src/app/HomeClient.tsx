@@ -99,7 +99,7 @@ export function HomeClient({ availableSpots: initialSpots }: HomeClientProps) {
 
           <button 
             onClick={() => document.getElementById("waitlist")?.scrollIntoView({ behavior: "smooth" })}
-            className="bg-olive-gold text-charcoal px-4 py-2 rounded-lg text-sm font-medium hover:bg-olive-gold/90 transition-colors"
+            className="bg-warm-gold text-charcoal px-4 py-2 rounded-lg text-sm font-medium hover:bg-warm-gold/90 transition-colors"
           >
             Get Started
           </button>
@@ -115,19 +115,19 @@ export function HomeClient({ availableSpots: initialSpots }: HomeClientProps) {
             backgroundSize: '24px 24px',
           }}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-olive-gold/5 to-transparent" />
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[400px] h-[400px] md:w-[600px] md:h-[600px] bg-olive-gold/10 rounded-full blur-[80px] md:blur-[120px]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-warm-gold/5 to-transparent" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[400px] h-[400px] md:w-[600px] md:h-[600px] bg-warm-gold/10 rounded-full blur-[80px] md:blur-[120px]" />
         
         <div className="relative max-w-6xl mx-auto px-4 md:px-6 py-20 md:py-32 w-full">
           <div className="text-center">
             <div className="inline-flex items-center gap-2 bg-warm-sand/10 px-3 py-2 md:px-4 md:py-2 rounded-full mb-6 md:mb-8">
-              <span className="w-2 h-2 bg-olive-gold rounded-full animate-pulse" />
+              <span className="w-2 h-2 bg-warm-gold rounded-full animate-pulse" />
               <span className="text-warm-sand text-sm">Now accepting founding members</span>
             </div>
             
             <h1 className="text-3xl md:text-5xl lg:text-7xl font-bold text-warm-white mb-4 md:mb-6 leading-tight">
               Stop running your bar business<br />
-              <span className="text-olive-gold">out of a notes app</span>
+              <span className="text-warm-gold">out of a notes app</span>
             </h1>
             
             <p className="text-base md:text-xl text-warm-sand/80 max-w-2xl mx-auto mb-8 md:mb-12">
@@ -138,14 +138,14 @@ export function HomeClient({ availableSpots: initialSpots }: HomeClientProps) {
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-4 sm:px-0">
               <Link 
                 href="/sign-up" 
-                className="inline-flex items-center justify-center gap-2 bg-olive-gold text-charcoal px-6 md:px-8 py-3 md:py-4 rounded-lg font-semibold hover:bg-olive-gold/90 transition-colors"
+                className="inline-flex items-center justify-center gap-2 bg-warm-gold text-charcoal px-6 md:px-8 py-3 md:py-4 rounded-lg font-semibold hover:bg-warm-gold/90 transition-colors"
               >
                 Get Founding Access
                 <ArrowRight className="w-5 h-5" />
               </Link>
               <Link 
                 href="/sign-in" 
-                className="inline-flex items-center justify-center gap-2 border border-warm-sand/30 text-warm-white px-6 md:px-8 py-3 md:py-4 rounded-lg font-semibold hover:border-olive-gold hover:text-olive-gold transition-colors"
+                className="inline-flex items-center justify-center gap-2 border border-warm-sand/30 text-warm-white px-6 md:px-8 py-3 md:py-4 rounded-lg font-semibold hover:border-warm-gold hover:text-warm-gold transition-colors"
               >
                 Sign In
               </Link>
@@ -175,14 +175,14 @@ export function HomeClient({ availableSpots: initialSpots }: HomeClientProps) {
                 className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center"
               >
                 <div className={`${i % 2 === 1 ? 'md:order-2' : ''}`}>
-                  <div className="w-48 h-48 md:w-56 md:h-56 mx-auto rounded-2xl border border-warm-sand/10 bg-gradient-to-br from-olive-gold/15 to-charcoal flex items-center justify-center">
-                    <step.icon className="w-16 h-16 md:w-20 md:h-20 text-olive-gold/80" />
+                  <div className="w-48 h-48 md:w-56 md:h-56 mx-auto rounded-2xl border border-warm-sand/10 bg-gradient-to-br from-warm-gold/15 to-charcoal flex items-center justify-center">
+                    <step.icon className="w-16 h-16 md:w-20 md:h-20 text-warm-gold/80" />
                   </div>
                 </div>
 
                 <div className={`${i % 2 === 1 ? 'md:order-1' : ''}`}>
-                  <div className="inline-flex items-center gap-2 bg-olive-gold/10 border border-olive-gold/20 px-3 py-1.5 rounded-full mb-4">
-                    <span className="text-olive-gold text-sm font-medium">Step {i + 1}</span>
+                  <div className="inline-flex items-center gap-2 bg-warm-gold/10 border border-warm-gold/20 px-3 py-1.5 rounded-full mb-4">
+                    <span className="text-warm-gold text-sm font-medium">Step {i + 1}</span>
                   </div>
                   <h3 className="text-xl md:text-2xl lg:text-3xl font-bold text-warm-white mb-3">
                     {step.title}
@@ -193,7 +193,7 @@ export function HomeClient({ availableSpots: initialSpots }: HomeClientProps) {
                   <ul className="space-y-2 md:space-y-3">
                     {step.features.map((feat) => (
                       <li key={feat} className="flex items-center gap-2 md:gap-3 text-sm md:text-base text-warm-sand">
-                        <Check className="w-4 h-4 text-olive-gold flex-shrink-0" />
+                        <Check className="w-4 h-4 text-warm-gold flex-shrink-0" />
                         {feat}
                       </li>
                     ))}
@@ -206,15 +206,15 @@ export function HomeClient({ availableSpots: initialSpots }: HomeClientProps) {
       </section>
 
       {/* FOUNDING PRICING */}
-      <section className="py-16 md:py-24 border-t border-warm-sand/10 bg-gradient-to-b from-charcoal via-olive-gold/[0.03] to-charcoal">
+      <section className="py-16 md:py-24 border-t border-warm-sand/10 bg-gradient-to-b from-charcoal via-warm-gold/[0.03] to-charcoal">
         <div className="max-w-4xl mx-auto px-4 md:px-6">
           <div className="text-center mb-8 md:mb-12">
-            <div className="inline-flex items-center gap-2 bg-olive-gold/20 border border-olive-gold/40 px-3 md:px-4 py-2 rounded-full mb-4 md:mb-6">
-              <Sparkles className="w-4 h-4 text-olive-gold" />
-              <span className="text-olive-gold text-sm font-medium">Founding Member Pricing</span>
+            <div className="inline-flex items-center gap-2 bg-warm-gold/20 border border-warm-gold/40 px-3 md:px-4 py-2 rounded-full mb-4 md:mb-6">
+              <Sparkles className="w-4 h-4 text-warm-gold" />
+              <span className="text-warm-gold text-sm font-medium">Founding Member Pricing</span>
             </div>
             <h2 className="text-2xl md:text-3xl lg:text-5xl font-bold text-warm-white mb-3 md:mb-4">
-              Lock In $20/Month — <span className="text-olive-gold">Forever</span>
+              Lock In $20/Month — <span className="text-warm-gold">Forever</span>
             </h2>
             <p className="text-base md:text-xl text-warm-sand/80 max-w-xl md:max-w-2xl mx-auto">
               Get the full Professional tier for $20/month. This rate is locked permanently — even at full launch.
@@ -222,8 +222,8 @@ export function HomeClient({ availableSpots: initialSpots }: HomeClientProps) {
           </div>
 
           <div className="max-w-md mx-auto px-2 md:px-0">
-            <div className="relative p-6 md:p-8 rounded-2xl border-2 border-olive-gold bg-charcoal shadow-2xl shadow-olive-gold/20">
-              <div className="absolute -top-3 md:-top-4 left-1/2 -translate-x-1/2 bg-olive-gold text-charcoal px-4 md:px-6 py-1.5 md:py-2 rounded-full text-xs md:text-sm font-bold">
+            <div className="relative p-6 md:p-8 rounded-2xl border-2 border-warm-gold bg-charcoal shadow-2xl shadow-warm-gold/20">
+              <div className="absolute -top-3 md:-top-4 left-1/2 -translate-x-1/2 bg-warm-gold text-charcoal px-4 md:px-6 py-1.5 md:py-2 rounded-full text-xs md:text-sm font-bold">
                 {spotsText}
               </div>
               
@@ -232,8 +232,8 @@ export function HomeClient({ availableSpots: initialSpots }: HomeClientProps) {
                   <span className="text-4xl md:text-5xl lg:text-6xl font-bold text-warm-white">$20</span>
                   <span className="text-warm-sand text-xl">/mo</span>
                 </div>
-                <div className="bg-olive-gold/10 border border-olive-gold/20 inline-block px-3 md:px-4 py-2 rounded-lg">
-                  <p className="text-olive-gold font-bold text-sm md:text-base">Save $360/year</p>
+                <div className="bg-warm-gold/10 border border-warm-gold/20 inline-block px-3 md:px-4 py-2 rounded-lg">
+                  <p className="text-warm-gold font-bold text-sm md:text-base">Save $360/year</p>
                   <p className="text-warm-sand text-xs md:text-sm">vs $50/month at launch</p>
                 </div>
               </div>
@@ -241,7 +241,7 @@ export function HomeClient({ availableSpots: initialSpots }: HomeClientProps) {
               <ul className="space-y-3 md:space-y-4 mb-6 md:mb-8">
                 {["Unlimited contacts", "Calendar & scheduling", "Quotes & contracts", "Invoicing & payments", "SMS & email updates", "Public profile page", "Priority support"].map((feature) => (
                   <li key={feature} className="flex items-center gap-2 md:gap-3 text-sm md:text-base text-warm-sand">
-                    <Check className="w-4 md:w-5 h-4 md:h-5 text-olive-gold flex-shrink-0" />
+                    <Check className="w-4 md:w-5 h-4 md:h-5 text-warm-gold flex-shrink-0" />
                     {feature}
                   </li>
                 ))}
@@ -249,7 +249,7 @@ export function HomeClient({ availableSpots: initialSpots }: HomeClientProps) {
 
               <div className="bg-warm-sand/10 border border-warm-sand/20 rounded-lg p-3 md:p-4 mb-3 md:mb-4">
                 <div className="flex items-start gap-2 md:gap-3">
-                  <Heart className="w-4 md:w-5 h-4 md:h-5 text-olive-gold mt-0.5 flex-shrink-0" />
+                  <Heart className="w-4 md:w-5 h-4 md:h-5 text-warm-gold mt-0.5 flex-shrink-0" />
                   <div>
                     <p className="text-warm-white font-medium text-sm">Founding Access = Early Support</p>
                     <p className="text-warm-sand text-xs mt-1">OnTap is still in development. Your membership funds what we&apos;re building now — and in return you lock in the rate and rewards listed above forever.</p>
@@ -259,7 +259,7 @@ export function HomeClient({ availableSpots: initialSpots }: HomeClientProps) {
 
               <Link 
                 href="/sign-up"
-                className="block w-full bg-olive-gold text-charcoal py-3 md:py-4 rounded-lg font-bold text-center hover:bg-olive-gold/90 transition-all hover:scale-[1.02] text-base md:text-lg"
+                className="block w-full bg-warm-gold text-charcoal py-3 md:py-4 rounded-lg font-bold text-center hover:bg-warm-gold/90 transition-all hover:scale-[1.02] text-base md:text-lg"
               >
                 {spotsLeft > 0 ? "Claim Founding Spot — $20/mo" : "Join Waitlist"}
               </Link>
@@ -277,7 +277,7 @@ export function HomeClient({ availableSpots: initialSpots }: HomeClientProps) {
         <div className="max-w-4xl mx-auto px-4 md:px-6">
           <div className="text-center mb-8 md:mb-12">
             <div className="inline-flex items-center gap-2 bg-warm-sand/10 px-3 py-2 rounded-full mb-4">
-              <Zap className="w-4 h-4 text-olive-gold" />
+              <Zap className="w-4 h-4 text-warm-gold" />
               <span className="text-warm-sand text-sm">Coming Soon</span>
             </div>
             <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-warm-white mb-3">
@@ -301,7 +301,7 @@ export function HomeClient({ availableSpots: initialSpots }: HomeClientProps) {
               { name: "Payment Processing", desc: "Accept credit cards, collect deposits online" },
             ].map((feature) => (
               <div key={feature.name} className="p-3 md:p-4 rounded-xl border border-warm-sand/10 bg-warm-sand/5 flex items-start gap-2 md:gap-3">
-                <div className="w-2 h-2 rounded-full bg-olive-gold mt-1.5 md:mt-2 flex-shrink-0" />
+                <div className="w-2 h-2 rounded-full bg-warm-gold mt-1.5 md:mt-2 flex-shrink-0" />
                 <div>
                   <p className="text-warm-white font-medium text-sm md:text-base">{feature.name}</p>
                   <p className="text-warm-sand text-xs md:text-sm">{feature.desc}</p>
@@ -326,8 +326,8 @@ export function HomeClient({ availableSpots: initialSpots }: HomeClientProps) {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
             <div className="bg-charcoal border border-warm-sand/20 rounded-xl p-5 md:p-6">
-              <div className="w-12 h-12 rounded-lg bg-olive-gold/20 flex items-center justify-center mb-4">
-                <Shield className="w-6 h-6 text-olive-gold" />
+              <div className="w-12 h-12 rounded-lg bg-warm-gold/20 flex items-center justify-center mb-4">
+                <Shield className="w-6 h-6 text-warm-gold" />
               </div>
               <h3 className="text-lg font-semibold text-warm-white mb-2">Insurance</h3>
               <p className="text-warm-sand text-sm mb-4">
@@ -343,8 +343,8 @@ export function HomeClient({ availableSpots: initialSpots }: HomeClientProps) {
             </div>
 
             <div className="bg-charcoal border border-warm-sand/20 rounded-xl p-5 md:p-6">
-              <div className="w-12 h-12 rounded-lg bg-olive-gold/20 flex items-center justify-center mb-4">
-                <Building2 className="w-6 h-6 text-olive-gold" />
+              <div className="w-12 h-12 rounded-lg bg-warm-gold/20 flex items-center justify-center mb-4">
+                <Building2 className="w-6 h-6 text-warm-gold" />
               </div>
               <h3 className="text-lg font-semibold text-warm-white mb-2">Business Formation</h3>
               <p className="text-warm-sand text-sm mb-4">
@@ -360,16 +360,16 @@ export function HomeClient({ availableSpots: initialSpots }: HomeClientProps) {
             </div>
 
             <div className="bg-charcoal border border-warm-sand/20 rounded-xl p-5 md:p-6">
-              <div className="w-12 h-12 rounded-lg bg-olive-gold/20 flex items-center justify-center mb-4">
-                <ScrollText className="w-6 h-6 text-olive-gold" />
+              <div className="w-12 h-12 rounded-lg bg-warm-gold/20 flex items-center justify-center mb-4">
+                <ScrollText className="w-6 h-6 text-warm-gold" />
               </div>
               <h3 className="text-lg font-semibold text-warm-white mb-2">Licenses & Permits</h3>
               <p className="text-warm-sand text-sm mb-4">
                 Know what&apos;s required in your state — from liquor licenses to catering permits.
               </p>
               <div className="flex flex-wrap gap-2">
-                <span className="text-xs px-2.5 py-1.5 bg-olive-gold/10 rounded text-olive-gold border border-olive-gold/20">State Guides</span>
-                <span className="text-xs px-2.5 py-1.5 bg-olive-gold/10 rounded text-olive-gold border border-olive-gold/20">Checklists</span>
+                <span className="text-xs px-2.5 py-1.5 bg-warm-gold/10 rounded text-warm-gold border border-warm-gold/20">State Guides</span>
+                <span className="text-xs px-2.5 py-1.5 bg-warm-gold/10 rounded text-warm-gold border border-warm-gold/20">Checklists</span>
               </div>
             </div>
           </div>
@@ -380,7 +380,7 @@ export function HomeClient({ availableSpots: initialSpots }: HomeClientProps) {
             </p>
             <Link 
               href="/sign-up"
-              className="inline-flex items-center gap-2 bg-olive-gold text-charcoal px-6 py-3 rounded-lg font-semibold hover:bg-olive-gold/90 transition-colors"
+              className="inline-flex items-center gap-2 bg-warm-gold text-charcoal px-6 py-3 rounded-lg font-semibold hover:bg-warm-gold/90 transition-colors"
             >
               Start Your Business <ArrowRight className="w-4 h-4" />
             </Link>
@@ -406,14 +406,14 @@ export function HomeClient({ availableSpots: initialSpots }: HomeClientProps) {
               <p className="text-3xl font-bold text-warm-white mt-2">$0</p>
               <p className="text-warm-sand text-sm mb-4">/month</p>
               <ul className="space-y-2 text-warm-sand text-sm">
-                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-olive-gold flex-shrink-0" /> Basic calendar</li>
-                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-olive-gold flex-shrink-0" /> 10 contacts</li>
-                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-olive-gold flex-shrink-0" /> Public profile</li>
+                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-warm-gold flex-shrink-0" /> Basic calendar</li>
+                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-warm-gold flex-shrink-0" /> 10 contacts</li>
+                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-warm-gold flex-shrink-0" /> Public profile</li>
               </ul>
             </div>
 
-            <div className="p-5 md:p-6 rounded-2xl border-2 border-olive-gold bg-charcoal relative">
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-olive-gold text-charcoal px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap">
+            <div className="p-5 md:p-6 rounded-2xl border-2 border-warm-gold bg-charcoal relative">
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-warm-gold text-charcoal px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap">
                 Founders pay $20
               </div>
               <h3 className="text-lg font-semibold text-warm-white">Professional</h3>
@@ -422,16 +422,16 @@ export function HomeClient({ availableSpots: initialSpots }: HomeClientProps) {
               </div>
               <p className="text-warm-sand text-sm mb-4">/month at launch</p>
               <ul className="space-y-2 text-warm-sand text-sm">
-                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-olive-gold flex-shrink-0" /> Unlimited contacts</li>
-                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-olive-gold flex-shrink-0" /> Quotes & contracts</li>
-                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-olive-gold flex-shrink-0" /> Invoicing</li>
-                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-olive-gold flex-shrink-0" /> SMS & email</li>
-                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-olive-gold flex-shrink-0" /> All features</li>
+                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-warm-gold flex-shrink-0" /> Unlimited contacts</li>
+                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-warm-gold flex-shrink-0" /> Quotes & contracts</li>
+                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-warm-gold flex-shrink-0" /> Invoicing</li>
+                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-warm-gold flex-shrink-0" /> SMS & email</li>
+                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-warm-gold flex-shrink-0" /> All features</li>
               </ul>
             </div>
 
             <div className="p-5 md:p-6 rounded-2xl border border-warm-sand/15 bg-charcoal relative">
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-olive-gold text-charcoal px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap">
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-warm-gold text-charcoal px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap">
                 Founders pay $80
               </div>
               <h3 className="text-lg font-semibold text-warm-white">Enterprise</h3>
@@ -440,11 +440,11 @@ export function HomeClient({ availableSpots: initialSpots }: HomeClientProps) {
               </div>
               <p className="text-warm-sand text-sm mb-4">/month at launch</p>
               <ul className="space-y-2 text-warm-sand text-sm">
-                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-olive-gold flex-shrink-0" /> Unlimited team seats</li>
-                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-olive-gold flex-shrink-0" /> Team permissions</li>
-                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-olive-gold flex-shrink-0" /> Multi-location</li>
-                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-olive-gold flex-shrink-0" /> Custom branding</li>
-                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-olive-gold flex-shrink-0" /> API access</li>
+                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-warm-gold flex-shrink-0" /> Unlimited team seats</li>
+                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-warm-gold flex-shrink-0" /> Team permissions</li>
+                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-warm-gold flex-shrink-0" /> Multi-location</li>
+                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-warm-gold flex-shrink-0" /> Custom branding</li>
+                <li className="flex items-center gap-2"><Check className="w-4 h-4 text-warm-gold flex-shrink-0" /> API access</li>
               </ul>
             </div>
           </div>
@@ -455,9 +455,9 @@ export function HomeClient({ availableSpots: initialSpots }: HomeClientProps) {
               <h3 className="text-base md:text-lg font-semibold text-warm-white mb-2">Marketplace Fee</h3>
               <p className="text-warm-sand/80 mb-4 text-sm">Platform fee on bookings (not subscription):</p>
               <div className="grid grid-cols-3 gap-4 max-w-sm mx-auto">
-                <div className="bg-charcoal rounded-lg p-3 border border-warm-sand/10"><p className="text-xl font-bold text-olive-gold">5%</p><p className="text-warm-sand text-xs">$50K+/year</p></div>
-                <div className="bg-charcoal rounded-lg p-3 border border-warm-sand/10"><p className="text-xl font-bold text-olive-gold">7%</p><p className="text-warm-sand text-xs">$20K-50K/year</p></div>
-                <div className="bg-charcoal rounded-lg p-3 border border-warm-sand/10"><p className="text-xl font-bold text-olive-gold">10%</p><p className="text-warm-sand text-xs">Under $20K</p></div>
+                <div className="bg-charcoal rounded-lg p-3 border border-warm-sand/10"><p className="text-xl font-bold text-warm-gold">5%</p><p className="text-warm-sand text-xs">$50K+/year</p></div>
+                <div className="bg-charcoal rounded-lg p-3 border border-warm-sand/10"><p className="text-xl font-bold text-warm-gold">7%</p><p className="text-warm-sand text-xs">$20K-50K/year</p></div>
+                <div className="bg-charcoal rounded-lg p-3 border border-warm-sand/10"><p className="text-xl font-bold text-warm-gold">10%</p><p className="text-warm-sand text-xs">Under $20K</p></div>
               </div>
               <p className="text-warm-sand/50 text-xs mt-4">Marketplace fees are estimates and subject to change once marketplace is activated.</p>
             </div>
@@ -468,9 +468,9 @@ export function HomeClient({ availableSpots: initialSpots }: HomeClientProps) {
       {/* Founder Story / Testimonial */}
       <section className="py-16 md:py-24 border-t border-warm-sand/10">
         <div className="max-w-3xl mx-auto px-4 md:px-6 text-center">
-          <div className="relative inline-flex items-center justify-center w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-olive-gold/20 mb-6">
-            <Star className="w-8 md:w-10 h-8 md:h-10 text-olive-gold" />
-            <div className="absolute -top-1 -right-1 w-4 h-4 bg-olive-gold rounded-full flex items-center justify-center">
+          <div className="relative inline-flex items-center justify-center w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-warm-gold/20 mb-6">
+            <Star className="w-8 md:w-10 h-8 md:h-10 text-warm-gold" />
+            <div className="absolute -top-1 -right-1 w-4 h-4 bg-warm-gold rounded-full flex items-center justify-center">
               <span className="text-charcoal text-[10px] font-bold">1</span>
             </div>
           </div>
@@ -486,13 +486,13 @@ export function HomeClient({ availableSpots: initialSpots }: HomeClientProps) {
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link 
               href="/sign-up"
-              className="inline-flex items-center gap-2 bg-olive-gold text-charcoal px-6 py-3 rounded-lg font-semibold hover:bg-olive-gold/90 transition-colors"
+              className="inline-flex items-center gap-2 bg-warm-gold text-charcoal px-6 py-3 rounded-lg font-semibold hover:bg-warm-gold/90 transition-colors"
             >
               Join as a Founder <ArrowRight className="w-4 h-4" />
             </Link>
             <Link 
               href="/sign-in"
-              className="inline-flex items-center gap-2 border border-warm-sand/30 text-warm-white px-6 py-3 rounded-lg font-semibold hover:border-olive-gold hover:text-olive-gold transition-colors"
+              className="inline-flex items-center gap-2 border border-warm-sand/30 text-warm-white px-6 py-3 rounded-lg font-semibold hover:border-warm-gold hover:text-warm-gold transition-colors"
             >
               Sign In
             </Link>
@@ -509,8 +509,8 @@ export function HomeClient({ availableSpots: initialSpots }: HomeClientProps) {
               <p className="text-warm-sand/80 text-sm mb-6 text-center">Get updates on launch, pricing, and features.</p>
               
               {submitted ? (
-                <div className="bg-olive-gold/20 border border-olive-gold rounded-lg p-4 md:p-6 text-center">
-                  <Check className="w-10 md:w-12 h-10 md:h-12 text-olive-gold mx-auto mb-3" />
+                <div className="bg-warm-gold/20 border border-warm-gold rounded-lg p-4 md:p-6 text-center">
+                  <Check className="w-10 md:w-12 h-10 md:h-12 text-warm-gold mx-auto mb-3" />
                   <p className="text-warm-white font-semibold">Thanks for your interest!</p>
                   <p className="text-warm-sand text-sm mt-1">We&apos;ll be in touch soon.</p>
                 </div>
@@ -522,13 +522,13 @@ export function HomeClient({ availableSpots: initialSpots }: HomeClientProps) {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
-                    className="w-full px-4 py-3 rounded-lg bg-charcoal border border-warm-sand/20 text-warm-white placeholder:text-warm-sand/50 focus:border-olive-gold focus:outline-none text-base"
+                    className="w-full px-4 py-3 rounded-lg bg-charcoal border border-warm-sand/20 text-warm-white placeholder:text-warm-sand/50 focus:border-warm-gold focus:outline-none text-base"
                   />
                   {error && <p className="text-red-400 text-sm">{error}</p>}
                   <button
                     type="submit"
                     disabled={loading || spotsLeft === 0}
-                    className="w-full flex items-center justify-center gap-2 bg-olive-gold text-charcoal py-3 rounded-lg font-semibold hover:bg-olive-gold/90 transition-colors disabled:opacity-50"
+                    className="w-full flex items-center justify-center gap-2 bg-warm-gold text-charcoal py-3 rounded-lg font-semibold hover:bg-warm-gold/90 transition-colors disabled:opacity-50"
                   >
                     {loading ? "Sending..." : <><Send className="w-4 h-4" />Join Waitlist</>}
                   </button>
@@ -553,8 +553,8 @@ export function HomeClient({ availableSpots: initialSpots }: HomeClientProps) {
             </div>
             <p className="text-warm-sand/60 text-sm">© 2025 OnTap. All rights reserved.</p>
             <div className="flex gap-4 text-sm">
-              <Link href="/terms" className="text-warm-sand/60 hover:text-olive-gold transition-colors">Terms</Link>
-              <Link href="/privacy" className="text-warm-sand/60 hover:text-olive-gold transition-colors">Privacy</Link>
+              <Link href="/terms" className="text-warm-sand/60 hover:text-warm-gold transition-colors">Terms</Link>
+              <Link href="/privacy" className="text-warm-sand/60 hover:text-warm-gold transition-colors">Privacy</Link>
             </div>
           </div>
         </div>

@@ -84,9 +84,9 @@ export function CalendarView({ events }: CalendarViewProps) {
   const getStatusColor = (status: string) => {
     const colors: Record<string, string> = {
       new_inquiry: "bg-warm-sand/20 border-warm-sand text-warm-sand",
-      quoted: "bg-olive-gold/20 border-olive-gold text-olive-gold",
+      quoted: "bg-warm-gold/20 border-warm-gold text-warm-gold",
       tentative: "bg-yellow-500/20 border-yellow-500 text-yellow-400",
-      booked: "bg-olive-gold/20 border-olive-gold text-olive-gold",
+      booked: "bg-warm-gold/20 border-warm-gold text-warm-gold",
       deposit_paid: "bg-green-500/20 border-green-500 text-green-400",
       completed: "bg-gray-500/20 border-gray-500 text-gray-400",
       cancelled: "bg-red-500/20 border-red-500 text-red-400",
@@ -97,9 +97,9 @@ export function CalendarView({ events }: CalendarViewProps) {
   const getChipColor = (status: string) => {
     const colors: Record<string, string> = {
       new_inquiry: "bg-warm-sand/10 text-warm-sand",
-      quoted: "bg-olive-gold/15 text-olive-gold",
+      quoted: "bg-warm-gold/15 text-warm-gold",
       tentative: "bg-yellow-500/10 text-yellow-400",
-      booked: "bg-olive-gold/15 text-olive-gold",
+      booked: "bg-warm-gold/15 text-warm-gold",
       deposit_paid: "bg-green-500/10 text-green-400",
       completed: "bg-gray-500/10 text-gray-400",
       cancelled: "bg-red-500/10 text-red-400",
@@ -167,7 +167,7 @@ export function CalendarView({ events }: CalendarViewProps) {
               onClick={() => handleViewChange(v.id as typeof view)}
               className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
                 view === v.id
-                  ? "bg-olive-gold text-charcoal"
+                  ? "bg-warm-gold text-charcoal"
                   : "text-warm-sand hover:text-warm-white"
               }`}
             >
@@ -224,8 +224,8 @@ export function CalendarView({ events }: CalendarViewProps) {
                 events.map((event) => (
                   <div key={event.id} className="flex items-center justify-between p-4 hover:bg-warm-sand/5">
                     <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-lg bg-olive-gold/20 flex items-center justify-center">
-                        <Calendar className="w-6 h-6 text-olive-gold" />
+                      <div className="w-12 h-12 rounded-lg bg-warm-gold/20 flex items-center justify-center">
+                        <Calendar className="w-6 h-6 text-warm-gold" />
                       </div>
                       <div>
                         <p className="text-warm-white font-medium">{event.name}</p>
@@ -278,9 +278,9 @@ export function CalendarView({ events }: CalendarViewProps) {
                         rounded-lg flex flex-col items-center justify-start pt-1 text-sm transition-all relative overflow-hidden
                         ${view === "week" ? "aspect-square" : "h-[56px] sm:h-[80px]"}
                         ${isSelected 
-                          ? "bg-olive-gold text-charcoal font-semibold" 
+                          ? "bg-warm-gold text-charcoal font-semibold" 
                           : isToday 
-                            ? "border border-olive-gold text-olive-gold"
+                            ? "border border-warm-gold text-warm-gold"
                             : isPast
                               ? "text-warm-sand/30 cursor-not-allowed"
                               : "text-warm-white hover:bg-warm-sand/10"
@@ -308,7 +308,7 @@ export function CalendarView({ events }: CalendarViewProps) {
                         </div>
                       )}
                       {view === "month" && hasEvent && !isSelected && (
-                        <div className="absolute bottom-0.5 sm:bottom-1 w-1 h-1 rounded-full bg-olive-gold" />
+                        <div className="absolute bottom-0.5 sm:bottom-1 w-1 h-1 rounded-full bg-warm-gold" />
                       )}
                     </button>
                   );
@@ -317,11 +317,11 @@ export function CalendarView({ events }: CalendarViewProps) {
               
               <div className="flex items-center gap-4 mt-4 pt-4 border-t border-warm-sand/10">
                 <div className="flex items-center gap-2 text-xs text-warm-sand">
-                  <div className="w-2 h-2 rounded-full bg-olive-gold" />
+                  <div className="w-2 h-2 rounded-full bg-warm-gold" />
                   <span>Has Event</span>
                 </div>
                 <div className="flex items-center gap-2 text-xs text-warm-sand">
-                  <div className="w-2 h-2 rounded-full border border-olive-gold" />
+                  <div className="w-2 h-2 rounded-full border border-warm-gold" />
                   <span>Today</span>
                 </div>
               </div>
@@ -345,7 +345,7 @@ export function CalendarView({ events }: CalendarViewProps) {
                     {selectedDateEvents.map((event) => (
                       <div
                         key={event.id}
-                        className="p-3 rounded-lg bg-warm-sand/5 border-l-4 border-olive-gold"
+                        className="p-3 rounded-lg bg-warm-sand/5 border-l-4 border-warm-gold"
                       >
                         <div className="flex items-start justify-between mb-2">
                           <div>

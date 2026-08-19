@@ -143,7 +143,7 @@ function CalendarPicker({ selectedDates, onSelectDate, multi = false }: { select
               onClick={() => handleSelect(dateStr)}
               className={`p-2 rounded-lg text-sm transition-all ${
                 selected 
-                  ? 'bg-olive-gold text-charcoal font-semibold' 
+                  ? 'bg-warm-gold text-charcoal font-semibold' 
                   : past 
                     ? 'text-warm-sand/30 cursor-not-allowed'
                     : 'text-warm-white hover:bg-warm-sand/20'
@@ -159,7 +159,7 @@ function CalendarPicker({ selectedDates, onSelectDate, multi = false }: { select
           <p className="text-xs text-warm-sand mb-2">Selected: {selectedDates.length} day(s)</p>
           <div className="flex flex-wrap gap-1">
             {selectedDates.sort().map((d, i) => (
-              <span key={i} className="bg-olive-gold/20 text-olive-gold px-2 py-1 rounded text-xs">
+              <span key={i} className="bg-warm-gold/20 text-warm-gold px-2 py-1 rounded text-xs">
                 {new Date(d + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
               </span>
             ))}
@@ -196,7 +196,7 @@ function TimeSlotPicker({ selectedStart, selectedEnd, onSelect }: {
                 onClick={() => onSelect(time, selectedEnd)}
                 className={`p-2 rounded-lg text-sm transition-all ${
                   selectedStart === time
-                    ? 'bg-olive-gold text-charcoal'
+                    ? 'bg-warm-gold text-charcoal'
                     : 'bg-warm-sand/10 text-warm-white hover:bg-warm-sand/20'
                 }`}
               >
@@ -220,7 +220,7 @@ function TimeSlotPicker({ selectedStart, selectedEnd, onSelect }: {
                   onClick={() => onSelect(selectedStart, time)}
                   className={`p-2 rounded-lg text-sm transition-all ${
                     selectedEnd === time
-                      ? 'bg-olive-gold text-charcoal'
+                      ? 'bg-warm-gold text-charcoal'
                       : !isValid
                         ? 'bg-warm-sand/5 text-warm-sand/30 cursor-not-allowed'
                         : 'bg-warm-sand/10 text-warm-white hover:bg-warm-sand/20'
@@ -234,7 +234,7 @@ function TimeSlotPicker({ selectedStart, selectedEnd, onSelect }: {
         </div>
       </div>
       {selectedStart && selectedEnd && (
-        <div className="mt-2 p-2 bg-olive-gold/10 rounded-lg text-center text-olive-gold text-sm">
+        <div className="mt-2 p-2 bg-warm-gold/10 rounded-lg text-center text-warm-gold text-sm">
           Service hours: {selectedStart} - {selectedEnd}
         </div>
       )}
@@ -370,8 +370,8 @@ export function PublicProfileClient({ organization, packages, galleryItems, cred
               />
             </div>
           ) : (
-            <div className="w-32 h-32 mx-auto mb-4 bg-olive-gold/20 rounded-xl flex items-center justify-center">
-              <span className="text-4xl font-bold text-olive-gold">
+            <div className="w-32 h-32 mx-auto mb-4 bg-warm-gold/20 rounded-xl flex items-center justify-center">
+              <span className="text-4xl font-bold text-warm-gold">
                 {organization.name.charAt(0)}
               </span>
             </div>
@@ -392,7 +392,7 @@ export function PublicProfileClient({ organization, packages, galleryItems, cred
               )}
               <div className="flex flex-wrap justify-center gap-2">
                 {credentialBadges.map(badge => (
-                  <span key={badge} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-olive-gold/15 border border-olive-gold/30 text-olive-gold text-xs font-medium">
+                  <span key={badge} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-warm-gold/15 border border-warm-gold/30 text-warm-gold text-xs font-medium">
                     <Check className="w-3.5 h-3.5" /> {badge}
                   </span>
                 ))}
@@ -428,14 +428,14 @@ export function PublicProfileClient({ organization, packages, galleryItems, cred
                       {!showPackages ? (
                         <button 
                           onClick={() => { setShowPackages(true); }}
-                          className="flex items-center gap-2 px-4 py-2 rounded-lg border border-warm-sand/30 bg-charcoal hover:border-olive-gold hover:bg-olive-gold/10 transition-all"
+                          className="flex items-center gap-2 px-4 py-2 rounded-lg border border-warm-sand/30 bg-charcoal hover:border-warm-gold hover:bg-warm-gold/10 transition-all"
                         >
                           <span className="text-warm-white text-sm">View packages</span>
                         </button>
                       ) : (
                         <button 
                           onClick={() => { setSelectedPackage(null); setShowPackages(false); }}
-                          className="flex items-center gap-2 px-4 py-2 rounded-lg border border-warm-sand/30 bg-charcoal hover:border-olive-gold hover:bg-olive-gold/10 transition-all"
+                          className="flex items-center gap-2 px-4 py-2 rounded-lg border border-warm-sand/30 bg-charcoal hover:border-warm-gold hover:bg-warm-gold/10 transition-all"
                         >
                           <span className="text-warm-white text-sm">Skip — Custom quote</span>
                         </button>
@@ -461,7 +461,7 @@ export function PublicProfileClient({ organization, packages, galleryItems, cred
                             onClick={() => setSelectedPackage(pkg.id)}
                             className={`w-full p-4 rounded-xl border text-left transition-all duration-300 ${
                               isSelected
-                                ? "border-olive-gold bg-olive-gold/10 shadow-lg shadow-olive-gold/20 ring-1 ring-olive-gold/50" 
+                                ? "border-warm-gold bg-warm-gold/10 shadow-lg shadow-warm-gold/20 ring-1 ring-warm-gold/50" 
                                 : "border-warm-sand/20 hover:border-warm-sand/60 hover:bg-warm-sand/5"
                             }`}
                           >
@@ -469,7 +469,7 @@ export function PublicProfileClient({ organization, packages, galleryItems, cred
                               <div className="flex items-center gap-3">
                                 <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-colors ${
                                   isSelected 
-                                    ? "border-olive-gold bg-olive-gold" 
+                                    ? "border-warm-gold bg-warm-gold" 
                                     : "border-warm-sand/50"
                                 }`}>
                                   {isSelected && <Check className="w-4 h-4 text-charcoal" />}
@@ -480,7 +480,7 @@ export function PublicProfileClient({ organization, packages, galleryItems, cred
                                 </div>
                               </div>
                               <div className="text-right">
-                                <p className="text-2xl font-bold text-olive-gold">
+                                <p className="text-2xl font-bold text-warm-gold">
                                   ${pkg.base_price}
                                   <span className="text-sm font-normal text-warm-sand">
                                     {pkg.pricing_type === "per_guest" ? "/guest" : pkg.pricing_type === "hourly" ? "/hr" : ""}
@@ -532,9 +532,9 @@ export function PublicProfileClient({ organization, packages, galleryItems, cred
                     <label className="text-warm-sand text-sm mb-2 block">Event Date *</label>
                     <button
                       onClick={() => setCalendarOpen(!calendarOpen)}
-                      className="w-full p-3 rounded-lg border border-warm-sand/30 bg-charcoal hover:border-olive-gold transition-colors flex items-center gap-3 text-left"
+                      className="w-full p-3 rounded-lg border border-warm-sand/30 bg-charcoal hover:border-warm-gold transition-colors flex items-center gap-3 text-left"
                     >
-                      <Calendar className="w-5 h-5 text-olive-gold flex-shrink-0" />
+                      <Calendar className="w-5 h-5 text-warm-gold flex-shrink-0" />
                       <span className={booking.dates.length > 0 ? "text-warm-white" : "text-warm-sand/50"}>
                         {booking.dates.length > 0 
                         ? booking.dates.sort().map(d => 
@@ -562,9 +562,9 @@ export function PublicProfileClient({ organization, packages, galleryItems, cred
                     <button
                       onClick={() => booking.dates.length > 0 && setTimePickerOpen(!timePickerOpen)}
                       disabled={booking.dates.length === 0}
-                      className="w-full p-3 rounded-lg border border-warm-sand/30 bg-charcoal hover:border-olive-gold transition-colors flex items-center gap-3 text-left disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="w-full p-3 rounded-lg border border-warm-sand/30 bg-charcoal hover:border-warm-gold transition-colors flex items-center gap-3 text-left disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      <Clock className="w-5 h-5 text-olive-gold flex-shrink-0" />
+                      <Clock className="w-5 h-5 text-warm-gold flex-shrink-0" />
                       <span className={booking.start_time ? "text-warm-white" : "text-warm-sand/50"}>
                         {booking.start_time && booking.end_time 
                           ? `${booking.start_time} – ${booking.end_time}` 
@@ -646,7 +646,7 @@ export function PublicProfileClient({ organization, packages, galleryItems, cred
                         onClick={() => setBooking({...booking, bar_type: opt.value})}
                         className={`p-4 rounded-lg border transition-all duration-200 ${
                           booking.bar_type === opt.value
-                            ? 'border-olive-gold bg-olive-gold/10 shadow-lg shadow-olive-gold/10'
+                            ? 'border-warm-gold bg-warm-gold/10 shadow-lg shadow-warm-gold/10'
                             : 'border-warm-sand/20 hover:border-warm-sand/50 hover:scale-[1.02]'
                         }`}
                       >
@@ -674,7 +674,7 @@ export function PublicProfileClient({ organization, packages, galleryItems, cred
                             onClick={() => setBooking({...booking, drink_preference: booking.drink_preference === opt.value ? "" : opt.value})}
                             className={`p-4 rounded-lg border transition-all duration-200 flex flex-col items-center gap-2 ${
                               booking.drink_preference === opt.value
-                                ? 'border-olive-gold bg-olive-gold/10 shadow-lg shadow-olive-gold/10'
+                                ? 'border-warm-gold bg-warm-gold/10 shadow-lg shadow-warm-gold/10'
                                 : 'border-warm-sand/20 hover:border-warm-sand/50 hover:scale-[1.02]'
                             }`}
                           >
@@ -697,9 +697,9 @@ export function PublicProfileClient({ organization, packages, galleryItems, cred
 
                 <div className="flex gap-3 pt-2">
                   {submitSuccess ? (
-                    <div className="w-full py-8 text-center rounded-xl bg-gradient-to-b from-olive-gold/10 to-charcoal border border-olive-gold/30">
-                      <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-olive-gold/20 flex items-center justify-center">
-                        <Check className="w-8 h-8 text-olive-gold" />
+                    <div className="w-full py-8 text-center rounded-xl bg-gradient-to-b from-warm-gold/10 to-charcoal border border-warm-gold/30">
+                      <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-warm-gold/20 flex items-center justify-center">
+                        <Check className="w-8 h-8 text-warm-gold" />
                       </div>
                       <p className="text-2xl font-bold text-warm-white mb-2">Request Sent!</p>
                       <p className="text-warm-sand mb-6">We&apos;ll get back to you within 24 hours.</p>
@@ -711,7 +711,7 @@ export function PublicProfileClient({ organization, packages, galleryItems, cred
                       </div>
                       <button 
                         onClick={() => { setShowBooking(false); setSubmitSuccess(false); setBooking({...booking, dates: [], start_time: "", end_time: "", guest_count: "", venue_name: "", venue_address: "", drink_preference: "", name: "", email: "", phone: ""}); setShowPackages(true); }}
-                        className="mt-6 px-6 py-3 rounded-lg bg-olive-gold text-charcoal font-semibold hover:bg-warm-white transition-colors"
+                        className="mt-6 px-6 py-3 rounded-lg bg-warm-gold text-charcoal font-semibold hover:bg-warm-white transition-colors"
                       >
                         Send Another Request
                       </button>
@@ -755,11 +755,11 @@ export function PublicProfileClient({ organization, packages, galleryItems, cred
             <h2 className="text-2xl font-bold text-warm-white mb-6">Our Packages</h2>
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
               {publicPackages.map((pkg) => (
-                <Card key={pkg.id} className="bg-charcoal border-warm-sand/20 hover:border-olive-gold/50 transition-colors">
+                <Card key={pkg.id} className="bg-charcoal border-warm-sand/20 hover:border-warm-gold/50 transition-colors">
                   <CardContent className="p-5">
                     <div className="flex justify-between items-start mb-2">
                       <h3 className="text-lg font-semibold text-warm-white">{pkg.name}</h3>
-                      <span className="text-xl font-bold text-olive-gold">
+                      <span className="text-xl font-bold text-warm-gold">
                         ${pkg.base_price}
                         <span className="text-sm text-warm-sand font-normal">
                           {pkg.pricing_type === "per_guest" ? "/guest" : pkg.pricing_type === "hourly" ? "/hr" : ""}
@@ -816,23 +816,23 @@ export function PublicProfileClient({ organization, packages, galleryItems, cred
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             <button 
               onClick={() => setShowBooking(true)}
-              className="flex items-center gap-3 p-4 rounded-lg border border-olive-gold/50 bg-olive-gold/10 hover:bg-olive-gold/20 hover:border-olive-gold transition-colors"
+              className="flex items-center gap-3 p-4 rounded-lg border border-warm-gold/50 bg-warm-gold/10 hover:bg-warm-gold/20 hover:border-warm-gold transition-colors"
             >
-              <MessageCircle className="w-6 h-6 text-olive-gold" />
+              <MessageCircle className="w-6 h-6 text-warm-gold" />
               <span className="text-warm-white font-medium">Message via OnTap</span>
             </button>
             
             <div className="flex flex-col items-start gap-2 p-4 rounded-lg border border-warm-sand/20 bg-charcoal">
               <div className="flex items-center gap-3">
-                <Phone className="w-6 h-6 text-olive-gold" />
+                <Phone className="w-6 h-6 text-warm-gold" />
                 <span className="text-warm-white">{organization.phone || "(555) 123-4567"}</span>
               </div>
               {organization.phone && (
                 <div className="flex gap-2 pl-9">
-                  <a href={`tel:${organization.phone.replace(/[^+\d]/g, "")}`} className="text-sm px-3 py-1.5 rounded-lg bg-olive-gold/20 text-olive-gold hover:bg-olive-gold/30 transition-colors">
+                  <a href={`tel:${organization.phone.replace(/[^+\d]/g, "")}`} className="text-sm px-3 py-1.5 rounded-lg bg-warm-gold/20 text-warm-gold hover:bg-warm-gold/30 transition-colors">
                     Call
                   </a>
-                  <a href={`sms:${organization.phone.replace(/[^+\d]/g, "")}`} className="text-sm px-3 py-1.5 rounded-lg bg-olive-gold/20 text-olive-gold hover:bg-olive-gold/30 transition-colors">
+                  <a href={`sms:${organization.phone.replace(/[^+\d]/g, "")}`} className="text-sm px-3 py-1.5 rounded-lg bg-warm-gold/20 text-warm-gold hover:bg-warm-gold/30 transition-colors">
                     Text
                   </a>
                 </div>
@@ -841,15 +841,15 @@ export function PublicProfileClient({ organization, packages, galleryItems, cred
 
             <button 
               onClick={() => setShowEmailPopup(true)}
-              className="flex items-center gap-3 p-4 rounded-lg border border-warm-sand/20 bg-charcoal hover:border-olive-gold transition-colors"
+              className="flex items-center gap-3 p-4 rounded-lg border border-warm-sand/20 bg-charcoal hover:border-warm-gold transition-colors"
             >
-              <Mail className="w-6 h-6 text-olive-gold" />
+              <Mail className="w-6 h-6 text-warm-gold" />
               <span className="text-warm-white">Send Email</span>
             </button>
             
             {organization.website && (
-              <a href={organization.website} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-4 rounded-lg border border-warm-sand/20 bg-charcoal hover:border-olive-gold transition-colors">
-                <Globe className="w-6 h-6 text-olive-gold" />
+              <a href={organization.website} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-4 rounded-lg border border-warm-sand/20 bg-charcoal hover:border-warm-gold transition-colors">
+                <Globe className="w-6 h-6 text-warm-gold" />
                 <span className="text-warm-white">{organization.website.replace(/^https?:\/\//, "")}</span>
               </a>
             )}
@@ -917,7 +917,7 @@ export function PublicProfileClient({ organization, packages, galleryItems, cred
             <h2 className="text-2xl font-bold text-warm-white mb-6">Location</h2>
             <Card className="bg-charcoal border-warm-sand/20">
               <CardContent className="p-6 flex items-start gap-3">
-                <MapPin className="w-6 h-6 text-olive-gold mt-1" />
+                <MapPin className="w-6 h-6 text-warm-gold mt-1" />
                 <div>
                   {organization.city && organization.state && (
                     <p className="text-warm-white text-lg">{organization.city}, {organization.state}</p>

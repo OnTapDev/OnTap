@@ -31,9 +31,9 @@ const TIERS = [
       "Priority support",
     ],
     icon: Star,
-    color: "from-olive-gold/20 to-charcoal",
-    border: "border-olive-gold/50 hover:border-olive-gold",
-    buttonStyle: "bg-olive-gold text-charcoal hover:bg-olive-gold/90 font-semibold",
+    color: "from-warm-gold/20 to-charcoal",
+    border: "border-warm-gold/50 hover:border-warm-gold",
+    buttonStyle: "bg-warm-gold text-charcoal hover:bg-warm-gold/90 font-semibold",
     popular: true,
   },
   {
@@ -128,19 +128,19 @@ export function SubscriptionClient({ orgId, orgName }: Props) {
               className={`relative flex flex-col rounded-2xl border ${tier.border} bg-gradient-to-b ${tier.color} p-6 lg:p-8 transition-all duration-300 ${tier.popular ? "scale-105 lg:scale-110" : ""}`}
             >
               {tier.popular && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-olive-gold text-charcoal text-xs font-bold px-4 py-1 rounded-full">
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-warm-gold text-charcoal text-xs font-bold px-4 py-1 rounded-full">
                   MOST POPULAR
                 </div>
               )}
 
               <div className="flex items-center gap-3 mb-4">
-                <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${tier.popular ? "bg-olive-gold/30" : "bg-warm-sand/10"}`}>
-                  <Icon className={`w-5 h-5 ${tier.popular ? "text-olive-gold" : "text-warm-sand"}`} />
+                <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${tier.popular ? "bg-warm-gold/30" : "bg-warm-sand/10"}`}>
+                  <Icon className={`w-5 h-5 ${tier.popular ? "text-warm-gold" : "text-warm-sand"}`} />
                 </div>
                 <div>
                   <h3 className="text-xl font-bold text-warm-white">{tier.name}</h3>
                   {tier.badge && (
-                    <span className="text-xs text-olive-gold font-medium">{tier.badge}</span>
+                    <span className="text-xs text-warm-gold font-medium">{tier.badge}</span>
                   )}
                 </div>
               </div>
@@ -153,7 +153,7 @@ export function SubscriptionClient({ orgId, orgName }: Props) {
                 {tier.originalPrice && (
                   <div className="flex items-center gap-2 mt-1">
                     <span className="text-sm text-warm-sand/60 line-through">{tier.originalPrice}</span>
-                    <span className="text-xs bg-olive-gold/20 text-olive-gold px-2 py-0.5 rounded-full font-medium">
+                    <span className="text-xs bg-warm-gold/20 text-warm-gold px-2 py-0.5 rounded-full font-medium">
                       Limited time
                     </span>
                   </div>
@@ -165,7 +165,7 @@ export function SubscriptionClient({ orgId, orgName }: Props) {
                 <ul className="space-y-3">
                   {tier.features.map((feature) => (
                     <li key={feature} className="flex items-start gap-3">
-                      <Check className={`w-4 h-4 flex-shrink-0 mt-0.5 ${tier.popular ? "text-olive-gold" : "text-warm-sand"}`} />
+                      <Check className={`w-4 h-4 flex-shrink-0 mt-0.5 ${tier.popular ? "text-warm-gold" : "text-warm-sand"}`} />
                       <span className="text-sm text-warm-sand">{feature}</span>
                     </li>
                   ))}

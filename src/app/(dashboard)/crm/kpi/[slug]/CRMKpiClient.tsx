@@ -107,7 +107,7 @@ export function CRMKpiClient({ slug, kpis }: { slug: string; kpis: PipelineKPIs 
           <h1 className="text-screen-title text-warm-white">KPI Not Found</h1>
           <p className="text-warm-sand mt-1">This KPI page does not exist.</p>
         </div>
-        <Link href="/crm" className="text-olive-gold hover:text-warm-white">← Back</Link>
+        <Link href="/crm" className="text-warm-gold hover:text-warm-white">← Back</Link>
       </div>
     );
   }
@@ -117,24 +117,24 @@ export function CRMKpiClient({ slug, kpis }: { slug: string; kpis: PipelineKPIs 
 
   return (
     <div className="space-y-6">
-      <Link href="/crm" className="text-olive-gold hover:text-warm-white">← Back</Link>
+      <Link href="/crm" className="text-warm-gold hover:text-warm-white">← Back</Link>
 
       <div className="flex flex-col lg:flex-row gap-6">
         <Card className="bg-charcoal border-warm-sand/20 lg:w-1/2">
           <CardContent className="p-6">
-            <div className="rounded-lg bg-olive-gold/20 p-3 mb-4"><config.icon className="h-8 w-8 text-olive-gold" /></div>
+            <div className="rounded-lg bg-warm-gold/20 p-3 mb-4"><config.icon className="h-8 w-8 text-warm-gold" /></div>
             <p className="text-section-title text-warm-white mb-2">{config.title}</p>
             <div className="flex items-end gap-4">
               <p className="text-4xl font-bold text-warm-white">{value}</p>
-              {change && <div className="flex items-center gap-1 text-sm text-olive-gold mb-1"><ArrowRight className="w-4 h-4" /><span>{change}</span></div>}
+              {change && <div className="flex items-center gap-1 text-sm text-warm-gold mb-1"><ArrowRight className="w-4 h-4" /><span>{change}</span></div>}
             </div>
             <div className="mt-4 pt-4 border-t border-warm-sand/20">
-              <Link href={config.dataHref} className="flex items-center gap-2 text-sm text-olive-gold hover:text-warm-white">{config.dataLabel}<ArrowRight className="w-4 h-4" /></Link>
+              <Link href={config.dataHref} className="flex items-center gap-2 text-sm text-warm-gold hover:text-warm-white">{config.dataLabel}<ArrowRight className="w-4 h-4" /></Link>
             </div>
           </CardContent>
         </Card>
         <Card className="bg-charcoal border-warm-sand/20 lg:w-1/2">
-          <CardContent className="p-6"><DetailedLineChart data={chartData} color="#7D7254" height={200} title="30-Day Trend" /></CardContent>
+          <CardContent className="p-6"><DetailedLineChart data={chartData} color="#7D6854" height={200} title="30-Day Trend" /></CardContent>
         </Card>
       </div>
 
@@ -144,7 +144,7 @@ export function CRMKpiClient({ slug, kpis }: { slug: string; kpis: PipelineKPIs 
         <CardHeader className="cursor-pointer hover:bg-warm-sand/5" onClick={() => toggleSection("standards")}>
           <div className="flex items-center justify-between"><CardTitle className="text-warm-white">Industry Standards</CardTitle>{openSections.standards ? <ChevronUp className="w-5 h-5 text-warm-sand" /> : <ChevronDown className="w-5 h-5 text-warm-sand" />}</div>
         </CardHeader>
-        {openSections.standards && <CardContent><div className="space-y-2">{config.industryStandards.map((s, i) => <div key={i} className="flex items-center justify-between p-2 rounded bg-warm-sand/5"><span className="text-warm-sand text-sm">{s.metric}</span><span className="text-warm-white text-sm font-medium">{s.range} · <span className={s.status === "Excellent" ? "text-olive-gold" : "text-warm-sand"}>{s.status}</span></span></div>)}</div></CardContent>}
+        {openSections.standards && <CardContent><div className="space-y-2">{config.industryStandards.map((s, i) => <div key={i} className="flex items-center justify-between p-2 rounded bg-warm-sand/5"><span className="text-warm-sand text-sm">{s.metric}</span><span className="text-warm-white text-sm font-medium">{s.range} · <span className={s.status === "Excellent" ? "text-warm-gold" : "text-warm-sand"}>{s.status}</span></span></div>)}</div></CardContent>}
       </Card>
 
       <Card className="bg-charcoal border-warm-sand/20">

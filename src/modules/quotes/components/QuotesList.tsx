@@ -121,7 +121,7 @@ export function QuotesList({ quotes, packages, addOns, contacts, events, orgId }
           onClick={() => setFilter("all")}
           className={`px-3 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
             filter === "all"
-              ? "bg-olive-gold text-charcoal"
+              ? "bg-warm-gold text-charcoal"
               : "text-warm-sand hover:text-warm-white bg-warm-sand/10"
           }`}
         >
@@ -133,7 +133,7 @@ export function QuotesList({ quotes, packages, addOns, contacts, events, orgId }
             onClick={() => setFilter(status)}
             className={`px-3 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
               filter === status
-                ? "bg-olive-gold text-charcoal"
+                ? "bg-warm-gold text-charcoal"
                 : "text-warm-sand hover:text-warm-white bg-warm-sand/10"
             }`}
           >
@@ -212,11 +212,11 @@ export function QuotesList({ quotes, packages, addOns, contacts, events, orgId }
                     <div className="flex items-center gap-1">
                       <button
                         onClick={() => copyQuoteLink(quote.id)}
-                        className="p-2 text-warm-sand hover:text-olive-gold"
+                        className="p-2 text-warm-sand hover:text-warm-gold"
                         title="Copy shareable link"
                       >
                         {copied === quote.id ? (
-                          <CheckCheck className="w-4 h-4 text-olive-gold" />
+                          <CheckCheck className="w-4 h-4 text-warm-gold" />
                         ) : (
                           <LinkIcon className="w-4 h-4" />
                         )}

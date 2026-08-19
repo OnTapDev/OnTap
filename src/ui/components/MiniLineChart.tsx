@@ -15,7 +15,7 @@ interface DetailedLineChartProps {
   title?: string;
 }
 
-export function MiniLineChart({ data, color = "#7D7254", height = 24 }: MiniLineChartProps) {
+export function MiniLineChart({ data, color = "#7D6854", height = 24 }: MiniLineChartProps) {
   const chartData = data.map((value, index) => ({ value, index }));
   
   return (
@@ -42,7 +42,7 @@ export function MiniLineChart({ data, color = "#7D7254", height = 24 }: MiniLine
   );
 }
 
-export function DetailedLineChart({ data, color = "#7D7254", height = 200, title }: DetailedLineChartProps) {
+export function DetailedLineChart({ data, color = "#7D6854", height = 200, title }: DetailedLineChartProps) {
   const chartData = data.map((value, index) => ({ value, day: index + 1 }));
   const maxValue = Math.max(...data);
   const minValue = Math.min(...data);
@@ -78,7 +78,7 @@ export function DetailedLineChart({ data, color = "#7D7254", height = 200, title
             <Tooltip
               contentStyle={{
                 backgroundColor: "#1A1A1A",
-                border: "1px solid #7D7254",
+                border: "1px solid #7D6854",
                 borderRadius: "8px",
                 boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
               }}

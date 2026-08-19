@@ -28,8 +28,8 @@ function SectionCard({ icon: Icon, title, description, children, className = "" 
     <Card className={className}>
       <CardHeader>
         <div className="flex items-start gap-3">
-          <div className="w-10 h-10 rounded-lg bg-olive-gold/20 flex items-center justify-center shrink-0">
-            <Icon className="w-5 h-5 text-olive-gold" />
+          <div className="w-10 h-10 rounded-lg bg-warm-gold/20 flex items-center justify-center shrink-0">
+            <Icon className="w-5 h-5 text-warm-gold" />
           </div>
           <div>
             <CardTitle>{title}</CardTitle>
@@ -83,7 +83,7 @@ function SupportForm() {
         <p className="text-warm-sand text-sm mt-1">We&apos;ll get back to you soon.</p>
         <button
           onClick={() => setSent(false)}
-          className="text-olive-gold text-sm mt-4 font-medium hover:underline"
+          className="text-warm-gold text-sm mt-4 font-medium hover:underline"
         >
           Send another message
         </button>
@@ -98,7 +98,7 @@ function SupportForm() {
         <select
           value={category}
           onChange={(e) => setCategory(e.target.value)}
-          className="w-full px-3 py-2.5 rounded-lg bg-charcoal border border-warm-sand/20 text-warm-white focus:border-olive-gold focus:outline-none focus:ring-1 focus:ring-olive-gold"
+          className="w-full px-3 py-2.5 rounded-lg bg-charcoal border border-warm-sand/20 text-warm-white focus:border-warm-gold focus:outline-none focus:ring-1 focus:ring-warm-gold"
         >
           <option value="general">General Question</option>
           <option value="bug">Bug Report</option>
@@ -124,7 +124,7 @@ function SupportForm() {
           onChange={(e) => setMessage(e.target.value)}
           required
           rows={4}
-          className="w-full px-3 py-2.5 rounded-lg bg-charcoal border border-warm-sand/20 text-warm-white placeholder:text-warm-sand/50 focus:border-olive-gold focus:outline-none focus:ring-1 focus:ring-olive-gold resize-none"
+          className="w-full px-3 py-2.5 rounded-lg bg-charcoal border border-warm-sand/20 text-warm-white placeholder:text-warm-sand/50 focus:border-warm-gold focus:outline-none focus:ring-1 focus:ring-warm-gold resize-none"
         />
       </div>
       {error && <p className="text-red-400 text-sm">{error}</p>}
@@ -229,7 +229,7 @@ function BookingTabContent({ orgId, orgSlug, bookingEnabled, packages }: {
             <code className="flex-1 text-sm text-warm-white truncate">{bookingUrl}</code>
             <button
               onClick={handleCopyLink}
-              className="shrink-0 p-2 text-warm-sand hover:text-olive-gold transition-colors rounded-lg hover:bg-warm-sand/10"
+              className="shrink-0 p-2 text-warm-sand hover:text-warm-gold transition-colors rounded-lg hover:bg-warm-sand/10"
               title="Copy link"
             >
               {copied ? <Check className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
@@ -238,7 +238,7 @@ function BookingTabContent({ orgId, orgSlug, bookingEnabled, packages }: {
               href={bookingUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="shrink-0 p-2 text-warm-sand hover:text-olive-gold transition-colors rounded-lg hover:bg-warm-sand/10"
+              className="shrink-0 p-2 text-warm-sand hover:text-warm-gold transition-colors rounded-lg hover:bg-warm-sand/10"
               title="Preview"
             >
               <ExternalLink className="w-4 h-4" />
@@ -265,7 +265,7 @@ function BookingTabContent({ orgId, orgSlug, bookingEnabled, packages }: {
               value={slug}
               onChange={(e) => { setSlug(e.target.value); setSlugError(""); setSlugSuccess(false); }}
               placeholder="your-bar-name"
-              className="flex-1 bg-charcoal border border-warm-sand/20 rounded-lg px-3 py-2 text-warm-white text-sm focus:border-olive-gold focus:outline-none focus:ring-1 focus:ring-olive-gold"
+              className="flex-1 bg-charcoal border border-warm-sand/20 rounded-lg px-3 py-2 text-warm-white text-sm focus:border-warm-gold focus:outline-none focus:ring-1 focus:ring-warm-gold"
             />
           </div>
           {slugError && <p className="text-sm text-red-400">{slugError}</p>}
@@ -309,7 +309,7 @@ function BookingTabContent({ orgId, orgSlug, bookingEnabled, packages }: {
                     onClick={() => handleTogglePackage(pkg.id)}
                     disabled={toggling}
                     className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                      visible ? "bg-olive-gold" : "bg-warm-sand/30"
+                      visible ? "bg-warm-gold" : "bg-warm-sand/30"
                     }`}
                   >
                     <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
@@ -359,8 +359,8 @@ function NotificationToggle({
   return (
     <div className="flex items-center justify-between gap-4 p-4 bg-warm-sand/5 rounded-lg hover:bg-warm-sand/10 transition-colors">
       <div className="flex items-start gap-3">
-        <div className="w-9 h-9 rounded-lg bg-olive-gold/15 flex items-center justify-center shrink-0 mt-0.5">
-          <Icon className="w-4 h-4 text-olive-gold" />
+        <div className="w-9 h-9 rounded-lg bg-warm-gold/15 flex items-center justify-center shrink-0 mt-0.5">
+          <Icon className="w-4 h-4 text-warm-gold" />
         </div>
         <div>
           <h4 className="text-warm-white font-medium">{title}</h4>
@@ -368,7 +368,7 @@ function NotificationToggle({
         </div>
       </div>
       <div className="flex items-center gap-2 shrink-0">
-        {saving && <Loader2 className="w-4 h-4 text-olive-gold animate-spin" />}
+        {saving && <Loader2 className="w-4 h-4 text-warm-gold animate-spin" />}
         {saved && !saving && <span className="text-xs text-green-400 flex items-center gap-1"><Check className="w-3.5 h-3.5" /> Saved</span>}
         <label className="relative inline-flex items-center cursor-pointer">
           <input
@@ -377,7 +377,7 @@ function NotificationToggle({
             className="sr-only peer"
             onChange={(e) => handleChange(e.target.checked)}
           />
-          <div className="w-11 h-6 bg-warm-sand/20 peer-focus:outline-none peer-focus:ring-1 peer-focus:ring-olive-gold rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-warm-sand after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-olive-gold peer-checked:after:bg-charcoal"></div>
+          <div className="w-11 h-6 bg-warm-sand/20 peer-focus:outline-none peer-focus:ring-1 peer-focus:ring-warm-gold rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-warm-sand after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-warm-gold peer-checked:after:bg-charcoal"></div>
         </label>
       </div>
     </div>
@@ -582,13 +582,13 @@ export function SettingsClient({
             backgroundSize: '24px 24px',
           }}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-olive-gold/5 to-transparent" />
-        <div className="absolute -top-24 -right-16 w-72 h-72 bg-olive-gold/10 rounded-full blur-[80px]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-warm-gold/5 to-transparent" />
+        <div className="absolute -top-24 -right-16 w-72 h-72 bg-warm-gold/10 rounded-full blur-[80px]" />
         <div className="relative px-6 md:px-8 py-8 md:py-10">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
               <div className="inline-flex items-center gap-2 bg-warm-sand/10 border border-warm-sand/20 px-3 py-1.5 rounded-full mb-4">
-                <Sparkles className="w-3.5 h-3.5 text-olive-gold" />
+                <Sparkles className="w-3.5 h-3.5 text-warm-gold" />
                 <span className="text-warm-sand text-xs font-medium">Account &amp; Preferences</span>
               </div>
               <h1 className="text-screen-title text-warm-white">Settings</h1>
@@ -598,8 +598,8 @@ export function SettingsClient({
             </div>
             {subscriptionStatus && (
               <div className="flex items-center gap-3 p-4 bg-charcoal/80 border border-warm-sand/20 rounded-xl backdrop-blur-sm">
-                <div className="w-10 h-10 rounded-lg bg-olive-gold/20 flex items-center justify-center">
-                  <ShieldCheck className="w-5 h-5 text-olive-gold" />
+                <div className="w-10 h-10 rounded-lg bg-warm-gold/20 flex items-center justify-center">
+                  <ShieldCheck className="w-5 h-5 text-warm-gold" />
                 </div>
                 <div>
                   <p className="text-warm-white font-medium text-sm">OnTap Platform</p>
@@ -624,7 +624,7 @@ export function SettingsClient({
             onClick={() => setActiveTab(tab.id)}
             className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium whitespace-nowrap transition-all ${
               activeTab === tab.id
-                ? "bg-olive-gold text-charcoal shadow-lg shadow-olive-gold/20"
+                ? "bg-warm-gold text-charcoal shadow-lg shadow-warm-gold/20"
                 : "text-warm-sand hover:text-warm-white hover:bg-warm-sand/10"
             }`}
           >
@@ -703,8 +703,8 @@ export function SettingsClient({
                     <Image src={orgLogoUrl} alt={orgName || "Logo"} width={56} height={56} className="object-contain" />
                   </div>
                 ) : (
-                  <div className="w-14 h-14 rounded-xl bg-olive-gold/20 flex items-center justify-center shrink-0">
-                    <Building2 className="w-7 h-7 text-olive-gold" />
+                  <div className="w-14 h-14 rounded-xl bg-warm-gold/20 flex items-center justify-center shrink-0">
+                    <Building2 className="w-7 h-7 text-warm-gold" />
                   </div>
                 )}
                 <div className="flex-1 min-w-0">
@@ -715,7 +715,7 @@ export function SettingsClient({
                 </div>
                 <Link
                   href="/profile"
-                  className="flex items-center gap-1.5 text-sm text-olive-gold font-medium hover:text-warm-white transition-colors shrink-0"
+                  className="flex items-center gap-1.5 text-sm text-warm-gold font-medium hover:text-warm-white transition-colors shrink-0"
                 >
                   Manage Profile <ArrowRight className="w-4 h-4" />
                 </Link>
@@ -746,8 +746,8 @@ export function SettingsClient({
           >
             <div className="flex items-center justify-between gap-4 p-4 bg-warm-sand/5 rounded-xl border border-warm-sand/15">
               <div className="flex items-start gap-3">
-                <div className="w-10 h-10 rounded-lg bg-olive-gold/15 flex items-center justify-center shrink-0">
-                  <Shield className="w-5 h-5 text-olive-gold" />
+                <div className="w-10 h-10 rounded-lg bg-warm-gold/15 flex items-center justify-center shrink-0">
+                  <Shield className="w-5 h-5 text-warm-gold" />
                 </div>
                 <div>
                   <h4 className="text-warm-white font-medium">Account Security</h4>
@@ -803,8 +803,8 @@ export function SettingsClient({
           >
             <div className="flex items-center justify-between gap-4 p-4 bg-warm-sand/5 rounded-xl border border-warm-sand/15">
               <div className="flex items-start gap-3">
-                <div className="w-10 h-10 rounded-lg bg-olive-gold/15 flex items-center justify-center shrink-0">
-                  <MonitorSmartphone className="w-5 h-5 text-olive-gold" />
+                <div className="w-10 h-10 rounded-lg bg-warm-gold/15 flex items-center justify-center shrink-0">
+                  <MonitorSmartphone className="w-5 h-5 text-warm-gold" />
                 </div>
                 <div>
                   <h4 className="text-warm-white font-medium">Review Devices</h4>
@@ -874,8 +874,8 @@ export function SettingsClient({
             <div className="space-y-4">
               <div className="flex items-center justify-between p-4 bg-warm-sand/5 rounded-xl border border-warm-sand/20">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-olive-gold/15 flex items-center justify-center">
-                    <CreditCard className="w-5 h-5 text-olive-gold" />
+                  <div className="w-10 h-10 rounded-lg bg-warm-gold/15 flex items-center justify-center">
+                    <CreditCard className="w-5 h-5 text-warm-gold" />
                   </div>
                   <div>
                     <h4 className="text-warm-white font-medium">Receive Payments</h4>
@@ -925,8 +925,8 @@ export function SettingsClient({
             <div className="space-y-4">
               <div className="flex items-center justify-between p-4 bg-warm-sand/5 rounded-xl border border-warm-sand/20">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-olive-gold/15 flex items-center justify-center">
-                    <Sparkles className="w-5 h-5 text-olive-gold" />
+                  <div className="w-10 h-10 rounded-lg bg-warm-gold/15 flex items-center justify-center">
+                    <Sparkles className="w-5 h-5 text-warm-gold" />
                   </div>
                   <div>
                     <h4 className="text-warm-white font-medium">OnTap Platform</h4>
@@ -945,9 +945,9 @@ export function SettingsClient({
               <SubscriptionActions orgId={orgId} status={subscriptionStatus?.status} />
 
               {subscriptionStatus?.subscriberCount !== undefined && (
-                <div className="flex items-center justify-between p-3 bg-olive-gold/10 rounded-lg border border-olive-gold/20">
+                <div className="flex items-center justify-between p-3 bg-warm-gold/10 rounded-lg border border-warm-gold/20">
                   <p className="text-sm text-warm-sand">Active subscribers</p>
-                  <p className="text-sm font-bold text-olive-gold">{subscriptionStatus.subscriberCount} / 500</p>
+                  <p className="text-sm font-bold text-warm-gold">{subscriptionStatus.subscriberCount} / 500</p>
                 </div>
               )}
             </div>
@@ -964,7 +964,7 @@ export function SettingsClient({
                   <h4 className="text-warm-white font-medium">Platform Fee</h4>
                   <p className="text-warm-sand text-sm">No platform fee is currently applied. 100% of each payment settles to your Stripe account (minus standard Stripe processing fees).</p>
                 </div>
-                <span className="text-olive-gold font-medium shrink-0 ml-4">0%</span>
+                <span className="text-warm-gold font-medium shrink-0 ml-4">0%</span>
               </div>
               <div className="flex items-center justify-between p-4 bg-warm-sand/5 rounded-xl">
                 <div>
@@ -981,8 +981,8 @@ export function SettingsClient({
           <Card>
             <CardHeader>
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-olive-gold/20 flex items-center justify-center shrink-0">
-                  <Shield className="w-5 h-5 text-olive-gold" />
+                <div className="w-10 h-10 rounded-lg bg-warm-gold/20 flex items-center justify-center shrink-0">
+                  <Shield className="w-5 h-5 text-warm-gold" />
                 </div>
                 <div>
                   <CardTitle>Record Keeping &amp; Responsibility</CardTitle>
@@ -994,13 +994,13 @@ export function SettingsClient({
               <p className="text-warm-sand text-sm">
                 As the merchant of record, you are responsible for maintaining records of all transactions processed through your Stripe account. This includes invoices, payments, refunds, and chargebacks.
               </p>
-              <div className="p-4 bg-olive-gold/10 rounded-xl border border-olive-gold/20">
+              <div className="p-4 bg-warm-gold/10 rounded-xl border border-warm-gold/20">
                 <h4 className="text-warm-white font-medium text-sm mb-3">Your Responsibilities</h4>
                 <ul className="text-warm-sand text-sm space-y-2.5">
-                  <li className="flex items-start gap-2"><Check className="w-4 h-4 text-olive-gold mt-0.5 shrink-0" /> Download and store copies of paid invoices for your records</li>
-                  <li className="flex items-start gap-2"><Check className="w-4 h-4 text-olive-gold mt-0.5 shrink-0" /> Handle refunds and disputes directly through your Stripe dashboard</li>
-                  <li className="flex items-start gap-2"><Check className="w-4 h-4 text-olive-gold mt-0.5 shrink-0" /> Report and remit applicable taxes for your transactions</li>
-                  <li className="flex items-start gap-2"><Check className="w-4 h-4 text-olive-gold mt-0.5 shrink-0" /> Retain transaction records as required by your local regulations</li>
+                  <li className="flex items-start gap-2"><Check className="w-4 h-4 text-warm-gold mt-0.5 shrink-0" /> Download and store copies of paid invoices for your records</li>
+                  <li className="flex items-start gap-2"><Check className="w-4 h-4 text-warm-gold mt-0.5 shrink-0" /> Handle refunds and disputes directly through your Stripe dashboard</li>
+                  <li className="flex items-start gap-2"><Check className="w-4 h-4 text-warm-gold mt-0.5 shrink-0" /> Report and remit applicable taxes for your transactions</li>
+                  <li className="flex items-start gap-2"><Check className="w-4 h-4 text-warm-gold mt-0.5 shrink-0" /> Retain transaction records as required by your local regulations</li>
                 </ul>
               </div>
               <p className="text-warm-sand/60 text-xs">
@@ -1165,12 +1165,12 @@ export function SettingsClient({
             description="Prefer email? Reach us directly."
           >
             <div className="flex items-center gap-3 p-4 bg-warm-sand/5 rounded-xl border border-warm-sand/15">
-              <div className="w-10 h-10 rounded-lg bg-olive-gold/15 flex items-center justify-center">
-                <Mail className="w-5 h-5 text-olive-gold" />
+              <div className="w-10 h-10 rounded-lg bg-warm-gold/15 flex items-center justify-center">
+                <Mail className="w-5 h-5 text-warm-gold" />
               </div>
               <div>
                 <p className="text-warm-white font-medium">Email</p>
-                <a href="mailto:ontap.inquiries@gmail.com" className="text-sm text-olive-gold hover:text-warm-white transition-colors">
+                <a href="mailto:ontap.inquiries@gmail.com" className="text-sm text-warm-gold hover:text-warm-white transition-colors">
                   ontap.inquiries@gmail.com
                 </a>
               </div>

@@ -143,7 +143,7 @@ export function InquiryForm({ orgSlug }: InquiryFormProps) {
               <div>
                 <label className="label">Event Type *</label>
                 <select
-                  className="w-full px-3 py-2 bg-charcoal border border-warm-sand/20 rounded-lg text-warm-white focus:outline-none focus:border-olive-gold"
+                  className="w-full px-3 py-2 bg-charcoal border border-warm-sand/20 rounded-lg text-warm-white focus:outline-none focus:border-warm-gold"
                   value={form.event_type}
                   onChange={(e) => setForm({ ...form, event_type: e.target.value })}
                   required

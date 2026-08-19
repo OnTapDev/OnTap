@@ -29,7 +29,7 @@ export function BookingToggle({ orgId, enabled: initialEnabled }: { orgId: strin
       variant="secondary"
       className={`${
         enabled
-          ? "border-olive-gold bg-olive-gold/20 text-olive-gold hover:bg-olive-gold/30"
+          ? "border-warm-gold bg-warm-gold/20 text-warm-gold hover:bg-warm-gold/30"
           : "border-warm-sand/20 text-warm-sand hover:text-warm-white hover:border-warm-sand/40"
       }`}
       title={enabled ? "Online bookings are ON" : "Online bookings are OFF"}

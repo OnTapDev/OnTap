@@ -59,8 +59,8 @@ interface ContractsClientProps {
 const statusSteps = ["draft", "sent", "viewed", "signed", "completed"];
 
 const quickActions = [
-  { name: "New Contract", icon: Plus, color: "bg-olive-gold/20 text-olive-gold" },
-  { name: "From Template", icon: FileText, color: "bg-olive-gold/20 text-olive-gold" },
+  { name: "New Contract", icon: Plus, color: "bg-warm-gold/20 text-warm-gold" },
+  { name: "From Template", icon: FileText, color: "bg-warm-gold/20 text-warm-gold" },
 ];
 
 export function ContractsClient({ contracts, templates, events, contacts, orgId, kpis }: ContractsClientProps) {
@@ -136,7 +136,7 @@ export function ContractsClient({ contracts, templates, events, contacts, orgId,
           {statusSteps.map(status => (
             <div key={status} className="text-center">
               <div className="relative h-2 bg-warm-sand/10 rounded-full mb-2 overflow-hidden">
-                <div className="h-full bg-olive-gold rounded-full transition-all duration-500"
+                <div className="h-full bg-warm-gold rounded-full transition-all duration-500"
                   style={{ width: `${(statusCounts[status as keyof typeof statusCounts] / maxFunnel) * 100}%` }} />
               </div>
               <p className="text-lg font-bold text-warm-white">{statusCounts[status as keyof typeof statusCounts]}</p>
@@ -148,68 +148,68 @@ export function ContractsClient({ contracts, templates, events, contacts, orgId,
 
       <div className="grid gap-4 md:grid-cols-4">
         <Link href="/contracts/kpi/avg-cycle-time">
-          <Card className="bg-charcoal border-warm-sand/20 hover:border-olive-gold hover:scale-[1.02] transition-all duration-200 cursor-pointer h-full">
+          <Card className="bg-charcoal border-warm-sand/20 hover:border-warm-gold hover:scale-[1.02] transition-all duration-200 cursor-pointer h-full">
             <CardContent className="p-6">
               <div className="flex items-center justify-between mb-3">
-                <div className="rounded-lg bg-olive-gold/20 p-3"><Clock className="h-6 w-6 text-olive-gold" /></div>
-                <MiniLineChart data={kpis.avgCycleTime.chartData.length > 0 ? kpis.avgCycleTime.chartData : [10, 8, 12, 7, 6, 9, 5, 7, 6, 8, 5, 4]} color="#7D7254" />
+                <div className="rounded-lg bg-warm-gold/20 p-3"><Clock className="h-6 w-6 text-warm-gold" /></div>
+                <MiniLineChart data={kpis.avgCycleTime.chartData.length > 0 ? kpis.avgCycleTime.chartData : [10, 8, 12, 7, 6, 9, 5, 7, 6, 8, 5, 4]} color="#7D6854" />
               </div>
               <p className="text-meta text-warm-sand">Avg Cycle Time</p>
               <div className="flex items-end justify-between mt-1">
                 <p className="text-2xl font-bold text-warm-white">{kpis.avgCycleTime.value > 0 ? `${kpis.avgCycleTime.value} days` : "0 days"}</p>
                 {kpis.avgCycleTime.change && kpis.avgCycleTime.value > 0 && (
-                  <div className="flex items-center gap-1 text-sm text-olive-gold"><ArrowUpRight className="w-4 h-4" /><span>{kpis.avgCycleTime.change}</span></div>
+                  <div className="flex items-center gap-1 text-sm text-warm-gold"><ArrowUpRight className="w-4 h-4" /><span>{kpis.avgCycleTime.change}</span></div>
                 )}
               </div>
             </CardContent>
           </Card>
         </Link>
         <Link href="/contracts/kpi/alcohol-cogs">
-          <Card className="bg-charcoal border-warm-sand/20 hover:border-olive-gold hover:scale-[1.02] transition-all duration-200 cursor-pointer h-full">
+          <Card className="bg-charcoal border-warm-sand/20 hover:border-warm-gold hover:scale-[1.02] transition-all duration-200 cursor-pointer h-full">
             <CardContent className="p-6">
               <div className="flex items-center justify-between mb-3">
-                <div className="rounded-lg bg-olive-gold/20 p-3"><DollarSign className="h-6 w-6 text-olive-gold" /></div>
-                <MiniLineChart data={kpis.avgAlcoholCogs.chartData.length > 0 ? kpis.avgAlcoholCogs.chartData : [25, 22, 20, 18, 19, 17, 16, 15, 14, 16, 15, 14]} color="#7D7254" />
+                <div className="rounded-lg bg-warm-gold/20 p-3"><DollarSign className="h-6 w-6 text-warm-gold" /></div>
+                <MiniLineChart data={kpis.avgAlcoholCogs.chartData.length > 0 ? kpis.avgAlcoholCogs.chartData : [25, 22, 20, 18, 19, 17, 16, 15, 14, 16, 15, 14]} color="#7D6854" />
               </div>
               <p className="text-meta text-warm-sand">Alcohol COGS</p>
               <div className="flex items-end justify-between mt-1">
                 <p className="text-2xl font-bold text-warm-white">{kpis.avgAlcoholCogs.value > 0 ? `${kpis.avgAlcoholCogs.value}%` : "0%"}</p>
                 {kpis.avgAlcoholCogs.change && kpis.avgAlcoholCogs.value > 0 && (
-                  <div className="flex items-center gap-1 text-sm text-olive-gold"><ArrowUpRight className="w-4 h-4" /><span>{kpis.avgAlcoholCogs.change}</span></div>
+                  <div className="flex items-center gap-1 text-sm text-warm-gold"><ArrowUpRight className="w-4 h-4" /><span>{kpis.avgAlcoholCogs.change}</span></div>
                 )}
               </div>
             </CardContent>
           </Card>
         </Link>
         <Link href="/contracts/kpi/revenue-per-hour">
-          <Card className="bg-charcoal border-warm-sand/20 hover:border-olive-gold hover:scale-[1.02] transition-all duration-200 cursor-pointer h-full">
+          <Card className="bg-charcoal border-warm-sand/20 hover:border-warm-gold hover:scale-[1.02] transition-all duration-200 cursor-pointer h-full">
             <CardContent className="p-6">
               <div className="flex items-center justify-between mb-3">
-                <div className="rounded-lg bg-olive-gold/20 p-3"><TrendingUp className="h-6 w-6 text-olive-gold" /></div>
-                <MiniLineChart data={kpis.avgRevenuePerHour.chartData.length > 0 ? kpis.avgRevenuePerHour.chartData : [150, 165, 180, 175, 190, 200, 195, 210, 205, 220, 215, 230]} color="#7D7254" />
+                <div className="rounded-lg bg-warm-gold/20 p-3"><TrendingUp className="h-6 w-6 text-warm-gold" /></div>
+                <MiniLineChart data={kpis.avgRevenuePerHour.chartData.length > 0 ? kpis.avgRevenuePerHour.chartData : [150, 165, 180, 175, 190, 200, 195, 210, 205, 220, 215, 230]} color="#7D6854" />
               </div>
               <p className="text-meta text-warm-sand">Revenue/Hour</p>
               <div className="flex items-end justify-between mt-1">
                 <p className="text-2xl font-bold text-warm-white">{kpis.avgRevenuePerHour.value > 0 ? `$${kpis.avgRevenuePerHour.value}` : "$0"}</p>
                 {kpis.avgRevenuePerHour.change && kpis.avgRevenuePerHour.value > 0 && (
-                  <div className="flex items-center gap-1 text-sm text-olive-gold"><ArrowUpRight className="w-4 h-4" /><span>{kpis.avgRevenuePerHour.change}</span></div>
+                  <div className="flex items-center gap-1 text-sm text-warm-gold"><ArrowUpRight className="w-4 h-4" /><span>{kpis.avgRevenuePerHour.change}</span></div>
                 )}
               </div>
             </CardContent>
           </Card>
         </Link>
         <Link href="/contracts/kpi/signed-contracts">
-          <Card className="bg-charcoal border-warm-sand/20 hover:border-olive-gold hover:scale-[1.02] transition-all duration-200 cursor-pointer h-full">
+          <Card className="bg-charcoal border-warm-sand/20 hover:border-warm-gold hover:scale-[1.02] transition-all duration-200 cursor-pointer h-full">
             <CardContent className="p-6">
               <div className="flex items-center justify-between mb-3">
-                <div className="rounded-lg bg-olive-gold/20 p-3"><FileCheck className="h-6 w-6 text-olive-gold" /></div>
-                <MiniLineChart data={kpis.totalSigned.chartData.length > 0 ? kpis.totalSigned.chartData : [5, 8, 12, 10, 15, 18, 20, 22, 25, 28, 30, 32]} color="#7D7254" />
+                <div className="rounded-lg bg-warm-gold/20 p-3"><FileCheck className="h-6 w-6 text-warm-gold" /></div>
+                <MiniLineChart data={kpis.totalSigned.chartData.length > 0 ? kpis.totalSigned.chartData : [5, 8, 12, 10, 15, 18, 20, 22, 25, 28, 30, 32]} color="#7D6854" />
               </div>
               <p className="text-meta text-warm-sand">Signed Contracts</p>
               <div className="flex items-end justify-between mt-1">
                 <p className="text-2xl font-bold text-warm-white">{kpis.totalSigned.value} contracts</p>
                 {kpis.totalSigned.change && kpis.totalSigned.value > 0 && (
-                  <div className="flex items-center gap-1 text-sm text-olive-gold"><ArrowUpRight className="w-4 h-4" /><span>{kpis.totalSigned.change}</span></div>
+                  <div className="flex items-center gap-1 text-sm text-warm-gold"><ArrowUpRight className="w-4 h-4" /><span>{kpis.totalSigned.change}</span></div>
                 )}
               </div>
             </CardContent>
@@ -221,12 +221,12 @@ export function ContractsClient({ contracts, templates, events, contacts, orgId,
         <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
           <div className="flex gap-2 flex-wrap">
             <button onClick={() => setFilter("all")}
-              className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${filter === "all" ? "bg-olive-gold text-charcoal" : "text-warm-sand hover:text-warm-white bg-warm-sand/10"}`}>
+              className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${filter === "all" ? "bg-warm-gold text-charcoal" : "text-warm-sand hover:text-warm-white bg-warm-sand/10"}`}>
               All ({contracts.length})
             </button>
             {(["draft", "sent", "viewed", "signed", "completed", "cancelled"] as const).map(status => (
               <button key={status} onClick={() => setFilter(status)}
-                className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${filter === status ? "bg-olive-gold text-charcoal" : "text-warm-sand hover:text-warm-white bg-warm-sand/10"}`}>
+                className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${filter === status ? "bg-warm-gold text-charcoal" : "text-warm-sand hover:text-warm-white bg-warm-sand/10"}`}>
                 {status.charAt(0).toUpperCase() + status.slice(1)} ({statusCounts[status]})
               </button>
             ))}
@@ -265,7 +265,7 @@ export function ContractsClient({ contracts, templates, events, contacts, orgId,
                     <td className="p-4 text-warm-sand">{contract.event?.name || "-"}</td>
                     <td className="p-4 text-warm-white">{formatCurrency(contract.total_amount)}</td>
                     <td className="p-4">
-                      <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium bg-olive-gold/20 text-olive-gold">
+                      <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium bg-warm-gold/20 text-warm-gold">
                         {contract.status === "signed" || contract.status === "completed" ? <CheckCircle className="w-3 h-3" /> :
                          contract.status === "cancelled" ? <XCircle className="w-3 h-3" /> :
                          contract.status === "sent" ? <Send className="w-3 h-3" /> :
@@ -278,7 +278,7 @@ export function ContractsClient({ contracts, templates, events, contacts, orgId,
                     <td className="p-4">
                       <div className="flex items-center gap-1">
                         {contract.status === "draft" && (
-                          <button onClick={() => handleSign(contract.id)} className="p-1.5 text-olive-gold hover:text-olive-gold/70" title="Mark as Signed">
+                          <button onClick={() => handleSign(contract.id)} className="p-1.5 text-warm-gold hover:text-warm-gold/70" title="Mark as Signed">
                             <CheckCircle className="w-4 h-4" />
                           </button>
                         )}

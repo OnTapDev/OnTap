@@ -237,7 +237,7 @@ export function QuoteFormModal({ quote, packages, addOns, contacts, events, orgI
                   onClick={() => toggleAddOn(addOn.id)}
                   className={`p-3 rounded-lg border text-left transition-colors ${
                     form.add_ons.includes(addOn.id)
-                      ? "border-olive-gold bg-olive-gold/20"
+                      ? "border-warm-gold bg-warm-gold/20"
                       : "border-warm-sand/20 hover:border-warm-sand/40"
                   }`}
                 >

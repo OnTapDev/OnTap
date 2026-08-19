@@ -81,11 +81,11 @@ export function SetupProgress({ progress }: SetupProgressProps) {
         <div className="mb-4">
           <div className="flex justify-between text-sm mb-2">
             <span className="text-warm-sand">Complete</span>
-            <span className="text-olive-gold font-medium">{percentage}%</span>
+            <span className="text-warm-gold font-medium">{percentage}%</span>
           </div>
           <div className="h-2 bg-warm-sand/10 rounded-full overflow-hidden">
             <div 
-              className="h-full bg-olive-gold transition-all duration-300"
+              className="h-full bg-warm-gold transition-all duration-300"
               style={{ width: `${percentage}%` }}
             />
           </div>
@@ -142,7 +142,7 @@ function ChecklistColumn({ title, items }: { title: string; items: { id: string;
               {item.label}
             </span>
             {item.note && !item.checked && (
-              <span className="text-xs text-olive-gold/70">{item.note}</span>
+              <span className="text-xs text-warm-gold/70">{item.note}</span>
             )}
           </div>
         </button>
